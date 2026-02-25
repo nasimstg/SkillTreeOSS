@@ -1,0 +1,780 @@
+{
+  "treeId": "full-stack-dev",
+  "title": "Full-Stack Web Developer",
+  "category": "Technology",
+  "difficulty": "hard",
+  "description": "The complete path from zero to deploying full-stack web applications. Master frontend, backend, databases, and deployment.",
+  "version": "2.0",
+  "estimatedMonths": 6,
+  "totalNodes": 20,
+  "icon": "terminal",
+  "nodes": [
+    {
+      "id": "command-line",
+      "label": "Command Line Basics",
+      "description": "Navigate your file system, run programs, and manage files using the terminal. An essential skill for every developer.",
+      "icon": "terminal",
+      "zone": "Foundation",
+      "resources": [
+        {
+          "id": "command-line-fcc-video",
+          "title": "Command Line Crash Course for Beginners",
+          "url": "https://www.youtube.com/watch?v=uwAqEzhyjtw",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 1,
+          "isFree": true
+        },
+        {
+          "id": "command-line-mdn-article",
+          "title": "Command Line Crash Course — MDN Web Docs",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Command_line",
+          "type": "article",
+          "author": "MDN Web Docs",
+          "estimatedHours": 0.5,
+          "isFree": true
+        },
+        {
+          "id": "command-line-codecademy-interactive",
+          "title": "Learn the Command Line",
+          "url": "https://www.codecademy.com/learn/learn-the-command-line",
+          "type": "interactive",
+          "author": "Codecademy",
+          "estimatedHours": 3,
+          "isFree": false
+        }
+      ],
+      "position": { "x": 0, "y": 0 },
+      "requires": []
+    },
+    {
+      "id": "git-basics",
+      "label": "Git & Version Control",
+      "description": "Track code changes, collaborate with teams, and manage your project history using Git and GitHub.",
+      "icon": "fork_right",
+      "zone": "Foundation",
+      "resources": [
+        {
+          "id": "git-fcc-video",
+          "title": "Git and GitHub for Beginners - Crash Course",
+          "url": "https://www.youtube.com/watch?v=RGOj5yH7evk",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 1.5,
+          "isFree": true
+        },
+        {
+          "id": "git-progit-docs",
+          "title": "Pro Git Book (Free Online)",
+          "url": "https://git-scm.com/book/en/v2",
+          "type": "docs",
+          "author": "Scott Chacon",
+          "estimatedHours": 8,
+          "isFree": true
+        },
+        {
+          "id": "git-learngitbranching-interactive",
+          "title": "Learn Git Branching — Visual & Interactive",
+          "url": "https://learngitbranching.js.org",
+          "type": "interactive",
+          "author": "Peter Cottle",
+          "estimatedHours": 2,
+          "isFree": true
+        },
+        {
+          "id": "git-atlassian-article",
+          "title": "Git Tutorials & Workflows",
+          "url": "https://www.atlassian.com/git/tutorials",
+          "type": "article",
+          "author": "Atlassian",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 0, "y": 320 },
+      "requires": []
+    },
+    {
+      "id": "html-basics",
+      "label": "HTML Basics",
+      "description": "Learn the skeleton of the web. Master semantic HTML5, forms, tables, and document structure for accessibility.",
+      "icon": "html",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "html-fcc-video",
+          "title": "HTML Full Course - Build a Website Tutorial",
+          "url": "https://www.youtube.com/watch?v=mU6anWqZJcc",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 2,
+          "isFree": true
+        },
+        {
+          "id": "html-mdn-docs",
+          "title": "HTML: HyperText Markup Language — MDN",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+          "type": "docs",
+          "author": "MDN Web Docs",
+          "estimatedHours": 1,
+          "isFree": true
+        },
+        {
+          "id": "html-fcc-interactive",
+          "title": "Responsive Web Design Certification (HTML section)",
+          "url": "https://www.freecodecamp.org/learn/2022/responsive-web-design/",
+          "type": "interactive",
+          "author": "freeCodeCamp",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "html-htmldog-article",
+          "title": "HTML Beginner Tutorial",
+          "url": "https://htmldog.com/guides/html/beginner/",
+          "type": "article",
+          "author": "HTML Dog",
+          "estimatedHours": 0.75,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 300, "y": 160 },
+      "requires": []
+    },
+    {
+      "id": "css-basics",
+      "label": "CSS Fundamentals",
+      "description": "Style your web pages with selectors, the box model, Flexbox, CSS Grid, and responsive design principles.",
+      "icon": "style",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "css-fcc-video",
+          "title": "CSS Tutorial - Zero to Hero (Complete Course)",
+          "url": "https://www.youtube.com/watch?v=1Rs2ND1ryYc",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 6,
+          "isFree": true
+        },
+        {
+          "id": "css-kevinpowell-video",
+          "title": "CSS for Beginners — Kevin Powell",
+          "url": "https://www.youtube.com/watch?v=OXGznpKZ_sA",
+          "type": "video",
+          "author": "Kevin Powell",
+          "estimatedHours": 4.5,
+          "isFree": true
+        },
+        {
+          "id": "css-flexboxfroggy-interactive",
+          "title": "Flexbox Froggy — Learn Flexbox Interactively",
+          "url": "https://flexboxfroggy.com",
+          "type": "interactive",
+          "author": "Codepip",
+          "estimatedHours": 0.5,
+          "isFree": true
+        },
+        {
+          "id": "css-gridgarden-interactive",
+          "title": "Grid Garden — Learn CSS Grid",
+          "url": "https://cssgridgarden.com",
+          "type": "interactive",
+          "author": "Codepip",
+          "estimatedHours": 0.5,
+          "isFree": true
+        },
+        {
+          "id": "css-tricks-article",
+          "title": "A Complete Guide to Flexbox",
+          "url": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+          "type": "article",
+          "author": "CSS-Tricks",
+          "estimatedHours": 0.5,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 600, "y": 0 },
+      "requires": ["html-basics"]
+    },
+    {
+      "id": "javascript-basics",
+      "label": "JavaScript Basics",
+      "description": "Learn variables, functions, DOM manipulation, events, and the fundamentals of the language that powers the web.",
+      "icon": "javascript",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "js-fcc-video",
+          "title": "JavaScript Programming - Full Course",
+          "url": "https://www.youtube.com/watch?v=PkZNo7MFNFg",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 8,
+          "isFree": true
+        },
+        {
+          "id": "js-info-article",
+          "title": "The Modern JavaScript Tutorial — javascript.info",
+          "url": "https://javascript.info",
+          "type": "article",
+          "author": "Ilya Kantor",
+          "estimatedHours": 12,
+          "isFree": true
+        },
+        {
+          "id": "js-eloquent-docs",
+          "title": "Eloquent JavaScript (Free Book)",
+          "url": "https://eloquentjavascript.net",
+          "type": "docs",
+          "author": "Marijn Haverbeke",
+          "estimatedHours": 10,
+          "isFree": true
+        },
+        {
+          "id": "js-scrimba-interactive",
+          "title": "Learn JavaScript for Free — Scrimba",
+          "url": "https://scrimba.com/learn/learnjavascript",
+          "type": "interactive",
+          "author": "Scrimba",
+          "estimatedHours": 11,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 600, "y": 320 },
+      "requires": ["html-basics"]
+    },
+    {
+      "id": "responsive-design",
+      "label": "Responsive Design",
+      "description": "Build websites that look great on every screen size using media queries, Flexbox, CSS Grid, and mobile-first design.",
+      "icon": "devices",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "resp-fcc-video",
+          "title": "Responsive Web Design - 5 Projects",
+          "url": "https://www.youtube.com/watch?v=srvUrASNj0s",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "resp-mdn-article",
+          "title": "Responsive Design — MDN Web Docs",
+          "url": "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design",
+          "type": "article",
+          "author": "MDN Web Docs",
+          "estimatedHours": 0.5,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 900, "y": 0 },
+      "requires": ["css-basics"]
+    },
+    {
+      "id": "javascript-advanced",
+      "label": "Advanced JavaScript",
+      "description": "Master closures, promises, async/await, the event loop, ES6+ features, and modern JavaScript patterns.",
+      "icon": "code",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "jsadv-tonyalicea-video",
+          "title": "JavaScript: Understanding the Weird Parts",
+          "url": "https://www.youtube.com/watch?v=Bv_5Zv5c-Ts",
+          "type": "video",
+          "author": "Tony Alicea",
+          "estimatedHours": 11,
+          "isFree": true
+        },
+        {
+          "id": "jsadv-info-article",
+          "title": "Advanced JavaScript Concepts — javascript.info",
+          "url": "https://javascript.info/advanced-functions",
+          "type": "article",
+          "author": "Ilya Kantor",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "jsadv-traversy-video",
+          "title": "Async JS Crash Course - Callbacks, Promises, Async Await",
+          "url": "https://www.youtube.com/watch?v=PoRJizFvM7s",
+          "type": "video",
+          "author": "Traversy Media",
+          "estimatedHours": 0.75,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 900, "y": 200 },
+      "requires": ["javascript-basics"]
+    },
+    {
+      "id": "nodejs",
+      "label": "Node.js",
+      "description": "Run JavaScript on the server. Learn modules, the Node runtime, npm ecosystem, and building server-side applications.",
+      "icon": "dns",
+      "zone": "Backend",
+      "resources": [
+        {
+          "id": "nodejs-fcc-video",
+          "title": "Node.js and Express.js - Full Course",
+          "url": "https://www.youtube.com/watch?v=Oe421EPjeBE",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 8,
+          "isFree": true
+        },
+        {
+          "id": "nodejs-official-docs",
+          "title": "Node.js Official Documentation",
+          "url": "https://nodejs.org/en/docs",
+          "type": "docs",
+          "author": "Node.js Foundation",
+          "estimatedHours": 3,
+          "isFree": true
+        },
+        {
+          "id": "nodejs-odin-article",
+          "title": "NodeJS — The Odin Project",
+          "url": "https://www.theodinproject.com/paths/full-stack-javascript/courses/nodejs",
+          "type": "course",
+          "author": "The Odin Project",
+          "estimatedHours": 20,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 900, "y": 400 },
+      "requires": ["javascript-basics"]
+    },
+    {
+      "id": "sql",
+      "label": "SQL & Databases",
+      "description": "Master relational databases with SQL. Write queries, design schemas, use JOINs, and understand transactions.",
+      "icon": "storage",
+      "zone": "Backend",
+      "resources": [
+        {
+          "id": "sql-fcc-video",
+          "title": "SQL Tutorial - Full Database Course for Beginners",
+          "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 4.5,
+          "isFree": true
+        },
+        {
+          "id": "sql-sqlbolt-interactive",
+          "title": "SQLBolt — Learn SQL with Simple Interactive Exercises",
+          "url": "https://sqlbolt.com",
+          "type": "interactive",
+          "author": "SQLBolt",
+          "estimatedHours": 2,
+          "isFree": true
+        },
+        {
+          "id": "sql-postgresqltutorial-article",
+          "title": "PostgreSQL Tutorial for Beginners",
+          "url": "https://www.postgresqltutorial.com",
+          "type": "article",
+          "author": "PostgreSQL Tutorial",
+          "estimatedHours": 3,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 900, "y": 600 },
+      "requires": ["javascript-basics"]
+    },
+    {
+      "id": "react-basics",
+      "label": "React.js Fundamentals",
+      "description": "Build component-based UIs with React. Master JSX, hooks (useState, useEffect), props, and the virtual DOM.",
+      "icon": "data_object",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "react-fcc-video",
+          "title": "React Course - Beginner's Tutorial for React JavaScript Library",
+          "url": "https://www.youtube.com/watch?v=bMknfKXIFA8",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 11,
+          "isFree": true
+        },
+        {
+          "id": "react-official-docs",
+          "title": "React Official Documentation (react.dev)",
+          "url": "https://react.dev/learn",
+          "type": "docs",
+          "author": "React Team",
+          "estimatedHours": 5,
+          "isFree": true
+        },
+        {
+          "id": "react-scrimba-interactive",
+          "title": "Learn React for Free — Scrimba",
+          "url": "https://scrimba.com/learn/learnreact",
+          "type": "interactive",
+          "author": "Scrimba",
+          "estimatedHours": 8,
+          "isFree": true
+        },
+        {
+          "id": "react-bobziroll-course",
+          "title": "React - The Complete Guide (Udemy)",
+          "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/",
+          "type": "course",
+          "author": "Maximilian Schwarzmüller",
+          "estimatedHours": 48,
+          "isFree": false
+        }
+      ],
+      "position": { "x": 1200, "y": 100 },
+      "requires": ["javascript-advanced"]
+    },
+    {
+      "id": "expressjs",
+      "label": "Express.js & REST APIs",
+      "description": "Build web servers and REST APIs with Express. Handle routing, middleware, authentication, and HTTP methods.",
+      "icon": "bolt",
+      "zone": "Backend",
+      "resources": [
+        {
+          "id": "express-traversy-video",
+          "title": "Express JS Crash Course",
+          "url": "https://www.youtube.com/watch?v=L72fhGm1tfE",
+          "type": "video",
+          "author": "Traversy Media",
+          "estimatedHours": 1.5,
+          "isFree": true
+        },
+        {
+          "id": "express-official-docs",
+          "title": "Express.js Official Documentation",
+          "url": "https://expressjs.com/en/guide/routing.html",
+          "type": "docs",
+          "author": "Express.js",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1200, "y": 350 },
+      "requires": ["nodejs"]
+    },
+    {
+      "id": "typescript",
+      "label": "TypeScript",
+      "description": "Add static typing to JavaScript. Learn interfaces, generics, type guards, and how TypeScript prevents runtime errors.",
+      "icon": "description",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "ts-academind-video",
+          "title": "TypeScript Course for Beginners - Learn TypeScript from Scratch",
+          "url": "https://www.youtube.com/watch?v=BwuLxPH8IDs",
+          "type": "video",
+          "author": "Academind",
+          "estimatedHours": 3,
+          "isFree": true
+        },
+        {
+          "id": "ts-official-docs",
+          "title": "TypeScript Handbook — Official Docs",
+          "url": "https://www.typescriptlang.org/docs/handbook/intro.html",
+          "type": "docs",
+          "author": "Microsoft",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "ts-deepdive-article",
+          "title": "TypeScript Deep Dive (Free Book)",
+          "url": "https://basarat.gitbook.io/typescript/",
+          "type": "article",
+          "author": "Basarat Ali Syed",
+          "estimatedHours": 6,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1200, "y": 600 },
+      "requires": ["javascript-advanced"]
+    },
+    {
+      "id": "react-advanced",
+      "label": "Advanced React Patterns",
+      "description": "Context API, custom hooks, performance optimization, code splitting, Suspense, and scalable React architecture.",
+      "icon": "hub",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "reactadv-codevolution-video",
+          "title": "Advanced React Patterns",
+          "url": "https://www.youtube.com/watch?v=MkMpCJ5Z3Mk",
+          "type": "video",
+          "author": "Codevolution",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "reactadv-kentcdodds-article",
+          "title": "React Patterns — Kent C. Dodds",
+          "url": "https://kentcdodds.com/blog/advanced-react-patterns",
+          "type": "article",
+          "author": "Kent C. Dodds",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1500, "y": 0 },
+      "requires": ["react-basics"]
+    },
+    {
+      "id": "nextjs",
+      "label": "Next.js",
+      "description": "Build full-stack React apps with file-based routing, server-side rendering, static generation, and API routes.",
+      "icon": "rocket_launch",
+      "zone": "Full-Stack",
+      "resources": [
+        {
+          "id": "nextjs-jsmastery-video",
+          "title": "Next.js 13 Full Course 2023 - Build and Deploy",
+          "url": "https://www.youtube.com/watch?v=wm5gMKuwSYk",
+          "type": "video",
+          "author": "JavaScript Mastery",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "nextjs-official-docs",
+          "title": "Next.js Official Documentation",
+          "url": "https://nextjs.org/docs",
+          "type": "docs",
+          "author": "Vercel",
+          "estimatedHours": 3,
+          "isFree": true
+        },
+        {
+          "id": "nextjs-vercel-interactive",
+          "title": "Next.js Learn — Official Interactive Course",
+          "url": "https://nextjs.org/learn",
+          "type": "interactive",
+          "author": "Vercel",
+          "estimatedHours": 6,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1500, "y": 250 },
+      "requires": ["react-basics", "nodejs"]
+    },
+    {
+      "id": "rest-api-design",
+      "label": "REST API Design",
+      "description": "Design scalable REST APIs with proper status codes, authentication middleware, pagination, and error handling.",
+      "icon": "api",
+      "zone": "Backend",
+      "resources": [
+        {
+          "id": "rest-traversy-video",
+          "title": "REST API Design Best Practices",
+          "url": "https://www.youtube.com/watch?v=7nm1pYuKAhY",
+          "type": "video",
+          "author": "Traversy Media",
+          "estimatedHours": 1,
+          "isFree": true
+        },
+        {
+          "id": "rest-restfulapi-article",
+          "title": "RESTful API Design Best Practices",
+          "url": "https://restfulapi.net",
+          "type": "article",
+          "author": "REST API Tutorial",
+          "estimatedHours": 0.5,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1500, "y": 550 },
+      "requires": ["expressjs", "sql"]
+    },
+    {
+      "id": "state-management",
+      "label": "State Management",
+      "description": "Manage complex application state with Zustand, Redux Toolkit, or React Query for server state and caching.",
+      "icon": "account_tree",
+      "zone": "Frontend",
+      "resources": [
+        {
+          "id": "state-fcc-video",
+          "title": "React State Management - Intermediate JavaScript Course",
+          "url": "https://www.youtube.com/watch?v=13naltF_OH8",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 4,
+          "isFree": true
+        },
+        {
+          "id": "state-zustand-docs",
+          "title": "Zustand Documentation",
+          "url": "https://docs.pmnd.rs/zustand/getting-started/introduction",
+          "type": "docs",
+          "author": "Poimandres",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1800, "y": 0 },
+      "requires": ["react-advanced"]
+    },
+    {
+      "id": "authentication",
+      "label": "Auth & Security",
+      "description": "Implement JWT authentication, OAuth 2.0, session management, bcrypt password hashing, and OWASP security basics.",
+      "icon": "lock",
+      "zone": "Backend",
+      "resources": [
+        {
+          "id": "auth-webdevsimplified-video",
+          "title": "Node.js Auth Tutorial (JWT and Bcrypt)",
+          "url": "https://www.youtube.com/watch?v=mbsmsi7l3r4",
+          "type": "video",
+          "author": "Web Dev Simplified",
+          "estimatedHours": 1,
+          "isFree": true
+        },
+        {
+          "id": "auth-owasp-article",
+          "title": "OWASP Authentication Cheat Sheet",
+          "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+          "type": "article",
+          "author": "OWASP",
+          "estimatedHours": 0.5,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 1800, "y": 450 },
+      "requires": ["rest-api-design"]
+    },
+    {
+      "id": "deployment",
+      "label": "Deployment & CI/CD",
+      "description": "Deploy apps to Vercel, Railway, or AWS. Set up GitHub Actions for automated testing and continuous deployment.",
+      "icon": "cloud_upload",
+      "zone": "Full-Stack",
+      "resources": [
+        {
+          "id": "deploy-traversy-video",
+          "title": "Full Stack App Deployment - Next.js, PostgreSQL, GitHub Actions",
+          "url": "https://www.youtube.com/watch?v=2HBIzEx6IZA",
+          "type": "video",
+          "author": "Traversy Media",
+          "estimatedHours": 2,
+          "isFree": true
+        },
+        {
+          "id": "deploy-vercel-docs",
+          "title": "Vercel Deployment Documentation",
+          "url": "https://vercel.com/docs",
+          "type": "docs",
+          "author": "Vercel",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 2100, "y": 225 },
+      "requires": ["nextjs", "authentication"]
+    },
+    {
+      "id": "system-design",
+      "label": "System Design",
+      "description": "Design scalable distributed systems. Learn load balancing, caching, databases at scale, microservices, and CAP theorem.",
+      "icon": "schema",
+      "zone": "Full-Stack",
+      "resources": [
+        {
+          "id": "sysdesign-fcc-video",
+          "title": "System Design for Beginners Course",
+          "url": "https://www.youtube.com/watch?v=m8Icp_Cid5o",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 6,
+          "isFree": true
+        },
+        {
+          "id": "sysdesign-primer-article",
+          "title": "System Design Primer (GitHub)",
+          "url": "https://github.com/donnemartin/system-design-primer",
+          "type": "article",
+          "author": "Donne Martin",
+          "estimatedHours": 10,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 2400, "y": 0 },
+      "requires": ["state-management", "deployment"]
+    },
+    {
+      "id": "docker",
+      "label": "Docker Basics",
+      "description": "Containerize applications with Docker. Write Dockerfiles, use Docker Compose, and understand container orchestration.",
+      "icon": "category",
+      "zone": "DevOps",
+      "resources": [
+        {
+          "id": "docker-fcc-video",
+          "title": "Docker Tutorial for Beginners - A Full DevOps Course",
+          "url": "https://www.youtube.com/watch?v=fqMOX6JJhGo",
+          "type": "video",
+          "author": "freeCodeCamp",
+          "estimatedHours": 2,
+          "isFree": true
+        },
+        {
+          "id": "docker-official-docs",
+          "title": "Docker Official Documentation — Get Started",
+          "url": "https://docs.docker.com/get-started/",
+          "type": "docs",
+          "author": "Docker Inc.",
+          "estimatedHours": 1.5,
+          "isFree": true
+        },
+        {
+          "id": "docker-nana-video",
+          "title": "Docker Tutorial for Beginners — TechWorld with Nana",
+          "url": "https://www.youtube.com/watch?v=3c-iBn73dDE",
+          "type": "video",
+          "author": "TechWorld with Nana",
+          "estimatedHours": 3,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 2400, "y": 450 },
+      "requires": ["deployment"]
+    }
+  ],
+  "edges": [
+    { "id": "e-cmd-html",      "source": "command-line",      "target": "html-basics" },
+    { "id": "e-git-html",      "source": "git-basics",        "target": "html-basics" },
+    { "id": "e-html-css",      "source": "html-basics",       "target": "css-basics" },
+    { "id": "e-html-js",       "source": "html-basics",       "target": "javascript-basics" },
+    { "id": "e-css-resp",      "source": "css-basics",        "target": "responsive-design" },
+    { "id": "e-js-adv",        "source": "javascript-basics", "target": "javascript-advanced" },
+    { "id": "e-js-node",       "source": "javascript-basics", "target": "nodejs" },
+    { "id": "e-js-sql",        "source": "javascript-basics", "target": "sql" },
+    { "id": "e-jsadv-react",   "source": "javascript-advanced","target": "react-basics" },
+    { "id": "e-jsadv-ts",      "source": "javascript-advanced","target": "typescript" },
+    { "id": "e-node-express",  "source": "nodejs",            "target": "expressjs" },
+    { "id": "e-node-next",     "source": "nodejs",            "target": "nextjs" },
+    { "id": "e-react-reactadv","source": "react-basics",      "target": "react-advanced" },
+    { "id": "e-react-next",    "source": "react-basics",      "target": "nextjs" },
+    { "id": "e-express-rest",  "source": "expressjs",         "target": "rest-api-design" },
+    { "id": "e-sql-rest",      "source": "sql",               "target": "rest-api-design" },
+    { "id": "e-reactadv-state","source": "react-advanced",    "target": "state-management" },
+    { "id": "e-rest-auth",     "source": "rest-api-design",   "target": "authentication" },
+    { "id": "e-next-deploy",   "source": "nextjs",            "target": "deployment" },
+    { "id": "e-auth-deploy",   "source": "authentication",    "target": "deployment" },
+    { "id": "e-state-sysdesign","source": "state-management", "target": "system-design" },
+    { "id": "e-deploy-sysdesign","source": "deployment",      "target": "system-design" },
+    { "id": "e-deploy-docker", "source": "deployment",        "target": "docker" }
+  ]
+}

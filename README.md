@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌳 The Skill-Tree
 
-## Getting Started
+**The Democratization of Mastery.** The Skill-Tree is an open-source, gamified learning platform. We map out complex skills (like "Full-Stack Developer," "Botanist," or "Urban Sketcher") into beautiful, interactive RPG-style skill trees. Click a node, find the absolute best free resource on the internet, and level up your life in the real world.
 
-First, run the development server:
+---
 
+## 🎯 The Vision
+
+Most learning sites are either hidden behind expensive paywalls or are overwhelming, messy lists of links. Self-learners often face a "curriculum gap"—they don't know *what* they should learn next.
+
+The Skill-Tree solves this by turning education into a visual progression system.
+
+* **Zero Overwhelm:** See exactly where you are and what to tackle next.
+* **Community Curated:** Nodes link to the single highest-voted free resource (YouTube, interactive tutorials, articles) for that specific sub-skill.
+* **Gamified Progression:** Watch your tree light up as you complete nodes, unlocking advanced branches.
+
+---
+
+## 🛠️ Tech Stack
+
+We chose a modern, performant, and contributor-friendly stack:
+
+* **Framework:** Next.js (App Router)
+* **Language:** TypeScript
+* **Canvas Engine:** React Flow (by xyflow)
+* **State Management:** Zustand
+* **Styling:** Tailwind CSS + shadcn/ui + Framer Motion
+* **Database & Auth:** Supabase
+* **Data Validation:** Zod
+
+---
+
+## 🚀 Quick Start (Local Development)
+
+Want to run The Skill-Tree locally? Follow these steps:
+
+1. **Clone the repository**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/nasimstg/SkillTreeOSS.git
+cd SkillTreeOSS
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Install dependencies**
+```bash
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+3. **Set up environment variables**
+Copy the example environment file and add your local/test Supabase keys.
+```bash
+cp .env.example .env.local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+4. **Run the development server**
+```bash
+npm run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) in your browser to see the result.
+
+---
+
+## 🤝 How to Contribute
+
+The heart of this project is the community. You **do not** need to be a React developer to contribute! The actual skill trees are generated from simple JSON files.
+
+**Want to add a new skill tree or fix a broken YouTube link?**
+
+1. Navigate to the `data/trees/` directory.
+2. Duplicate an existing JSON file or edit one to update a resource link.
+3. Follow the schema rules (e.g., ensuring your node has `x` and `y` coordinates).
+4. Submit a Pull Request!
+
+For a detailed guide on how the JSON schema works and how to structure a tree, please read our full **[CONTRIBUTING.md](https://www.google.com/search?q=./CONTRIBUTING.md)**.
+
+**Are you a developer?**
+Check out the **Issues** tab for labels like `good first issue` or `help wanted` to tackle UI improvements, animation tweaks, or Supabase integrations.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details. Education should be free, and so is this code.
+
+---
