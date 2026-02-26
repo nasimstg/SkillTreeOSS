@@ -4,12 +4,20 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useSkillTreeStore } from '@/lib/store'
 
-export default function Navbar() {
+interface NavbarProps {
+  variant?: 'landing' | 'canvas'
+}
+
+export default function Navbar({ variant = 'landing' }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const user = useSkillTreeStore((s) => s.user)
 
+  const headerCls = variant === 'canvas'
+    ? 'sticky top-0 z-50 w-full border-b border-white/[0.06] bg-background-dark/95 backdrop-blur-md'
+    : 'sticky top-0 z-50 w-full border-b border-primary/20 bg-bg-landing/80 backdrop-blur-md'
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-bg-landing/80 backdrop-blur-md">
+    <header className={headerCls}>
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
@@ -83,7 +91,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-primary/10 bg-bg-landing/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
+        <div className={`md:hidden border-t ${variant === 'canvas' ? 'border-white/[0.06] bg-background-dark/98' : 'border-primary/10 bg-bg-landing/95'} backdrop-blur-md px-6 py-4 flex flex-col gap-4`}>
           <Link href="/explore" className="text-sm font-medium text-slate-300 hover:text-primary">
             Explore Trees
           </Link>

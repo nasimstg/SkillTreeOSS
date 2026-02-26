@@ -49,7 +49,11 @@ function buildNodes(
   posOverrides?: Record<string, { x: number; y: number }>,
   animatingNodes: Record<string, 'completing' | 'unlocking'> = {},
   requiredNodeIds: string[] = [],
+  lockedSelectedId: string | null = null,
+  hoveredPrereqId: string | null = null,
 ): Node[] {
+  const isFocusMode = lockedSelectedId !== null
+
   return tree.nodes.map((node) => {
     const status = getNodeStatus(node, completedIds)
     const data: SkillNodeData = {
@@ -62,15 +66,24 @@ function buildNodes(
       animationState: animatingNodes[node.id],
       highlightRequired: requiredNodeIds.includes(node.id),
     }
-    // When auto-arranged, dagre positions are used as-is (direction is baked in).
-    // Otherwise fall back to the JSON position with manual axis transform.
+
     const position = posOverrides?.[node.id] ?? getPosition(node, dir)
+
+    // Focus mode: dim every node that isn't the selected locked node or a required prereq
+    const dimmed = isFocusMode
+      && node.id !== lockedSelectedId
+      && !requiredNodeIds.includes(node.id)
+
     return {
       id: node.id,
       type: view,
       position,
       data: data as unknown as Record<string, unknown>,
       draggable: true,
+      style: {
+        opacity: dimmed ? 0.30 : 1,
+        transition: 'opacity 0.25s ease',
+      },
     }
   })
 }
@@ -86,7 +99,7 @@ function buildEdges(
     const srcDone = completedIds.includes(edge.source)
     const tgtDone = completedIds.includes(edge.target)
     const isActive = srcDone && tgtDone
-    const isPath   = srcDone && !tgtDone
+    const isPath = srcDone && !tgtDone
 
     // Required path: edge leads TO the locked node from an unmet prereq,
     // OR both endpoints are unmet prerequisites in the chain.
@@ -97,18 +110,24 @@ function buildEdges(
         (requiredNodeIds.includes(edge.target) && requiredNodeIds.includes(edge.source))
       )
 
-    let stroke      = '#2a2a2a'
-    let dashArray   = '5 5'
-    let animated    = false
-    let opacity     = 0.6
+    let stroke = '#585858'
+    let dashArray = '5 5'
+    let animated = false
+    let opacity = 0.7
     let strokeWidth = 1.5
-    let edgeType    = 'smoothstep'
-    let arrowW      = 11
-    let arrowH      = 11
+    let edgeType = 'smoothstep'
+    let arrowW = 11
+    let arrowH = 11
+    let markerType = MarkerType.ArrowClosed
+    let linecap: 'round' | 'square' | 'butt' = 'round'
+    let linejoin: 'round' | 'miter' | 'bevel' = 'round'
+    let pathOptions: Record<string, unknown> = {}
 
     if (view === 'rpg') {
       // ── Fantasy Quest Board ─────────────────────────────────────────────
-      edgeType = 'smoothstep'; arrowW = 13; arrowH = 13
+      // Moderate corner radius — deliberate, board-game quest paths.
+      edgeType = 'smoothstep'; pathOptions = { borderRadius: 10 }
+      arrowW = 12; arrowH = 12; linecap = 'round'; linejoin = 'round'
       if (isActive) {
         stroke = '#11d452'; dashArray = '0'; animated = true
         strokeWidth = 2.5; opacity = 0.85
@@ -122,9 +141,9 @@ function buildEdges(
 
     } else if (view === 'worldmap') {
       // ── Geographic / Treasure Map ────────────────────────────────────────
-      // Thick road markings for active, amber dotted treasure-trail for available,
-      // faint dotted path for locked (uncharted — visible but dim).
-      edgeType = 'smoothstep'; arrowW = 18; arrowH = 18
+      // Large corner radius + round linecap/linejoin = winding road aesthetics.
+      edgeType = 'smoothstep'; pathOptions = { borderRadius: 28 }
+      arrowW = 16; arrowH = 16; linecap = 'round'; linejoin = 'round'
       if (isActive) {
         stroke = '#11d452'; dashArray = '12 5'
         strokeWidth = 4; opacity = 0.7
@@ -138,11 +157,12 @@ function buildEdges(
 
     } else if (view === 'terminal') {
       // ── BST / Code Diagram ───────────────────────────────────────────────
-      // Right-angle step edges, tight uniform dashes, tiny arrows.
-      edgeType = 'step'; arrowW = 7; arrowH = 7
+      // Right-angle step routing + open arrow heads + square linecap = schematic/circuit feel.
+      edgeType = 'step'
+      arrowW = 8; arrowH = 8; markerType = MarkerType.Arrow; linecap = 'square'; linejoin = 'miter'
       if (isActive) {
         stroke = '#11d452'; dashArray = '0'
-        strokeWidth = 1.5; opacity = 0.65
+        strokeWidth = 1.5; opacity = 0.7
       } else if (isPath) {
         stroke = '#2b95ff'; dashArray = '3 3'
         strokeWidth = 1.5; opacity = 0.55
@@ -153,43 +173,57 @@ function buildEdges(
 
     } else if (view === 'neural') {
       // ── Neural / Organic Sci-Fi ──────────────────────────────────────────
-      // Smooth bezier signal paths, thick animated active synapses.
-      edgeType = 'default'; arrowW = 16; arrowH = 16
+      // Deep bezier curvature + round linecap = organic synapse signal paths.
+      edgeType = 'default'; pathOptions = { curvature: 0.45 }
+      arrowW = 14; arrowH = 14; linecap = 'round'; linejoin = 'round'
       if (isActive) {
         stroke = '#11d452'; dashArray = '0'; animated = true
         strokeWidth = 3; opacity = 0.8
       } else if (isPath) {
         stroke = '#2b95ff'; dashArray = '0'
-        strokeWidth = 1.5; opacity = 0.4
+        strokeWidth = 1.5; opacity = 0.45
       } else {
         stroke = '#585858'; dashArray = '4 5'
         strokeWidth = 1.5; opacity = 0.7
       }
     }
 
-    // Amber required-path override — always applied last
-    if (isRequired) {
-      stroke      = '#f59e0b'
-      dashArray   = '6 3'
-      opacity     = 0.9
-      animated    = false
+    // Focus mode: dim all non-required edges so the prereq path stands out
+    if (lockedSelectedId !== null && !isRequired) {
+      opacity = opacity * 0.15
+    }
+
+    // Amber required-path override — only on incomplete edges (completed ones keep their green)
+    if (isRequired && !isActive) {
+      stroke = '#f59e0b'
+      dashArray = '6 3'
+      opacity = 0.9
+      animated = false
       strokeWidth = Math.max(strokeWidth, 2)
     }
 
     return {
-      id:       edge.id,
-      source:   edge.source,
-      target:   edge.target,
+      id: edge.id,
+      source: edge.source,
+      target: edge.target,
       animated,
-      style:    { stroke, strokeDasharray: dashArray, opacity, strokeWidth },
-      type:     edgeType,
-      markerEnd: {
-        type:   MarkerType.ArrowClosed,
-        width:  arrowW,
-        height: arrowH,
-        color:  stroke,
+      style: {
+        stroke,
+        strokeDasharray: dashArray,
+        opacity,
+        strokeWidth,
+        strokeLinecap: linecap,
+        strokeLinejoin: linejoin,
       },
-    }
+      type: edgeType,
+      pathOptions,
+      markerEnd: {
+        type: markerType,
+        width: arrowW,
+        height: arrowH,
+        color: stroke,
+      },
+    } as Edge
   })
 }
 
@@ -218,6 +252,7 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
     canvasView,
     setSelectedNode,
     selectedNode,
+    hoveredPrereqId,
   } = useSkillTreeStore()
 
   const [layoutDir, setLayoutDir] = useState<LayoutDir>('LR')
@@ -293,7 +328,7 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
     tree.nodes.forEach((node) => {
       if (completedNodeIds.includes(node.id)) return
       const wasAvail = node.requires.every((r) => prev.includes(r))
-      const isAvail  = node.requires.every((r) => completedNodeIds.includes(r))
+      const isAvail = node.requires.every((r) => completedNodeIds.includes(r))
       if (!wasAvail && isAvail) next[node.id] = 'unlocking'
     })
 
@@ -307,18 +342,18 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
   // navigation (clicking a prereq) immediately shows the selection ring on canvas.
   useEffect(() => {
     setNodes(() => {
-      return buildNodes(tree, completedNodeIds, canvasView, layoutDir, autoPositions ?? undefined, animatingNodes, requiredNodeIds)
+      return buildNodes(tree, completedNodeIds, canvasView, layoutDir, autoPositions ?? undefined, animatingNodes, requiredNodeIds, lockedSelectedId, hoveredPrereqId)
         .map((n) => ({ ...n, selected: n.id === selectedNode?.id }))
     })
     setEdges(buildEdges(tree, completedNodeIds, canvasView, lockedSelectedId, requiredNodeIds))
-  }, [tree, completedNodeIds, canvasView, layoutDir, autoPositions, animatingNodes, requiredNodeIds, lockedSelectedId, selectedNode, setNodes, setEdges])
+  }, [tree, completedNodeIds, canvasView, layoutDir, autoPositions, animatingNodes, requiredNodeIds, lockedSelectedId, selectedNode, hoveredPrereqId, setNodes, setEdges])
 
   // ── center canvas on node within the visible area (canvas minus sidebar) ──
   const centerOnSelectedNode = useCallback((nodeId: string) => {
     if (!rfInstance.current) return
     const rfNode = rfInstance.current.getNodes().find((n) => n.id === nodeId)
     if (!rfNode) return
-    const nodeW = (rfNode.measured as { width?: number } | undefined)?.width  ?? 120
+    const nodeW = (rfNode.measured as { width?: number } | undefined)?.width ?? 120
     const nodeH = (rfNode.measured as { height?: number } | undefined)?.height ?? 160
     const nodeCX = rfNode.position.x + nodeW / 2
     const nodeCY = rfNode.position.y + nodeH / 2
@@ -334,7 +369,7 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
 
     // Only zoom in if below threshold — never zoom out
     const currentZoom = rfInstance.current.getZoom()
-    const targetZoom = Math.max(currentZoom, 1.2)
+    const targetZoom = Math.max(currentZoom, 1.5) - .5
 
     // viewport transform:  screen = graph * zoom + offset
     //                    → offset = screenCenter - graphCenter * zoom
@@ -436,7 +471,7 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
           variant={bgVariant}
           gap={
             canvasView === 'terminal' ? 20 :
-            canvasView === 'neural'   ? 28 : 36
+              canvasView === 'neural' ? 28 : 36
           }
           size={canvasView === 'neural' ? 2 : 1.5}
           color="#171717"
@@ -497,28 +532,8 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
           </div>
         </Panel>
 
-        {/* ── Hint pill (bottom-center) ── */}
-        <Panel position="bottom-center" className="!mb-5">
-          <div className="flex items-center gap-3 rounded-xl border border-white/8 bg-background-dark/75 backdrop-blur-xl px-4 py-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest shadow-xl pointer-events-none select-none">
-            <span className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-sm">scroll</span>
-              Scroll to zoom
-            </span>
-            <span className="h-3 w-px bg-white/10" />
-            <span className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-sm">drag_pan</span>
-              Drag to pan
-            </span>
-            <span className="h-3 w-px bg-white/10" />
-            <span className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-sm">mouse</span>
-              Right-click canvas
-            </span>
-          </div>
-        </Panel>
-
-        {/* ── FAB control menu (bottom-left) ── */}
-        <Panel position="bottom-left" className="m-4!">
+        {/* ── Canvas controls pill (bottom-center) ── */}
+        <Panel position="bottom-left" className="!mb-5">
           <CanvasFAB
             layoutDir={layoutDir}
             onLayoutDirChange={handleLayoutDirChange}

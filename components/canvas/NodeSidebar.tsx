@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useSkillTreeStore } from '@/lib/store'
 import { getNodeStatus, formatHours, getZoneColor } from '@/lib/utils'
 import type { SkillTree, TreeNode, Resource, ResourceType } from '@/types/tree'
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useCallback, useMemo } from 'react'
 
 // ── Type config ────────────────────────────────────────────────────────────────
 
@@ -92,6 +92,28 @@ function formatDuration(hours: number): string {
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
+/**
+ * Topological sort (post-order DFS) — returns prereqs foundation-first,
+ * so base nodes with no ancestors appear at the top of the list.
+ */
+function sortPrereqsTopologically(prereqs: TreeNode[]): TreeNode[] {
+  const ids = new Set(prereqs.map((n) => n.id))
+  const result: TreeNode[] = []
+  const visited = new Set<string>()
+  function dfs(node: TreeNode) {
+    if (visited.has(node.id)) return
+    visited.add(node.id)
+    for (const reqId of node.requires) {
+      if (!ids.has(reqId) || visited.has(reqId)) continue
+      const req = prereqs.find((n) => n.id === reqId)
+      if (req) dfs(req)
+    }
+    result.push(node)
+  }
+  for (const node of prereqs) dfs(node)
+  return result
+}
+
 /** BFS to collect every transitive ancestor of `node` from `allNodes`. */
 function getAllAncestors(node: TreeNode, allNodes: TreeNode[]): TreeNode[] {
   const visited = new Set<string>()
@@ -119,8 +141,12 @@ interface Props { tree: SkillTree }
 // ── Main ───────────────────────────────────────────────────────────────────────
 
 export default function NodeSidebar({ tree }: Props) {
-  const { selectedNode, setSelectedNode, completedNodeIds, completeNode, currentTree } =
+  const { selectedNode, setSelectedNode, completedNodeIds, completeNode, currentTree, setHoveredPrereqId } =
     useSkillTreeStore()
+
+  const [distantExpanded, setDistantExpanded] = useState(false)
+  // Must be above early return — hooks cannot be called conditionally
+  const handlePrereqHover = useCallback((id: string | null) => setHoveredPrereqId(id), [setHoveredPrereqId])
 
   const isOpen = selectedNode !== null
 
@@ -134,8 +160,14 @@ export default function NodeSidebar({ tree }: Props) {
   const isCompleted = status === 'completed'
   const isLocked = status === 'locked'
   const treeId = currentTree?.treeId ?? tree.treeId
-  // All transitive ancestors (not just immediate requires)
+
+  // All transitive ancestors (not just immediate requires), sorted foundation-first
   const prerequisites = getAllAncestors(node, tree.nodes)
+  const sortedPrereqs = sortPrereqsTopologically(prerequisites)
+  const immediateIds = new Set(node.requires)
+  const immediate = sortedPrereqs.filter((p) => immediateIds.has(p.id))
+  const distant   = sortedPrereqs.filter((p) => !immediateIds.has(p.id))
+  const prereqDoneCount = prerequisites.filter((p) => completedNodeIds.includes(p.id)).length
 
   return (
     <AnimatePresence>
@@ -148,7 +180,7 @@ export default function NodeSidebar({ tree }: Props) {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0.6 }}
             transition={SPRING}
-            className="fixed right-0 top-0 z-50 h-screen w-full md:w-[600px] lg:w-[750px] flex flex-row bg-bg-landing border-l border-white/[0.07] shadow-2xl font-display"
+            className="fixed right-0 top-0 z-50 h-screen w-full lg:w-2/5 flex flex-row bg-background-dark border-l border-white/[0.07] shadow-2xl font-display"
           >
             <motion.button
               onClick={() => setSelectedNode(null)}
@@ -198,54 +230,92 @@ export default function NodeSidebar({ tree }: Props) {
                 {/* Resources */}
                 <ResourceList node={node} treeId={treeId} nodeId={node.id} />
 
-                {/* Prerequisites */}
+                {/* Prerequisites — vertical timeline */}
                 {prerequisites.length > 0 && (
                   <div className="pt-4 border-t border-white/[0.06]">
-                    <div className="flex items-center justify-between mb-3">
+
+                    {/* Section header */}
+                    <div className="flex items-center justify-between mb-4">
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                         Prerequisites
                       </h4>
-                      <span className="text-[10px] text-slate-600">
-                        {prerequisites.filter(p => getNodeStatus(p, completedNodeIds) === 'completed').length}
-                        /{prerequisites.length} done
+                      <span className="text-[10px] text-slate-600 tabular-nums">
+                        {prereqDoneCount} / {prerequisites.length} done
                       </span>
                     </div>
-                    <div className="space-y-2">
-                      {prerequisites.map((pre) => {
-                        const done = getNodeStatus(pre, completedNodeIds) === 'completed'
-                        const zoneStyle = ZONE_ICON_STYLE[pre.zone] ?? 'bg-slate-400/15 text-slate-400'
-                        return (
+
+                    <div className="flex flex-col">
+
+                      {/* ── Distant ancestors (collapsible) ── */}
+                      {distant.length > 0 && (
+                        <>
                           <button
-                            key={pre.id}
-                            onClick={() => setSelectedNode(pre)}
-                            className={`w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-all cursor-pointer group
-                              ${done
-                                ? 'bg-card-dark border-white/[0.06] hover:border-primary/30'
-                                : 'bg-amber-500/5 border-amber-500/20 hover:border-amber-500/50 hover:bg-amber-500/10'
-                              }`}
+                            onClick={() => setDistantExpanded((v) => !v)}
+                            className="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg hover:bg-white/[0.04] transition-colors mb-1 group"
                           >
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 ${zoneStyle}`}>
-                              <span className="material-symbols-outlined text-[20px]">{pre.icon}</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className={`text-sm font-bold truncate transition-colors ${done ? 'text-slate-200 group-hover:text-primary' : 'text-amber-200 group-hover:text-amber-100'}`}>
-                                {pre.label}
-                              </p>
-                              <p className="text-xs text-slate-500">{done ? 'Completed' : pre.zone}</p>
-                            </div>
-                            <span className={`material-symbols-outlined text-[20px] shrink-0 ${done ? 'text-primary' : 'text-amber-500/60'}`}>
-                              {done ? 'check_circle' : 'radio_button_unchecked'}
+                            <span className={`material-symbols-outlined text-base text-slate-600 transition-transform duration-200 ${distantExpanded ? 'rotate-90' : ''}`}>
+                              chevron_right
+                            </span>
+                            <span className="text-[11px] font-semibold text-slate-500 group-hover:text-slate-300 transition-colors flex-1 text-left">
+                              {distantExpanded ? 'Hide' : 'Show'} {distant.length} foundational {distant.length === 1 ? 'prerequisite' : 'prerequisites'}
+                            </span>
+                            {/* Mini progress dots */}
+                            <span className="flex items-center gap-1 shrink-0">
+                              {distant.slice(0, 6).map((p) => (
+                                <span
+                                  key={p.id}
+                                  className={`inline-block w-1.5 h-1.5 rounded-full ${completedNodeIds.includes(p.id) ? 'bg-primary' : 'bg-white/15'}`}
+                                />
+                              ))}
+                              {distant.length > 6 && <span className="text-[9px] text-slate-600">+{distant.length - 6}</span>}
                             </span>
                           </button>
-                        )
-                      })}
+
+                          <AnimatePresence initial={false}>
+                            {distantExpanded && (
+                              <motion.div
+                                key="distant"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.22, ease: 'easeInOut' }}
+                                className="overflow-hidden"
+                              >
+                                {distant.map((pre, idx) => (
+                                  <PrereqTimelineItem
+                                    key={pre.id}
+                                    prereq={pre}
+                                    isLast={idx === distant.length - 1 && immediate.length === 0}
+                                    completedNodeIds={completedNodeIds}
+                                    onNavigate={setSelectedNode}
+                                    onHover={handlePrereqHover}
+                                  />
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      )}
+
+                      {/* ── Immediate prerequisites ── */}
+                      {immediate.map((pre, idx) => (
+                        <PrereqTimelineItem
+                          key={pre.id}
+                          prereq={pre}
+                          isLast={idx === immediate.length - 1}
+                          completedNodeIds={completedNodeIds}
+                          onNavigate={setSelectedNode}
+                          onHover={handlePrereqHover}
+                        />
+                      ))}
+
                     </div>
                   </div>
                 )}
               </div>
 
               {/* ── Footer ── */}
-              <div className="shrink-0 px-6 py-5 border-t border-white/[0.08] bg-bg-landing shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.4)]">
+              <div className="shrink-0 px-6 py-5 border-t border-white/[0.08] bg-background-dark shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.4)]">
                 {isCompleted ? (
                   <div className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-primary/10 border border-primary/30 text-primary font-bold">
                     <span className="material-symbols-outlined">workspace_premium</span>
@@ -277,10 +347,100 @@ export default function NodeSidebar({ tree }: Props) {
   )
 }
 
+// ── PrereqTimelineItem ─────────────────────────────────────────────────────────
+
+interface PrereqTimelineItemProps {
+  prereq: TreeNode
+  isLast: boolean
+  completedNodeIds: string[]
+  onNavigate: (node: TreeNode) => void
+  onHover: (id: string | null) => void
+}
+
+function PrereqTimelineItem({ prereq, isLast, completedNodeIds, onNavigate, onHover }: PrereqTimelineItemProps) {
+  const status = getNodeStatus(prereq, completedNodeIds)
+  const isCompleted = status === 'completed'
+  const isAvailable = status === 'available'
+  const isLocked    = status === 'locked'
+
+  const zoneStyle = ZONE_ICON_STYLE[prereq.zone] ?? 'bg-slate-400/15 text-slate-400'
+
+  const dotCls = isCompleted
+    ? 'bg-primary/15 border-2 border-primary'
+    : isAvailable
+      ? 'bg-accent-blue/15 border-2 border-accent-blue'
+      : 'bg-white/5 border border-white/20'
+
+  const dotIcon = isCompleted ? 'check' : isAvailable ? 'play_arrow' : 'lock'
+  const dotIconColor = isCompleted ? 'text-primary' : isAvailable ? 'text-accent-blue' : 'text-slate-600'
+
+  const labelColor = isCompleted
+    ? 'text-slate-200'
+    : isAvailable
+      ? 'text-accent-blue'
+      : 'text-slate-400'
+
+  const subText = isCompleted
+    ? 'Completed'
+    : isAvailable
+      ? 'Ready to start'
+      : prereq.zone
+
+  const subColor = isCompleted
+    ? 'text-primary/80'
+    : isAvailable
+      ? 'text-accent-blue/60'
+      : 'text-slate-600'
+
+  return (
+    <div className="flex gap-3">
+      {/* Timeline track */}
+      <div className="flex flex-col items-center shrink-0 w-5">
+        {/* Status dot */}
+        <div className={`relative w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 z-10 ${dotCls}`}>
+          {isAvailable && (
+            <span className="absolute inset-0 rounded-full border-2 border-accent-blue animate-ping opacity-25" />
+          )}
+          <span className={`material-symbols-outlined leading-none ${dotIconColor}`} style={{ fontSize: 10 }}>
+            {dotIcon}
+          </span>
+        </div>
+        {/* Connecting line to next item */}
+        {!isLast && <div className="w-px flex-1 mt-1 bg-white/[0.07] min-h-[20px]" />}
+      </div>
+
+      {/* Content row */}
+      <button
+        onClick={() => onNavigate(prereq)}
+        onMouseEnter={() => onHover(prereq.id)}
+        onMouseLeave={() => onHover(null)}
+        className={`flex-1 flex items-center gap-3 pb-4 text-left group transition-opacity ${isLocked ? 'opacity-50 hover:opacity-80' : ''}`}
+      >
+        {/* Zone icon */}
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105 ${zoneStyle}`}>
+          <span className="material-symbols-outlined text-base leading-none">{prereq.icon}</span>
+        </div>
+
+        {/* Label + sub */}
+        <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+          <p className={`text-sm font-bold truncate transition-colors group-hover:text-white ${labelColor}`}>
+            {prereq.label}
+          </p>
+          <p className={`text-[10px] font-medium ${subColor}`}>{subText}</p>
+        </div>
+
+        {/* Hover arrow */}
+        <span className="material-symbols-outlined text-sm text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+          arrow_forward
+        </span>
+      </button>
+    </div>
+  )
+}
+
 // ── ResourceList ───────────────────────────────────────────────────────────────
 
 function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string; nodeId: string }) {
-  const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState<ResourceType | 'all'>('all')
   const [votes, setVotes] = useState<Record<string, 'up' | 'down'>>({})
 
@@ -301,16 +461,10 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
     return TYPE_FILTER_ORDER.filter((t) => t === 'all' || present.has(t as ResourceType))
   }, [resources])
 
-  const filtered = useMemo(() => {
-    return resources.filter((r) => {
-      if (typeFilter !== 'all' && r.type !== typeFilter) return false
-      if (search) {
-        const q = search.toLowerCase()
-        if (!r.title.toLowerCase().includes(q) && !r.author.toLowerCase().includes(q)) return false
-      }
-      return true
-    })
-  }, [resources, typeFilter, search])
+  const filtered = useMemo(
+    () => resources.filter((r) => typeFilter === 'all' || r.type === typeFilter),
+    [resources, typeFilter],
+  )
 
   const [featured, ...rest] = filtered
 
@@ -320,28 +474,6 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
         Learning Resources
       </h3>
 
-      {/* Search */}
-      <div className="relative group">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-[20px] text-slate-500 group-focus-within:text-primary transition-colors pointer-events-none">
-          search
-        </span>
-        <input
-          type="text"
-          placeholder="Search resources..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-card-dark border border-white/[0.08] rounded-xl py-2.5 pl-10 pr-9 text-sm text-slate-200 outline-none focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-500 transition-all"
-        />
-        {search && (
-          <button
-            onClick={() => setSearch('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
-          >
-            <span className="material-symbols-outlined text-[18px]">close</span>
-          </button>
-        )}
-      </div>
-
       {/* Type chips */}
       <div className="flex flex-wrap gap-2">
         {availableTypes.map((t) => (
@@ -350,7 +482,7 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
             onClick={() => setTypeFilter(t)}
             className={`px-3 py-1 text-xs font-semibold rounded-full border transition-all ${typeFilter === t
               ? 'bg-primary/20 text-primary border-primary glow-primary'
-              : 'bg-card-dark text-slate-400 border-white/[0.08] hover:border-slate-600 hover:text-slate-200'
+              : 'bg-surface-dark text-slate-400 border-white/[0.08] hover:border-slate-600 hover:text-slate-200'
               }`}
           >
             {t === 'all' ? 'All' : t.charAt(0).toUpperCase() + t.slice(1)}
@@ -366,13 +498,13 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="flex flex-col items-center py-10 text-slate-600"
           >
-            <span className="material-symbols-outlined text-4xl mb-2">search_off</span>
-            <p className="text-sm">No resources match your search</p>
+            <span className="material-symbols-outlined text-4xl mb-2">filter_list_off</span>
+            <p className="text-sm">No resources for this type</p>
             <button
-              onClick={() => { setSearch(''); setTypeFilter('all') }}
+              onClick={() => setTypeFilter('all')}
               className="mt-2 text-xs text-accent-blue hover:underline"
             >
-              Clear filters
+              Show all
             </button>
           </motion.div>
         ) : (
@@ -386,7 +518,7 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.97 }}
                 transition={{ duration: 0.18 }}
-                className="group relative flex flex-col gap-3 p-4 rounded-xl bg-card-dark border-2 border-amber-500/40 hover:border-amber-500/70 transition-colors shadow-[0_0_15px_-3px_rgba(234,179,8,0.2)]"
+                className="group relative flex flex-col gap-3 p-4 rounded-xl bg-surface-dark border-2 border-amber-500/40 hover:border-amber-500/70 transition-colors shadow-[0_0_15px_-3px_rgba(234,179,8,0.2)]"
               >
                 {/* RECOMMENDED tag */}
                 <div className="absolute -top-3 -right-2 z-20">
@@ -435,7 +567,7 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.97 }}
                   transition={{ duration: 0.18 }}
-                  className="flex flex-col rounded-xl bg-card-dark border border-white/[0.07] hover:border-primary/40 transition-colors shadow-sm overflow-hidden"
+                  className="flex flex-col rounded-xl bg-surface-dark border border-white/[0.07] hover:border-primary/40 transition-colors shadow-sm overflow-hidden"
                 >
                   <a
                     href={r.url}
@@ -499,7 +631,7 @@ function FeaturedThumbnail({ resource }: { resource: Resource }) {
           className="absolute inset-0 w-full h-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
         />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-card-dark to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-surface-dark to-black/60" />
       )}
       {/* Overlay + play button */}
       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">

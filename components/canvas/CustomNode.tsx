@@ -150,14 +150,14 @@ function NodeAnimShell({
 
 // ─── World Map Landmark Node ──────────────────────────────────────────────────
 
-function WorldMapNode({ data, selected }: NodeProps) {
+function WorldMapNode({ data, selected, sourcePosition, targetPosition }: NodeProps) {
   const d = data as unknown as SkillNodeData
   const { label, icon, status, animationState, highlightRequired } = d
 
   if (status === 'completed') {
     return (
       <div className="flex flex-col items-center gap-2 cursor-pointer group">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-full" highlightRequired={highlightRequired}>
           <div className="relative">
             <div
@@ -176,7 +176,7 @@ function WorldMapNode({ data, selected }: NodeProps) {
           <p className="text-white font-black uppercase text-xs tracking-tight">{label}</p>
           <p className="text-primary text-[9px] font-bold uppercase tracking-wider">Mastered</p>
         </div>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div >
     )
   }
@@ -184,7 +184,7 @@ function WorldMapNode({ data, selected }: NodeProps) {
   if (status === 'available') {
     return (
       <div className="flex flex-col items-center gap-2 cursor-pointer group">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-xl" highlightRequired={highlightRequired}>
           <div className="relative">
             <div className="absolute inset-0 -m-2 rounded-xl bg-accent-blue/15 blur-sm" />
@@ -201,15 +201,15 @@ function WorldMapNode({ data, selected }: NodeProps) {
           <p className="text-sm font-black text-white uppercase tracking-tight">{label}</p>
           <p className="text-accent-blue text-[9px] font-bold uppercase tracking-wider">Quest Available</p>
         </div>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
 
   // Locked
   return (
-    <div className="flex flex-col items-center gap-2 cursor-not-allowed grayscale">
-      <Handle type="target" position={Position.Top} />
+    <div className="flex flex-col items-center gap-2 cursor-pointer grayscale">
+      <Handle type="target" position={targetPosition ?? Position.Top} />
       <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-xl" highlightRequired={highlightRequired}>
         <div className="w-16 h-16 bg-surface-dark rounded-xl flex items-center justify-center border-2 border-dashed border-white/30">
           <span className="material-symbols-outlined text-xl text-zinc-500">{icon}</span>
@@ -219,21 +219,21 @@ function WorldMapNode({ data, selected }: NodeProps) {
         <p className="text-xs font-bold text-zinc-500 uppercase tracking-tight">{label}</p>
         <p className="text-[9px] text-zinc-600 uppercase tracking-widest">Locked Territory</p>
       </div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={sourcePosition ?? Position.Bottom} />
     </div>
   )
 }
 
 // ─── RPG Card Node ────────────────────────────────────────────────────────────
 
-function RPGNode({ data, selected }: NodeProps) {
+function RPGNode({ data, selected, sourcePosition, targetPosition }: NodeProps) {
   const d = data as unknown as SkillNodeData
   const { label, icon, status, animationState, highlightRequired } = d
 
   if (status === 'completed') {
     return (
       <div className="flex flex-col items-center gap-2 cursor-pointer group">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-2xl" highlightRequired={highlightRequired}>
           <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-primary glow-primary transition-transform hover:scale-105 ring-4 ring-primary/20">
             <span className="material-symbols-outlined text-3xl text-background-dark font-bold">check</span>
@@ -248,7 +248,7 @@ function RPGNode({ data, selected }: NodeProps) {
             Completed
           </span>
         </div>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
@@ -256,7 +256,7 @@ function RPGNode({ data, selected }: NodeProps) {
   if (status === 'available') {
     return (
       <div className="flex flex-col items-center gap-2 cursor-pointer group">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-2xl" highlightRequired={highlightRequired}>
           <div className="relative">
             <div className="absolute inset-0 -m-1 rounded-[1.3rem] bg-accent-blue opacity-40 blur-sm" />
@@ -271,7 +271,7 @@ function RPGNode({ data, selected }: NodeProps) {
             Available
           </span>
         </div>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
@@ -279,7 +279,7 @@ function RPGNode({ data, selected }: NodeProps) {
   // Locked
   return (
     <div className="flex flex-col items-center gap-2 cursor-not-allowed grayscale">
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={targetPosition ?? Position.Top} />
       <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-2xl" highlightRequired={highlightRequired}>
         <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-surface-dark border border-white/8">
           <span className="material-symbols-outlined text-2xl text-slate-500">lock</span>
@@ -291,7 +291,7 @@ function RPGNode({ data, selected }: NodeProps) {
           Locked
         </span>
       </div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={sourcePosition ?? Position.Bottom} />
     </div >
   )
 }
@@ -312,7 +312,7 @@ function getCodeSnippet(zone: string, nodeId: string): string {
   return '$ ./run\n  --env\n  dev'
 }
 
-function TerminalNode({ data, selected, id }: NodeProps) {
+function TerminalNode({ data, selected, id, sourcePosition, targetPosition }: NodeProps) {
   const d = data as unknown as SkillNodeData
   const { label, status, zone, animationState, highlightRequired } = d
   const snippet = getCodeSnippet(zone, id)
@@ -321,7 +321,7 @@ function TerminalNode({ data, selected, id }: NodeProps) {
   if (status === 'completed') {
     return (
       <div className="group cursor-pointer flex flex-col items-center">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-none" highlightRequired={highlightRequired}>
           <div className="relative w-14 h-14 bg-primary flex items-center justify-center glow-primary">
             <pre className="text-[6.5px] leading-tight text-background-dark font-mono text-center whitespace-pre select-none">
@@ -333,7 +333,7 @@ function TerminalNode({ data, selected, id }: NodeProps) {
         <p className="text-[9px] font-bold font-mono whitespace-nowrap mt-1.5 text-primary uppercase">
           {shortLabel}
         </p>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
@@ -341,7 +341,7 @@ function TerminalNode({ data, selected, id }: NodeProps) {
   if (status === 'available') {
     return (
       <div className="group cursor-pointer flex flex-col items-center">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-none" highlightRequired={highlightRequired}>
           <div className="relative w-14 h-14 bg-surface-dark border-2 border-accent-blue flex items-center justify-center shadow-[0_0_20px_rgba(43,149,255,0.2)]">
             <pre className="text-[6.5px] leading-tight text-accent-blue font-mono text-center whitespace-pre select-none">
@@ -355,7 +355,7 @@ function TerminalNode({ data, selected, id }: NodeProps) {
         <span className="text-[7px] bg-accent-blue/10 text-accent-blue px-1.5 py-0.5 uppercase tracking-tighter font-mono border border-accent-blue/20">
           Available
         </span>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
@@ -363,7 +363,7 @@ function TerminalNode({ data, selected, id }: NodeProps) {
   // Locked
   return (
     <div className="group cursor-not-allowed grayscale flex flex-col items-center">
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={targetPosition ?? Position.Top} />
       <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-none" highlightRequired={highlightRequired}>
         <div className="w-14 h-14 bg-surface-dark border border-white/10 flex items-center justify-center">
           <span className="material-symbols-outlined text-xl text-slate-600">lock</span>
@@ -372,7 +372,7 @@ function TerminalNode({ data, selected, id }: NodeProps) {
       <p className="text-[9px] font-bold font-mono whitespace-nowrap mt-1.5 text-slate-600 uppercase">
         {shortLabel}
       </p>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={sourcePosition ?? Position.Bottom} />
     </div>
   )
 }
@@ -380,14 +380,14 @@ function TerminalNode({ data, selected, id }: NodeProps) {
 // ─── Neural Node ──────────────────────────────────────────────────────────────
 // Organic sci-fi style: energy-signature halos, floating animations, glowing circles.
 
-function NeuralNode({ data, selected }: NodeProps) {
+function NeuralNode({ data, selected, sourcePosition, targetPosition }: NodeProps) {
   const d = data as unknown as SkillNodeData
   const { label, icon, status, animationState, highlightRequired } = d
 
   if (status === 'completed') {
     return (
       <div className="flex flex-col items-center node-float cursor-pointer group">
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-full" highlightRequired={highlightRequired}>
           <div className="relative h-20 w-20 flex items-center justify-center">
             {/* Spinning conic-gradient energy halo */}
@@ -405,7 +405,7 @@ function NeuralNode({ data, selected }: NodeProps) {
           </div>
         </NodeAnimShell>
         <span className="mt-2 text-[10px] font-bold tracking-[0.2em] text-primary uppercase">{label}</span>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
@@ -413,7 +413,7 @@ function NeuralNode({ data, selected }: NodeProps) {
   if (status === 'available') {
     return (
       <div className="flex flex-col items-center node-float cursor-pointer group" style={{ animationDelay: '-1.5s' }}>
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={targetPosition ?? Position.Top} />
         <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-full" highlightRequired={highlightRequired}>
           <div className="relative h-[72px] w-[72px] flex items-center justify-center">
             {/* Blue reverse-spin energy halo */}
@@ -433,7 +433,7 @@ function NeuralNode({ data, selected }: NodeProps) {
           </div>
         </NodeAnimShell>
         <span className="mt-2 text-[10px] font-bold tracking-[0.2em] text-accent-blue uppercase">{label}</span>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={sourcePosition ?? Position.Bottom} />
       </div>
     )
   }
@@ -441,14 +441,14 @@ function NeuralNode({ data, selected }: NodeProps) {
   // Locked
   return (
     <div className="flex flex-col items-center grayscale cursor-not-allowed" style={{ animationDelay: '-3s' }}>
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={targetPosition ?? Position.Top} />
       <NodeAnimShell selected={!!selected} animationState={animationState} ringShape="rounded-full" highlightRequired={highlightRequired}>
         <div className="h-12 w-12 rounded-full bg-surface-dark border border-white/10 flex items-center justify-center">
           <span className="material-symbols-outlined text-slate-600 text-base">lock</span>
         </div>
       </NodeAnimShell>
       <span className="mt-1.5 text-[9px] font-medium tracking-[0.3em] text-slate-600 uppercase">{label}</span>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={sourcePosition ?? Position.Bottom} />
     </div>
   )
 }

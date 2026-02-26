@@ -26,6 +26,10 @@ interface SkillTreeState {
 
   isSidebarOpen: boolean
   setSidebarOpen: (open: boolean) => void
+
+  // Hover-highlight a prereq node on the canvas from the sidebar
+  hoveredPrereqId: string | null
+  setHoveredPrereqId: (id: string | null) => void
 }
 
 export const useSkillTreeStore = create<SkillTreeState>((set, get) => ({
@@ -74,4 +78,7 @@ export const useSkillTreeStore = create<SkillTreeState>((set, get) => ({
 
   isSidebarOpen: false,
   setSidebarOpen: (open) => set({ isSidebarOpen: open }),
+
+  hoveredPrereqId: null,
+  setHoveredPrereqId: (id) => set({ hoveredPrereqId: id }),
 }))
