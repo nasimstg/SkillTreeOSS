@@ -44,7 +44,6 @@
           "isFree": false
         }
       ],
-      "position": { "x": 0, "y": 0 },
       "requires": []
     },
     {
@@ -91,7 +90,6 @@
           "isFree": true
         }
       ],
-      "position": { "x": 0, "y": 320 },
       "requires": []
     },
     {
@@ -138,7 +136,6 @@
           "isFree": true
         }
       ],
-      "position": { "x": 300, "y": 160 },
       "requires": []
     },
     {
@@ -194,8 +191,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 600, "y": 0 },
-      "requires": ["html-basics"]
+      "requires": [
+        "html-basics"
+      ]
     },
     {
       "id": "javascript-basics",
@@ -241,8 +239,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 600, "y": 320 },
-      "requires": ["html-basics"]
+      "requires": [
+        "html-basics"
+      ]
     },
     {
       "id": "responsive-design",
@@ -270,8 +269,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 900, "y": 0 },
-      "requires": ["css-basics"]
+      "requires": [
+        "css-basics"
+      ]
     },
     {
       "id": "javascript-advanced",
@@ -308,8 +308,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 900, "y": 200 },
-      "requires": ["javascript-basics"]
+      "requires": [
+        "javascript-basics"
+      ]
     },
     {
       "id": "nodejs",
@@ -346,8 +347,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 900, "y": 400 },
-      "requires": ["javascript-basics"]
+      "requires": [
+        "javascript-basics"
+      ]
     },
     {
       "id": "sql",
@@ -384,8 +386,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 900, "y": 600 },
-      "requires": ["javascript-basics"]
+      "requires": [
+        "javascript-basics"
+      ]
     },
     {
       "id": "react-basics",
@@ -431,8 +434,9 @@
           "isFree": false
         }
       ],
-      "position": { "x": 1200, "y": 100 },
-      "requires": ["javascript-advanced"]
+      "requires": [
+        "javascript-advanced"
+      ]
     },
     {
       "id": "expressjs",
@@ -460,8 +464,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1200, "y": 350 },
-      "requires": ["nodejs"]
+      "requires": [
+        "nodejs"
+      ]
     },
     {
       "id": "typescript",
@@ -498,8 +503,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1200, "y": 600 },
-      "requires": ["javascript-advanced"]
+      "requires": [
+        "javascript-advanced"
+      ]
     },
     {
       "id": "react-advanced",
@@ -527,8 +533,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1500, "y": 0 },
-      "requires": ["react-basics"]
+      "requires": [
+        "react-basics"
+      ]
     },
     {
       "id": "nextjs",
@@ -565,8 +572,10 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1500, "y": 250 },
-      "requires": ["react-basics", "nodejs"]
+      "requires": [
+        "react-basics",
+        "nodejs"
+      ]
     },
     {
       "id": "rest-api-design",
@@ -594,8 +603,10 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1500, "y": 550 },
-      "requires": ["expressjs", "sql"]
+      "requires": [
+        "expressjs",
+        "sql"
+      ]
     },
     {
       "id": "state-management",
@@ -623,8 +634,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1800, "y": 0 },
-      "requires": ["react-advanced"]
+      "requires": [
+        "react-advanced"
+      ]
     },
     {
       "id": "authentication",
@@ -652,8 +664,9 @@
           "isFree": true
         }
       ],
-      "position": { "x": 1800, "y": 450 },
-      "requires": ["rest-api-design"]
+      "requires": [
+        "rest-api-design"
+      ]
     },
     {
       "id": "deployment",
@@ -681,8 +694,10 @@
           "isFree": true
         }
       ],
-      "position": { "x": 2100, "y": 225 },
-      "requires": ["nextjs", "authentication"]
+      "requires": [
+        "nextjs",
+        "authentication"
+      ]
     },
     {
       "id": "system-design",
@@ -710,8 +725,10 @@
           "isFree": true
         }
       ],
-      "position": { "x": 2400, "y": 0 },
-      "requires": ["state-management", "deployment"]
+      "requires": [
+        "state-management",
+        "deployment"
+      ]
     },
     {
       "id": "docker",
@@ -748,33 +765,126 @@
           "isFree": true
         }
       ],
-      "position": { "x": 2400, "y": 450 },
-      "requires": ["deployment"]
+      "requires": [
+        "deployment"
+      ]
     }
   ],
   "edges": [
-    { "id": "e-cmd-html",      "source": "command-line",      "target": "html-basics" },
-    { "id": "e-git-html",      "source": "git-basics",        "target": "html-basics" },
-    { "id": "e-html-css",      "source": "html-basics",       "target": "css-basics" },
-    { "id": "e-html-js",       "source": "html-basics",       "target": "javascript-basics" },
-    { "id": "e-css-resp",      "source": "css-basics",        "target": "responsive-design" },
-    { "id": "e-js-adv",        "source": "javascript-basics", "target": "javascript-advanced" },
-    { "id": "e-js-node",       "source": "javascript-basics", "target": "nodejs" },
-    { "id": "e-js-sql",        "source": "javascript-basics", "target": "sql" },
-    { "id": "e-jsadv-react",   "source": "javascript-advanced","target": "react-basics" },
-    { "id": "e-jsadv-ts",      "source": "javascript-advanced","target": "typescript" },
-    { "id": "e-node-express",  "source": "nodejs",            "target": "expressjs" },
-    { "id": "e-node-next",     "source": "nodejs",            "target": "nextjs" },
-    { "id": "e-react-reactadv","source": "react-basics",      "target": "react-advanced" },
-    { "id": "e-react-next",    "source": "react-basics",      "target": "nextjs" },
-    { "id": "e-express-rest",  "source": "expressjs",         "target": "rest-api-design" },
-    { "id": "e-sql-rest",      "source": "sql",               "target": "rest-api-design" },
-    { "id": "e-reactadv-state","source": "react-advanced",    "target": "state-management" },
-    { "id": "e-rest-auth",     "source": "rest-api-design",   "target": "authentication" },
-    { "id": "e-next-deploy",   "source": "nextjs",            "target": "deployment" },
-    { "id": "e-auth-deploy",   "source": "authentication",    "target": "deployment" },
-    { "id": "e-state-sysdesign","source": "state-management", "target": "system-design" },
-    { "id": "e-deploy-sysdesign","source": "deployment",      "target": "system-design" },
-    { "id": "e-deploy-docker", "source": "deployment",        "target": "docker" }
+    {
+      "id": "e-cmd-html",
+      "source": "command-line",
+      "target": "html-basics"
+    },
+    {
+      "id": "e-git-html",
+      "source": "git-basics",
+      "target": "html-basics"
+    },
+    {
+      "id": "e-html-css",
+      "source": "html-basics",
+      "target": "css-basics"
+    },
+    {
+      "id": "e-html-js",
+      "source": "html-basics",
+      "target": "javascript-basics"
+    },
+    {
+      "id": "e-css-resp",
+      "source": "css-basics",
+      "target": "responsive-design"
+    },
+    {
+      "id": "e-js-adv",
+      "source": "javascript-basics",
+      "target": "javascript-advanced"
+    },
+    {
+      "id": "e-js-node",
+      "source": "javascript-basics",
+      "target": "nodejs"
+    },
+    {
+      "id": "e-js-sql",
+      "source": "javascript-basics",
+      "target": "sql"
+    },
+    {
+      "id": "e-jsadv-react",
+      "source": "javascript-advanced",
+      "target": "react-basics"
+    },
+    {
+      "id": "e-jsadv-ts",
+      "source": "javascript-advanced",
+      "target": "typescript"
+    },
+    {
+      "id": "e-node-express",
+      "source": "nodejs",
+      "target": "expressjs"
+    },
+    {
+      "id": "e-node-next",
+      "source": "nodejs",
+      "target": "nextjs"
+    },
+    {
+      "id": "e-react-reactadv",
+      "source": "react-basics",
+      "target": "react-advanced"
+    },
+    {
+      "id": "e-react-next",
+      "source": "react-basics",
+      "target": "nextjs"
+    },
+    {
+      "id": "e-express-rest",
+      "source": "expressjs",
+      "target": "rest-api-design"
+    },
+    {
+      "id": "e-sql-rest",
+      "source": "sql",
+      "target": "rest-api-design"
+    },
+    {
+      "id": "e-reactadv-state",
+      "source": "react-advanced",
+      "target": "state-management"
+    },
+    {
+      "id": "e-rest-auth",
+      "source": "rest-api-design",
+      "target": "authentication"
+    },
+    {
+      "id": "e-next-deploy",
+      "source": "nextjs",
+      "target": "deployment"
+    },
+    {
+      "id": "e-auth-deploy",
+      "source": "authentication",
+      "target": "deployment"
+    },
+    {
+      "id": "e-state-sysdesign",
+      "source": "state-management",
+      "target": "system-design"
+    },
+    {
+      "id": "e-deploy-sysdesign",
+      "source": "deployment",
+      "target": "system-design"
+    },
+    {
+      "id": "e-deploy-docker",
+      "source": "deployment",
+      "target": "docker"
+    }
   ]
 }

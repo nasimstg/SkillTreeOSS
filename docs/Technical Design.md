@@ -37,9 +37,11 @@ export interface TreeNode {
   description: string     // One-to-two sentence explanation shown in the sidebar
   icon: string            // Material Symbols Outlined icon name (e.g. "html", "terminal")
   zone: string            // Logical grouping label (e.g. "Foundation", "Frontend")
-  resources: Resource[]   // At least one resource required (schema: minItems: 1)
-  position: { x: number; y: number }  // Canvas coordinates used by the default layout
-  requires: string[]      // IDs of nodes that must be completed before this unlocks
+  resources: Resource[]    // At least one resource required (schema: minItems: 1)
+  position?: { x: number; y: number }  // Optional — omit in JSON content files.
+                                        // Dagre computes layout on the fly from graph structure.
+                                        // Reserved for the future roadmap creator (custom positions persist here).
+  requires: string[]       // IDs of nodes that must be completed before this unlocks
 }
 
 export interface TreeEdge {
@@ -166,8 +168,9 @@ Runs the **Dagre (Sugiyama)** layered-graph algorithm over the skill tree and re
 Key details:
 - Node dimensions (`w × h`) are approximated per `CanvasView` to avoid overlap (worldmap: 110×160, rpg: 100×150, terminal: 80×90, neural: 80×110).
 - Direction is controlled by `dir: 'LR' | 'TB'` (passed straight to Dagre's `rankdir`). Unlike the JSON-based `getPosition` helper in `SkillCanvas`, auto-layout positions do **not** need an axis swap.
-- The returned positions are stored in `autoPositions` state in `SkillCanvas` and passed as `posOverrides` to `buildNodes`, overriding the JSON `position` field.
-- Switching layout direction (`LR`↔`TB`) clears `autoPositions`, reverting to JSON coordinates.
+- The returned positions are stored in `autoPositions` state in `SkillCanvas` and passed as `posOverrides` to `buildNodes`, taking precedence over any JSON `position` field.
+- **Auto-initialised on mount** when the tree has no stored positions (i.e. `tree.nodes.some(n => !n.position)`). This means all current content JSON files render correctly without coordinates.
+- Switching layout direction (`LR`↔`TB`) clears `autoPositions`, triggering a fresh Dagre compute on the next render.
 
 ---
 
@@ -256,7 +259,7 @@ Static content lives at `data/trees/{treeId}.json`. Every file is validated agai
 | `nodes[].resources[].url` | ✅ | valid URI; must be a **free** resource |
 | `nodes[].resources[].type` | ✅ | `"video"` \| `"article"` \| `"interactive"` \| `"course"` \| `"docs"` |
 | `nodes[].resources[].isFree` | — | boolean; prefer explicit `true`/`false` |
-| `nodes[].position` | ✅ | `{ "x": number, "y": number }` |
+| `nodes[].position` | — | `{ "x": number, "y": number }` — **omit in content files**; Dagre auto-computes layout. Reserved for future roadmap creator. |
 | `nodes[].requires` | ✅ | array of node IDs (`[]` for root nodes) |
 | `edges[].id` | ✅ | string |
 | `edges[].source` | ✅ | must be a valid node `id` in the same file |
@@ -293,7 +296,6 @@ Static content lives at `data/trees/{treeId}.json`. Every file is validated agai
           "isFree": true
         }
       ],
-      "position": { "x": 250, "y": 0 },
       "requires": []
     },
     {
@@ -322,7 +324,6 @@ Static content lives at `data/trees/{treeId}.json`. Every file is validated agai
           "isFree": true
         }
       ],
-      "position": { "x": 250, "y": 180 },
       "requires": ["perspective-101"]
     }
   ],

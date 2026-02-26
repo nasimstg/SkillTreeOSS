@@ -17,7 +17,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "label", "description", "icon", "zone", "resources", "position", "requires"],
+        "required": ["id", "label", "description", "icon", "zone", "resources", "requires"],
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
           "label": { "type": "string" },

@@ -34,6 +34,8 @@ interface Props {
 // ─── position helpers ────────────────────────────────────────────────────────
 
 function getPosition(node: TreeNode, dir: LayoutDir) {
+  // position is optional — trees without it rely entirely on posOverrides (Dagre)
+  if (!node.position) return { x: 0, y: 0 }
   if (dir === 'LR') return node.position
   // TB: swap axes and rescale so the tree reads top → bottom
   return { x: node.position.y * 2, y: node.position.x * 0.55 }
@@ -257,8 +259,11 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
 
   const [layoutDir, setLayoutDir] = useState<LayoutDir>('LR')
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
-  // Dagre-computed positions (null = use JSON positions)
-  const [autoPositions, setAutoPositions] = useState<Record<string, { x: number; y: number }> | null>(null)
+  // Dagre-computed positions. Lazy-initialised on mount when the tree has no
+  // stored positions (the common case). null = fall back to JSON position field.
+  const [autoPositions, setAutoPositions] = useState<Record<string, { x: number; y: number }> | null>(
+    () => tree.nodes.some((n) => !n.position) ? computeAutoLayout(tree, 'worldmap', 'LR') : null,
+  )
   // Per-node animation state: 'completing' | 'unlocking' (cleared after animation)
   const [animatingNodes, setAnimatingNodes] = useState<Record<string, 'completing' | 'unlocking'>>({})
   const prevCompletedIdsRef = useRef<string[]>([])

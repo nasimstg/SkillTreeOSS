@@ -20,7 +20,7 @@ export interface TreeNode {
   icon: string
   zone: string
   resources: Resource[]
-  position: { x: number; y: number }
+  position?: { x: number; y: number }  // omit in JSON; Dagre computes layout automatically. Reserved for future roadmap creator.
   requires: string[]
 }
 

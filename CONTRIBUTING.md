@@ -25,52 +25,64 @@ Here is a simple template:
 {
   "treeId": "urban-sketching",
   "title": "Urban Sketching",
+  "category": "Art",
+  "difficulty": "easy",
   "description": "Learn to draw the world around you on location.",
   "version": "1.0",
+  "estimatedMonths": 2,
+  "totalNodes": 2,
+  "icon": "brush",
   "nodes": [
     {
       "id": "perspective-101",
       "label": "1-Point Perspective",
       "description": "Understand the horizon line and vanishing points.",
-      "resource": {
-        "title": "One Point Perspective Drawing Tutorial",
-        "url": "https://youtube.com/watch?v=...",
-        "type": "video",
-        "author": "ArtFundamentals",
-        "estimatedHours": 1.5
-      },
-      "position": { "x": 250, "y": 0 }
+      "icon": "straighten",
+      "zone": "Foundation",
+      "resources": [
+        {
+          "id": "perspective-yt-artfundamentals",
+          "title": "One Point Perspective Drawing Tutorial",
+          "url": "https://youtube.com/watch?v=...",
+          "type": "video",
+          "author": "ArtFundamentals",
+          "estimatedHours": 1.5,
+          "isFree": true
+        }
+      ],
+      "requires": []
     },
     {
       "id": "ink-wash",
       "label": "Ink & Wash Basics",
       "description": "Adding depth with watercolor over ink.",
-      "resource": {
-        "title": "Beginner Ink and Wash",
-        "url": "https://youtube.com/watch?v=...",
-        "type": "video",
-        "author": "SketchingDaily",
-        "estimatedHours": 2
-      },
-      "position": { "x": 250, "y": 150 }
+      "icon": "water_drop",
+      "zone": "Technique",
+      "resources": [
+        {
+          "id": "ink-wash-yt-sketchingdaily",
+          "title": "Beginner Ink and Wash",
+          "url": "https://youtube.com/watch?v=...",
+          "type": "video",
+          "author": "SketchingDaily",
+          "estimatedHours": 2,
+          "isFree": true
+        }
+      ],
+      "requires": ["perspective-101"]
     }
   ],
   "edges": [
-    { 
-      "id": "edge-1", 
-      "source": "perspective-101", 
-      "target": "ink-wash" 
-    }
+    { "id": "e-perspective-ink", "source": "perspective-101", "target": "ink-wash" }
   ]
 }
-
 ```
 
 ### Step 2: Key Rules for JSON Editing
 
-* **Coordinates (`x` and `y`):** Think of the canvas as a grid. `x: 250, y: 0` is the starting point. To place a node below it, increase the `y` value (e.g., `y: 150`). To place nodes side-by-side, change the `x` value.
-* **Edges:** The `source` is the ID of the prerequisite skill. The `target` is the ID of the skill it unlocks.
-* **The Resource:** We only link to **100% free** resources. Do not link to paid courses, bootcamps, or generic landing pages. Link directly to the specific YouTube video or article that teaches that exact node.
+* **No coordinates needed:** The app uses the Dagre layout engine to automatically compute node positions from the graph structure. You only need to define the `requires` relationships — the visual tree arranges itself.
+* **Edges:** The `source` is the ID of the prerequisite skill. The `target` is the ID of the skill it unlocks. Every edge should have a matching entry in the node's `requires` array.
+* **Resources:** We only link to **100% free** resources unless `"isFree": false` is explicitly set. Do not link to paid courses, bootcamps, or generic landing pages. Link directly to the specific YouTube video or article that teaches that exact node. Each node can have multiple resources — add alternatives across different formats (video + article + interactive).
 
 ### Step 3: Submitting Your Tree
 
