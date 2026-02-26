@@ -1,92 +1,351 @@
-# Technical Design Document (TDD): Core Data Schema
+# Technical Design Document
 
-Because this project relies entirely on open-source contributions for content, the JSON schema must be perfectly defined. This acts as the contract between the content creators and the UI developers.
+This document is the authoritative reference for every developer and content contributor. It covers the TypeScript type contracts, utility functions, Zustand store, canvas internals, JSON content schema, and database schema.
 
-### TypeScript Types (`types/tree.ts`)
+---
+
+## 1. TypeScript Types
+
+### `types/tree.ts`
+
+Core domain types shared across the entire application.
 
 ```typescript
+// Derived at runtime from completedNodeIds — never stored in JSON
 export type NodeStatus = 'locked' | 'available' | 'completed'
+
+// Valid resource formats accepted in the JSON content files
 export type ResourceType = 'video' | 'article' | 'interactive' | 'course' | 'docs'
+
+// The four visual themes selectable via CanvasFAB
 export type CanvasView = 'worldmap' | 'rpg' | 'terminal' | 'neural'
 
 export interface Resource {
+  id: string              // Unique within the node; kebab-case (e.g. "html-fcc-video")
   title: string
-  url: string
+  url: string             // Must be a fully-qualified URI; validated by JSON Schema
   type: ResourceType
   author: string
   estimatedHours: number
+  isFree?: boolean        // Omit only if genuinely unknown; prefer explicit true/false
+  language?: string       // BCP-47 language tag, e.g. "en", "es" (omit if English)
 }
 
 export interface TreeNode {
-  id: string
-  label: string
-  description: string
-  icon: string               // Material Symbols icon name
-  zone: string               // e.g. "Frontend", "Foundation"
-  resource: Resource
-  position: { x: number; y: number }
-  requires: string[]         // array of prerequisite node IDs
+  id: string              // Unique within the tree; kebab-case (e.g. "html-basics")
+  label: string           // Short display name shown on the canvas node
+  description: string     // One-to-two sentence explanation shown in the sidebar
+  icon: string            // Material Symbols Outlined icon name (e.g. "html", "terminal")
+  zone: string            // Logical grouping label (e.g. "Foundation", "Frontend")
+  resources: Resource[]   // At least one resource required (schema: minItems: 1)
+  position: { x: number; y: number }  // Canvas coordinates used by the default layout
+  requires: string[]      // IDs of nodes that must be completed before this unlocks
+}
+
+export interface TreeEdge {
+  id: string              // Unique string (e.g. "e-html-css")
+  source: string          // ID of the prerequisite node
+  target: string          // ID of the node being unlocked
 }
 
 export interface SkillTree {
-  treeId: string
+  treeId: string          // Kebab-case, matches the JSON filename (e.g. "full-stack-dev")
   title: string
-  category: string
-  difficulty: 'beginner' | 'intermediate' | 'hard'
+  category: string        // Human-readable category (e.g. "Technology", "Art")
+  difficulty: 'easy' | 'medium' | 'hard'
   description: string
-  version: string
+  version: string         // SemVer string (e.g. "2.0")
   estimatedMonths: number
-  totalNodes: number
-  icon: string               // Material Symbols icon
+  totalNodes: number      // Must equal nodes.length
+  icon: string            // Material Symbols icon for the tree card
   nodes: TreeNode[]
   edges: TreeEdge[]
 }
+
+// Convenience type used inside components that need status alongside node data
+export interface RichNode extends TreeNode {
+  status: NodeStatus
+}
 ```
 
-### The `Tree` JSON Schema
+**Where used:**
+| Type | Consumers |
+|------|-----------|
+| `NodeStatus` | `lib/utils.ts` → `getNodeStatus`, `components/canvas/CustomNode.tsx` → `SkillNodeData` |
+| `ResourceType` | `types/tree.ts` internal, `components/canvas/NodeSidebar.tsx` resource type badge |
+| `CanvasView` | `lib/store.ts`, `components/canvas/SkillCanvas.tsx` → `buildNodes`/`buildEdges`, `lib/autoLayout.ts` |
+| `Resource` | `components/canvas/NodeSidebar.tsx` resource list |
+| `TreeNode` | `lib/store.ts` → `selectedNode`, `components/canvas/NodeSidebar.tsx`, `components/canvas/SkillCanvas.tsx` |
+| `TreeEdge` | `components/canvas/SkillCanvas.tsx` → `buildEdges` |
+| `SkillTree` | `components/canvas/SkillCanvas.tsx` props, `lib/store.ts` → `currentTree`, `lib/autoLayout.ts` |
+| `RichNode` | Available for future list/dashboard views needing status without re-computing |
 
-Static content lives at `data/trees/{treeId}.json`. Validated against `data/schema.json` (JSON Schema draft-07) in CI.
+---
 
-The `requires` array dictates RPG lock logic — nodes are `locked` until all prerequisite IDs appear in the user's `completed_node_ids`.
+### `types/user.ts`
+
+Auth and progress types that mirror the Supabase table columns.
+
+```typescript
+export interface UserProfile {
+  id: string              // Supabase auth.users UUID
+  email: string
+  display_name: string | null
+  avatar_url: string | null
+  created_at: string      // ISO 8601 timestamp
+}
+
+export interface UserProgress {
+  user_id: string         // FK → auth.users.id
+  tree_id: string         // Matches SkillTree.treeId
+  completed_node_ids: string[]
+  last_updated: string    // ISO 8601 timestamp
+}
+
+export interface ResourceFeedback {
+  id: string              // UUID, generated by Supabase
+  user_id: string
+  tree_id: string
+  node_id: string
+  resource_url: string
+  vote: 'up' | 'down'
+  created_at: string
+}
+```
+
+**Where used:**
+| Type | Consumers |
+|------|-----------|
+| `UserProfile` | `lib/store.ts` → `user` state, `components/layout/Navbar.tsx` |
+| `UserProgress` | `app/api/progress/` route handlers |
+| `ResourceFeedback` | `components/canvas/NodeSidebar.tsx` vote buttons |
+
+---
+
+### `components/canvas/CustomNode.tsx` — `SkillNodeData`
+
+This interface is the bridge between the `TreeNode` JSON domain and the ReactFlow node rendering layer. It is **not** exported from `types/`; it lives alongside the component.
+
+```typescript
+export interface SkillNodeData {
+  label: string
+  description: string
+  icon: string
+  zone: string
+  status: NodeStatus
+  view: CanvasView                       // Which visual theme is active
+  animationState?: 'completing' | 'unlocking'  // Triggers Framer Motion burst sequences
+  highlightRequired?: boolean            // Amber ring — node is an unmet prereq of a locked selection
+}
+```
+
+`buildNodes` in `SkillCanvas.tsx` maps each `TreeNode` → `SkillNodeData` on every render cycle. Direct JSON fields (`label`, `icon`, `zone`) are copied verbatim; derived fields (`status`, `animationState`, `highlightRequired`) are computed from store state at build time.
+
+---
+
+## 2. Utility Functions (`lib/utils.ts`)
+
+| Function | Signature | Purpose |
+|----------|-----------|---------|
+| `getNodeStatus` | `(node: TreeNode, completedIds: string[]) → NodeStatus` | Returns `'completed'` if the node ID is in `completedIds`, `'available'` if all `requires` IDs are completed, otherwise `'locked'`. Used in `buildNodes` and `NodeSidebar`. |
+| `getProgressPercent` | `(completedIds: string[], totalNodes: number) → number` | Returns a rounded 0–100 integer. Used by the info pill Panel in `SkillCanvas`. |
+| `formatHours` | `(hours: number) → string` | Converts decimal hours to a human string: `0.5` → `"~30 min"`, `2` → `"~2 hours"`. Used in `NodeSidebar` resource metadata. |
+| `getZoneColor` | `(zone: string) → string` | Maps zone names to Tailwind text-color classes (Foundation=yellow, Frontend=blue, Backend=orange, Full-Stack=green, DevOps=purple). Fallback: `text-slate-400`. |
+
+---
+
+## 3. Auto-Layout (`lib/autoLayout.ts`)
+
+```typescript
+computeAutoLayout(tree: SkillTree, view: CanvasView, dir: LayoutDir)
+  → Record<string, { x: number; y: number }>
+```
+
+Runs the **Dagre (Sugiyama)** layered-graph algorithm over the skill tree and returns a `nodeId → {x, y}` map of **top-left** positions ready for ReactFlow. Triggered by the "Auto-Arrange" button in `CanvasFAB`.
+
+Key details:
+- Node dimensions (`w × h`) are approximated per `CanvasView` to avoid overlap (worldmap: 110×160, rpg: 100×150, terminal: 80×90, neural: 80×110).
+- Direction is controlled by `dir: 'LR' | 'TB'` (passed straight to Dagre's `rankdir`). Unlike the JSON-based `getPosition` helper in `SkillCanvas`, auto-layout positions do **not** need an axis swap.
+- The returned positions are stored in `autoPositions` state in `SkillCanvas` and passed as `posOverrides` to `buildNodes`, overriding the JSON `position` field.
+- Switching layout direction (`LR`↔`TB`) clears `autoPositions`, reverting to JSON coordinates.
+
+---
+
+## 4. Zustand Store (`lib/store.ts`)
+
+Single store exported as `useSkillTreeStore`. Import individual slices with the selector pattern to avoid unnecessary re-renders.
+
+```typescript
+// Auth
+user: UserProfile | null
+setUser: (user: UserProfile | null) => void
+
+// Tree data
+currentTree: SkillTree | null
+setCurrentTree: (tree: SkillTree | null) => void
+
+// Progress — optimistic: updates local state immediately, POSTs to /api/progress/update,
+// and rolls back on network failure.
+completedNodeIds: string[]
+setCompletedNodeIds: (ids: string[]) => void   // bulk set (used on page load)
+completeNode: (nodeId: string, treeId: string) => void  // optimistic add + API call
+uncompleteNode: (nodeId: string) => void        // local remove only (dev/debug)
+
+// UI — setSelectedNode also sets isSidebarOpen to (node !== null)
+selectedNode: TreeNode | null
+setSelectedNode: (node: TreeNode | null) => void
+
+canvasView: CanvasView          // default: 'worldmap'
+setCanvasView: (view: CanvasView) => void
+
+isSidebarOpen: boolean
+setSidebarOpen: (open: boolean) => void
+
+// Sidebar → Canvas hover bridge
+// NodeSidebar calls setHoveredPrereqId(node.id) on prereq item mouseenter/mouseleave.
+// SkillCanvas reads hoveredPrereqId in its buildNodes useEffect dependency array and
+// can use it to visually highlight the matching node (implementation left to the node component).
+hoveredPrereqId: string | null
+setHoveredPrereqId: (id: string | null) => void
+```
+
+---
+
+## 5. Key Component Files
+
+| File | Responsibility |
+|------|----------------|
+| `components/canvas/SkillCanvas.tsx` | Root canvas component. Owns `buildNodes` / `buildEdges`, ReactFlow instance, animation state, auto-layout, context menu, and center-on-node logic. |
+| `components/canvas/CustomNode.tsx` | Four node renderers (`worldmap`, `rpg`, `terminal`, `neural`) + shared `NodeAnimShell` (Framer Motion scale bounce, selection ring, required-prereq amber ring, completion burst, unlock ripple). |
+| `components/canvas/NodeSidebar.tsx` | Right-side detail panel. Shows resource list, prerequisites timeline (topological sort, accordion for distant ancestors, hover/click wayfinding), and Mark-as-Completed CTA. |
+| `components/canvas/CanvasFAB.tsx` | Horizontal pill at bottom-left. Left cluster: four view-switcher buttons. Right cluster: fit-view, layout direction, auto-arrange, share. |
+| `components/canvas/CanvasContextMenu.tsx` | Right-click context menu for canvas pane and individual nodes. |
+| `components/layout/Navbar.tsx` | Accepts `variant?: 'landing' \| 'canvas'`. Landing = green-tinted; canvas = neutral dark. |
+| `lib/store.ts` | Zustand store (see §4). |
+| `lib/utils.ts` | Pure utility functions (see §2). |
+| `lib/autoLayout.ts` | Dagre auto-arrange (see §3). |
+| `lib/supabase.ts` | Client-side Supabase client (browser). |
+| `lib/supabase-server.ts` | Server-side Supabase client (Next.js Server Components / Route Handlers). |
+
+---
+
+## 6. JSON Content Schema
+
+Static content lives at `data/trees/{treeId}.json`. Every file is validated against `data/schema.json` (JSON Schema draft-07) in CI before merging.
+
+### Schema rules summary
+
+| Field | Required | Constraint |
+|-------|----------|------------|
+| `treeId` | ✅ | kebab-case only: `^[a-z0-9-]+$`; must match the filename |
+| `title` | ✅ | string |
+| `category` | ✅ | string |
+| `difficulty` | ✅ | `"easy"` \| `"medium"` \| `"hard"` |
+| `description` | ✅ | string |
+| `version` | ✅ | string (use SemVer, e.g. `"2.0"`) |
+| `estimatedMonths` | — | number |
+| `totalNodes` | — | number; **must equal `nodes.length`** |
+| `icon` | — | Material Symbols icon name |
+| `nodes[].id` | ✅ | kebab-case: `^[a-z0-9-]+$`; unique within the file |
+| `nodes[].label` | ✅ | string |
+| `nodes[].description` | ✅ | string |
+| `nodes[].icon` | ✅ | Material Symbols icon name |
+| `nodes[].zone` | ✅ | string (e.g. `"Foundation"`, `"Frontend"`) |
+| `nodes[].resources` | ✅ | array, **minItems: 1** |
+| `nodes[].resources[].id` | ✅ | string, unique within the node |
+| `nodes[].resources[].url` | ✅ | valid URI; must be a **free** resource |
+| `nodes[].resources[].type` | ✅ | `"video"` \| `"article"` \| `"interactive"` \| `"course"` \| `"docs"` |
+| `nodes[].resources[].isFree` | — | boolean; prefer explicit `true`/`false` |
+| `nodes[].position` | ✅ | `{ "x": number, "y": number }` |
+| `nodes[].requires` | ✅ | array of node IDs (`[]` for root nodes) |
+| `edges[].id` | ✅ | string |
+| `edges[].source` | ✅ | must be a valid node `id` in the same file |
+| `edges[].target` | ✅ | must be a valid node `id` in the same file |
+
+### Full annotated example
 
 ```json
 {
-  "treeId": "full-stack-dev",
-  "title": "Full-Stack Web Developer",
-  "category": "Technology",
-  "difficulty": "hard",
-  "description": "...",
+  "treeId": "urban-sketching",
+  "title": "Urban Sketching",
+  "category": "Art",
+  "difficulty": "easy",
+  "description": "Learn to draw the world around you on location.",
   "version": "1.0",
-  "estimatedMonths": 6,
-  "totalNodes": 20,
-  "icon": "terminal",
+  "estimatedMonths": 2,
+  "totalNodes": 2,
+  "icon": "brush",
   "nodes": [
     {
-      "id": "html-basics",
-      "label": "HTML Basics",
-      "description": "Learn the skeleton of the web.",
-      "icon": "html",
-      "zone": "Frontend",
-      "resource": {
-        "title": "HTML Full Course - Build a Website Tutorial",
-        "url": "https://www.youtube.com/watch?v=mU6anWqZJcc",
-        "type": "video",
-        "author": "freeCodeCamp",
-        "estimatedHours": 2
-      },
-      "position": { "x": 500, "y": 0 },
+      "id": "perspective-101",
+      "label": "1-Point Perspective",
+      "description": "Understand the horizon line and vanishing points.",
+      "icon": "straighten",
+      "zone": "Foundation",
+      "resources": [
+        {
+          "id": "perspective-yt-artfundamentals",
+          "title": "One Point Perspective Drawing Tutorial",
+          "url": "https://www.youtube.com/watch?v=example",
+          "type": "video",
+          "author": "ArtFundamentals",
+          "estimatedHours": 1.5,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 250, "y": 0 },
       "requires": []
+    },
+    {
+      "id": "ink-wash",
+      "label": "Ink & Wash Basics",
+      "description": "Adding depth with watercolor over ink.",
+      "icon": "water_drop",
+      "zone": "Technique",
+      "resources": [
+        {
+          "id": "ink-wash-yt-sketchingdaily",
+          "title": "Beginner Ink and Wash",
+          "url": "https://www.youtube.com/watch?v=example2",
+          "type": "video",
+          "author": "SketchingDaily",
+          "estimatedHours": 2,
+          "isFree": true
+        },
+        {
+          "id": "ink-wash-proko-article",
+          "title": "Ink Wash Techniques for Beginners",
+          "url": "https://www.proko.com/ink-wash-basics",
+          "type": "article",
+          "author": "Proko",
+          "estimatedHours": 0.5,
+          "isFree": true
+        }
+      ],
+      "position": { "x": 250, "y": 180 },
+      "requires": ["perspective-101"]
     }
   ],
   "edges": [
-    { "id": "e-html-css", "source": "html-basics", "target": "css-basics" }
+    { "id": "e-perspective-ink", "source": "perspective-101", "target": "ink-wash" }
   ]
 }
 ```
 
-### Supabase Database Schema
+### Lock logic
 
-Run these SQL statements in the Supabase SQL editor to create required tables:
+A node's runtime status is derived by `getNodeStatus` in `lib/utils.ts`:
+- **`completed`** — the node's `id` is in the user's `completedNodeIds` array.
+- **`available`** — all IDs in `requires` are in `completedNodeIds`.
+- **`locked`** — one or more `requires` IDs are not yet completed.
+
+Root nodes (`"requires": []`) are always `available` to unauthenticated users.
+
+---
+
+## 7. Supabase Database Schema
+
+Run these SQL statements in the Supabase SQL editor to provision the required tables:
 
 ```sql
 -- User progress per tree
@@ -121,5 +380,5 @@ create policy "Users manage own feedback"
 ```
 
 **Table summary:**
-- `user_progress` — composite PK `(user_id, tree_id)`, `completed_node_ids` as `text[]`, `last_updated` timestamp.
-- `resource_feedback` — per-user upvote/downvote for a node's resource URL, unique per `(user_id, tree_id, node_id)`.
+- `user_progress` — composite PK `(user_id, tree_id)`, `completed_node_ids` as `text[]`, `last_updated` timestamp. Written by `POST /api/progress/update` via `completeNode` in the Zustand store (optimistic — rolls back on failure).
+- `resource_feedback` — per-user upvote/downvote for a specific resource URL on a node; unique per `(user_id, tree_id, node_id)`.

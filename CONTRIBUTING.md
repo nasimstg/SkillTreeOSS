@@ -89,13 +89,13 @@ If you want to help build the platform's UI or backend, we are thrilled to have 
 
 1. Fork and clone the repo.
 2. Run `npm install`.
-3. Duplicate `.env.example` to `.env.local`. (You can use the mock Supabase keys provided in the example for local UI development, or spin up your own free Supabase project).
+3. Duplicate `.env.local.example` to `.env.local`. (You can use the mock Supabase keys provided in the example for local UI development, or spin up your own free Supabase project).
 4. Run `npm run dev`.
 
 ### Development Guidelines
 
-* **State Management:** For anything related to the canvas (dragging, zooming, selecting nodes), strictly use the Zustand store located in `src/lib/store.ts`. Do not use React Context for canvas state, as it will cause severe performance issues with React Flow.
-* **Styling:** Use Tailwind utility classes. For complex components (modals, dropdowns), check if there is an existing `shadcn/ui` component in `src/components/ui/` before building from scratch.
+* **State Management:** For anything related to the canvas (dragging, zooming, selecting nodes), strictly use the Zustand store located in `lib/store.ts`. Do not use React Context for canvas state, as it will cause severe performance issues with React Flow.
+* **Styling:** Use Tailwind utility classes. For complex components (modals, dropdowns), check if there is an existing `shadcn/ui` component in `components/ui/` before building from scratch.
 * **Database (Supabase):** If your PR requires database schema changes, please open an Issue to discuss it first.
 
 ---

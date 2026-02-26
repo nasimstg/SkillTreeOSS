@@ -52,7 +52,7 @@ npm install
 3. **Set up environment variables**
 Copy the example environment file and add your local/test Supabase keys.
 ```bash
-cp .env.example .env.local
+cp .env.local.example .env.local
 
 ```
 
