@@ -12,7 +12,8 @@
  */
 
 import { execSync } from 'child_process'
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync, unlinkSync } from 'fs'
+import { tmpdir } from 'os'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -114,9 +115,12 @@ for (const treeId of TREES) {
   const title = `[Tree Review] ${tree.title} (${tree.category})`
   const body  = buildBody(tree)
 
+  // Write body to a temp file so newlines aren't mangled by shell escaping
+  const tmpFile = join(tmpdir(), `tree-review-${treeId}.md`)
   try {
+    writeFileSync(tmpFile, body, 'utf8')
     const result = execSync(
-      `gh issue create --title ${JSON.stringify(title)} --body ${JSON.stringify(body)} --label "tree-review" --label "help wanted" --label "good first issue" --repo ${REPO}`,
+      `gh issue create --title ${JSON.stringify(title)} --body-file ${JSON.stringify(tmpFile)} --label "tree-review" --label "help wanted" --label "good first issue" --repo ${REPO}`,
       { encoding: 'utf8' }
     ).trim()
     console.log(`  ✅ ${tree.title}`)
@@ -126,6 +130,8 @@ for (const treeId of TREES) {
     console.error(`  ❌ Failed: ${tree.title}`)
     console.error(`     ${err.message}`)
     skipped++
+  } finally {
+    try { unlinkSync(tmpFile) } catch { /* ignore */ }
   }
 
   // Small delay to avoid rate-limiting
