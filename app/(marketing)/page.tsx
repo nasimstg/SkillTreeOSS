@@ -75,7 +75,7 @@ async function fetchFeaturedTreeStats(
     const [progressRes, ratingsRes] = await Promise.all([
       supabase
         .from('user_progress')
-        .select('tree_id, completed_node_ids')
+        .select('tree_id, user_id, completed_node_ids')
         .in('tree_id', ids),
       supabase
         .from('tree_ratings')
