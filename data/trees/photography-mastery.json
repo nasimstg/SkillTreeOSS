@@ -1,0 +1,169 @@
+{
+    "treeId": "photography-mastery",
+    "title": "Photography Mastery",
+    "category": "Arts",
+    "difficulty": "medium",
+    "description": "Learn how to use a DSLR/Mirrorless camera manually and edit photos professionally.",
+    "version": "1.0",
+    "estimatedMonths": 3,
+    "totalNodes": 6,
+    "icon": "photo_camera",
+    "nodes": [
+        {
+            "id": "exposure-triangle",
+            "label": "The Exposure Triangle",
+            "description": "Understanding Aperture, Shutter Speed, and ISO to shoot in full Manual mode.",
+            "icon": "lens_blur",
+            "zone": "Technical",
+            "resources": [
+                {
+                    "id": "exposure-triangle-vid",
+                    "title": "The Exposure Triangle Explained",
+                    "url": "https://www.youtube.com/watch?v=3eXCUZcqUCA",
+                    "type": "video",
+                    "author": "Peter McKinnon",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "composition",
+            "label": "Composition Rules",
+            "description": "Rule of thirds, leading lines, framing, and negative space to make striking images.",
+            "icon": "crop",
+            "zone": "Artistic",
+            "resources": [
+                {
+                    "id": "composition-rules",
+                    "title": "9 Photo Composition Rules",
+                    "url": "https://www.youtube.com/watch?v=VArISvUAMx0",
+                    "type": "video",
+                    "author": "Mango Street",
+                    "estimatedHours": 1.5,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "lighting",
+            "label": "Lighting & Flash",
+            "description": "Using natural light (golden hour), manipulating light with reflectors, and basic off-camera flash.",
+            "icon": "wb_incandescent",
+            "zone": "Artistic",
+            "resources": [
+                {
+                    "id": "natural-light-guide",
+                    "title": "Natural Light Photography",
+                    "url": "https://digital-photography-school.com/natural-light/",
+                    "type": "article",
+                    "author": "DPS",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "exposure-triangle"
+            ]
+        },
+        {
+            "id": "lenses",
+            "label": "Focal Lengths & Lenses",
+            "description": "Choosing between prime/zoom lenses, wide-angle vs telephoto, and depth of field.",
+            "icon": "camera",
+            "zone": "Technical",
+            "resources": [
+                {
+                    "id": "lens-guide",
+                    "title": "Camera Lenses Explained",
+                    "url": "https://www.youtube.com/watch?v=qT4_v6wNlK8",
+                    "type": "video",
+                    "author": "B&H",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "exposure-triangle",
+                "composition"
+            ]
+        },
+        {
+            "id": "lightroom",
+            "label": "Editing in Lightroom",
+            "description": "Organizing catalogs, basic adjustments, tone curves, color grading, and masking.",
+            "icon": "tune",
+            "zone": "Post-Processing",
+            "resources": [
+                {
+                    "id": "lightroom-tutorial",
+                    "title": "Lightroom Classic Tutorial for Beginners",
+                    "url": "https://www.youtube.com/watch?v=2KzP2KjH70E",
+                    "type": "video",
+                    "author": "Envato Tuts+",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "lighting",
+                "lenses"
+            ]
+        },
+        {
+            "id": "photoshop-basics",
+            "label": "Retouching in Photoshop",
+            "description": "Removing blemishes, frequency separation, cloning, and advanced composite editing.",
+            "icon": "brush",
+            "zone": "Post-Processing",
+            "resources": [
+                {
+                    "id": "photoshop-retouch",
+                    "title": "Photoshop Basic Retouching",
+                    "url": "https://www.youtube.com/watch?v=Zf1z_T1Tvwc",
+                    "type": "video",
+                    "author": "Phlearn",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "lightroom"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-exp-light",
+            "source": "exposure-triangle",
+            "target": "lighting"
+        },
+        {
+            "id": "e-exp-lens",
+            "source": "exposure-triangle",
+            "target": "lenses"
+        },
+        {
+            "id": "e-comp-lens",
+            "source": "composition",
+            "target": "lenses"
+        },
+        {
+            "id": "e-light-lr",
+            "source": "lighting",
+            "target": "lightroom"
+        },
+        {
+            "id": "e-lens-lr",
+            "source": "lenses",
+            "target": "lightroom"
+        },
+        {
+            "id": "e-lr-ps",
+            "source": "lightroom",
+            "target": "photoshop-basics"
+        }
+    ]
+}

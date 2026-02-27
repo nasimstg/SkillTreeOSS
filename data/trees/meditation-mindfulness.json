@@ -1,0 +1,118 @@
+{
+    "treeId": "meditation-mindfulness",
+    "title": "Meditation & Mindfulness",
+    "category": "Wellness",
+    "difficulty": "easy",
+    "description": "Develop a daily meditation habit to reduce stress, improve focus, and cultivate inner peace.",
+    "version": "1.0",
+    "estimatedMonths": 1,
+    "totalNodes": 4,
+    "icon": "self_improvement",
+    "nodes": [
+        {
+            "id": "breath-awareness",
+            "label": "Breath Awareness",
+            "description": "Learning to sit still for 5 minutes and gently return focus to the breath when the mind wanders.",
+            "icon": "air",
+            "zone": "Basics",
+            "resources": [
+                {
+                    "id": "mindful-breath",
+                    "title": "10-Minute Guided Breathing",
+                    "url": "https://www.youtube.com/watch?v=ZToicYcHIOU",
+                    "type": "video",
+                    "author": "Great Meditation",
+                    "estimatedHours": 0.2,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "body-scan",
+            "label": "The Body Scan",
+            "description": "Systematically bringing awareness to different parts of the body to release physical tension.",
+            "icon": "accessibility_new",
+            "zone": "Techniques",
+            "resources": [
+                {
+                    "id": "mbsr-bodyscan",
+                    "title": "MBSR Body Scan",
+                    "url": "https://www.youtube.com/watch?v=u4gZgnCy5ew",
+                    "type": "video",
+                    "author": "Jon Kabat-Zinn",
+                    "estimatedHours": 0.75,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "breath-awareness"
+            ]
+        },
+        {
+            "id": "noting-thoughts",
+            "label": "Noting Thoughts & Feelings",
+            "description": "Observing thoughts passing like clouds without judging them or getting caught up in the story.",
+            "icon": "speaker_notes",
+            "zone": "Techniques",
+            "resources": [
+                {
+                    "id": "noting-headspace",
+                    "title": "Meditation Technique: Noting",
+                    "url": "https://www.youtube.com/watch?v=htwK1kvoOpk",
+                    "type": "video",
+                    "author": "Headspace",
+                    "estimatedHours": 0.2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "breath-awareness"
+            ]
+        },
+        {
+            "id": "daily-integration",
+            "label": "Mindfulness in Daily Life",
+            "description": "Bringing the meditative state into everyday activities like walking, eating, or listening.",
+            "icon": "directions_walk",
+            "zone": "Lifestyle",
+            "resources": [
+                {
+                    "id": "thich-nhat-hanh",
+                    "title": "The Miracle of Mindfulness",
+                    "url": "https://plumvillage.org/mindfulness/",
+                    "type": "article",
+                    "author": "Plum Village",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "body-scan",
+                "noting-thoughts"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-ba-bs",
+            "source": "breath-awareness",
+            "target": "body-scan"
+        },
+        {
+            "id": "e-ba-nt",
+            "source": "breath-awareness",
+            "target": "noting-thoughts"
+        },
+        {
+            "id": "e-bs-di",
+            "source": "body-scan",
+            "target": "daily-integration"
+        },
+        {
+            "id": "e-nt-di",
+            "source": "noting-thoughts",
+            "target": "daily-integration"
+        }
+    ]
+}

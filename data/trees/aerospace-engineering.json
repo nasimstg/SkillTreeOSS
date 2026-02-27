@@ -1,0 +1,191 @@
+{
+    "treeId": "aerospace-engineering",
+    "title": "Aerospace Engineering Basics",
+    "category": "Engineering",
+    "difficulty": "hard",
+    "description": "The physics and math behind rocket science, aerodynamics, orbital mechanics, and spacecraft design.",
+    "version": "1.0",
+    "estimatedMonths": 10,
+    "totalNodes": 6,
+    "icon": "rocket",
+    "nodes": [
+        {
+            "id": "calc-physics",
+            "label": "Calculus & Newtonian Mechanics",
+            "description": "Multivariable calculus, differential equations, kinematics, dynamics, and Newton's laws.",
+            "icon": "calculate",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "mit-801",
+                    "title": "MIT 8.01 Classical Mechanics",
+                    "url": "https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/",
+                    "type": "course",
+                    "author": "MIT OCW",
+                    "estimatedHours": 40,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "thermodynamics",
+            "label": "Thermodynamics",
+            "description": "Laws of thermodynamics, heat transfer, ideal gas laws, and energy cycles.",
+            "icon": "whatshot",
+            "zone": "Core Science",
+            "resources": [
+                {
+                    "id": "thermo-crash-course",
+                    "title": "Thermodynamics Crash Course Physics",
+                    "url": "https://www.youtube.com/watch?v=kjpT1s-w-9A",
+                    "type": "video",
+                    "author": "CrashCourse",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "calc-physics"
+            ]
+        },
+        {
+            "id": "fluid-mechanics",
+            "label": "Fluid Mechanics & Aerodynamics",
+            "description": "Navier-Stokes equations, lift, drag, boundary layers, and compressible flow (supersonic vs subsonic).",
+            "icon": "air",
+            "zone": "Core Science",
+            "resources": [
+                {
+                    "id": "mit-fluids",
+                    "title": "MIT Fluid Dynamics",
+                    "url": "https://ocw.mit.edu/courses/2-06-fluid-dynamics-spring-2013/",
+                    "type": "course",
+                    "author": "MIT OCW",
+                    "estimatedHours": 35,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "calc-physics",
+                "thermodynamics"
+            ]
+        },
+        {
+            "id": "orbital-mechanics",
+            "label": "Orbital Mechanics",
+            "description": "Kepler's laws, the Tsiolkovsky rocket equation, delta-v, orbital maneuvers (Hohmann transfer).",
+            "icon": "public",
+            "zone": "Specialization",
+            "resources": [
+                {
+                    "id": "ksp-orbital",
+                    "title": "Kerbal Space Program & Orbital Mechanics",
+                    "url": "https://www.youtube.com/playlist?list=PLB3Ia8aQsjoGgQLLR1bCttDqP22zFw1-s",
+                    "type": "video",
+                    "author": "Scott Manley",
+                    "estimatedHours": 15,
+                    "isFree": true
+                },
+                {
+                    "id": "braeunig-rocket",
+                    "title": "Rocket & Space Technology",
+                    "url": "http://www.braeunig.us/space/orbmech.htm",
+                    "type": "article",
+                    "author": "Robert A. Braeunig",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "calc-physics"
+            ]
+        },
+        {
+            "id": "propulsion",
+            "label": "Rocket Propulsion Systems",
+            "description": "Chemical rockets (liquid/solid), turbopumps, specific impulse (Isp), nozzle design (De Laval nozzle), and ion thrusters.",
+            "icon": "local_fire_department",
+            "zone": "Engineering",
+            "resources": [
+                {
+                    "id": "everyday-astronaut-engines",
+                    "title": "Is SpaceX's Raptor Engine The King of Rocket Engines?",
+                    "url": "https://www.youtube.com/watch?v=LbH1ZDImaA8",
+                    "type": "video",
+                    "author": "Everyday Astronaut",
+                    "estimatedHours": 1.5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "thermodynamics",
+                "fluid-mechanics",
+                "orbital-mechanics"
+            ]
+        },
+        {
+            "id": "structures-materials",
+            "label": "Aerospace Structures & Materials",
+            "description": "Stress, strain, composite materials, fatigue, and designing lightweight pressure vessels.",
+            "icon": "architecture",
+            "zone": "Engineering",
+            "resources": [
+                {
+                    "id": "mit-structures",
+                    "title": "Mechanics of Materials",
+                    "url": "https://ocw.mit.edu/courses/3-11-mechanics-of-materials-fall-1999/",
+                    "type": "course",
+                    "author": "MIT OCW",
+                    "estimatedHours": 25,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "calc-physics"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-cp-th",
+            "source": "calc-physics",
+            "target": "thermodynamics"
+        },
+        {
+            "id": "e-cp-fm",
+            "source": "calc-physics",
+            "target": "fluid-mechanics"
+        },
+        {
+            "id": "e-th-fm",
+            "source": "thermodynamics",
+            "target": "fluid-mechanics"
+        },
+        {
+            "id": "e-cp-om",
+            "source": "calc-physics",
+            "target": "orbital-mechanics"
+        },
+        {
+            "id": "e-th-pr",
+            "source": "thermodynamics",
+            "target": "propulsion"
+        },
+        {
+            "id": "e-fm-pr",
+            "source": "fluid-mechanics",
+            "target": "propulsion"
+        },
+        {
+            "id": "e-om-pr",
+            "source": "orbital-mechanics",
+            "target": "propulsion"
+        },
+        {
+            "id": "e-cp-sm",
+            "source": "calc-physics",
+            "target": "structures-materials"
+        }
+    ]
+}

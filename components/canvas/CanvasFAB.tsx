@@ -11,6 +11,9 @@ interface Props {
   layoutDir: LayoutDir
   onLayoutDirChange: (dir: LayoutDir) => void
   onAutoArrange: () => void
+  onResetProgress: () => void
+  onRateTree: () => void
+  userRating?: number | null
 }
 
 const VIEWS: { id: CanvasView; icon: string; label: string }[] = [
@@ -20,7 +23,9 @@ const VIEWS: { id: CanvasView; icon: string; label: string }[] = [
   { id: 'neural',   icon: 'hub',            label: 'Neural'    },
 ]
 
-export default function CanvasFAB({ layoutDir, onLayoutDirChange, onAutoArrange }: Props) {
+export default function CanvasFAB({
+  layoutDir, onLayoutDirChange, onAutoArrange, onResetProgress, onRateTree, userRating,
+}: Props) {
   const [copied,    setCopied]    = useState(false)
   const [arranging, setArranging] = useState(false)
 
@@ -129,6 +134,33 @@ export default function CanvasFAB({ layoutDir, onLayoutDirChange, onAutoArrange 
         <span className="material-symbols-outlined text-base leading-none">
           {copied ? 'check_circle' : 'share'}
         </span>
+      </button>
+
+      {/* ── Rate tree ── */}
+      <button
+        onClick={onRateTree}
+        title={userRating ? `Your rating: ${userRating}/5 — click to change` : 'Rate this tree'}
+        className={`p-2 rounded-full transition-colors ${
+          userRating
+            ? 'text-amber-400 hover:text-amber-300 hover:bg-white/5'
+            : 'text-slate-500 hover:text-amber-400 hover:bg-white/5'
+        }`}
+      >
+        <span
+          className="material-symbols-outlined text-base leading-none"
+          style={{ fontVariationSettings: userRating ? "'FILL' 1" : "'FILL' 0" }}
+        >
+          star
+        </span>
+      </button>
+
+      {/* ── Reset progress ── */}
+      <button
+        onClick={onResetProgress}
+        title="Reset progress"
+        className="p-2 rounded-full text-slate-500 hover:text-red-400 hover:bg-white/5 transition-colors"
+      >
+        <span className="material-symbols-outlined text-base leading-none">delete_sweep</span>
       </button>
     </div>
   )

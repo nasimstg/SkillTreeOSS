@@ -1,0 +1,230 @@
+{
+    "treeId": "ml-ai-engineer",
+    "title": "AI/Machine Learning Engineer",
+    "category": "Artificial Intelligence",
+    "difficulty": "hard",
+    "description": "Comprehensive path to becoming an AI and Machine Learning Engineer. Covers foundational math, classic ML, deep learning, and MLOps.",
+    "version": "1.0",
+    "estimatedMonths": 10,
+    "totalNodes": 12,
+    "icon": "psychology",
+    "nodes": [
+        {
+            "id": "python-programming",
+            "label": "Python for Data Science",
+            "description": "Learn Python programming, specifically focusing on data manipulation with pandas, numpy, and matplotlib.",
+            "icon": "code",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "python-freecodecamp",
+                    "title": "Python for Data Science Course",
+                    "url": "https://www.youtube.com/watch?v=edhTEkEusxg",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 12,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "math-statistics",
+            "label": "Mathematics & Statistics",
+            "description": "Foundational Linear Algebra, Calculus, Probability, and Statistics required for understanding ML algorithms.",
+            "icon": "calculate",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "khan-academy-stats",
+                    "title": "High School Statistics",
+                    "url": "https://www.khanacademy.org/math/statistics-probability",
+                    "type": "interactive",
+                    "author": "Khan Academy",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "data-preprocessing",
+            "label": "Data Preprocessing",
+            "description": "Learn to clean, transform, and prepare raw data for machine learning models. Handling missing values, encoding, and scaling.",
+            "icon": "cleaning_services",
+            "zone": "Core ML",
+            "resources": [
+                {
+                    "id": "kaggle-data-cleaning",
+                    "title": "Data Cleaning",
+                    "url": "https://www.kaggle.com/learn/data-cleaning",
+                    "type": "course",
+                    "author": "Kaggle",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "python-programming",
+                "math-statistics"
+            ]
+        },
+        {
+            "id": "classic-machine-learning",
+            "label": "Classic Machine Learning",
+            "description": "Supervised (Regression, Classification) and Unsupervised (Clustering, PCA) learning using Scikit-Learn.",
+            "icon": "model_training",
+            "zone": "Core ML",
+            "resources": [
+                {
+                    "id": "ml-crash-course",
+                    "title": "Machine Learning Crash Course",
+                    "url": "https://developers.google.com/machine-learning/crash-course",
+                    "type": "course",
+                    "author": "Google",
+                    "estimatedHours": 15,
+                    "isFree": true
+                },
+                {
+                    "id": "scikit-learn-docs",
+                    "title": "Scikit-Learn Documentation",
+                    "url": "https://scikit-learn.org/stable/user_guide.html",
+                    "type": "docs",
+                    "author": "Scikit-Learn",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "data-preprocessing"
+            ]
+        },
+        {
+            "id": "deep-learning",
+            "label": "Deep Learning Basics",
+            "description": "Introduction to Neural Networks, Backpropagation, and activation functions using PyTorch or TensorFlow.",
+            "icon": "hub",
+            "zone": "Advanced ML",
+            "resources": [
+                {
+                    "id": "dl-fastai",
+                    "title": "Practical Deep Learning for Coders",
+                    "url": "https://course.fast.ai/",
+                    "type": "course",
+                    "author": "Fast.ai",
+                    "estimatedHours": 25,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "classic-machine-learning"
+            ]
+        },
+        {
+            "id": "computer-vision",
+            "label": "Computer Vision (CV)",
+            "description": "Convolutional Neural Networks (CNNs), Image Classification, Object Detection, and Image Segmentation.",
+            "icon": "visibility",
+            "zone": "Specialization",
+            "resources": [
+                {
+                    "id": "cs231n",
+                    "title": "CS231n: Convolutional Neural Networks for Visual Recognition",
+                    "url": "http://cs231n.stanford.edu/",
+                    "type": "course",
+                    "author": "Stanford",
+                    "estimatedHours": 30,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "deep-learning"
+            ]
+        },
+        {
+            "id": "nlp",
+            "label": "Natural Language Processing",
+            "description": "Transformers, Word Embeddings, RNNs, and Large Language Models (LLMs) using Hugging Face.",
+            "icon": "translate",
+            "zone": "Specialization",
+            "resources": [
+                {
+                    "id": "huggingface-course",
+                    "title": "Hugging Face NLP Course",
+                    "url": "https://huggingface.co/course/",
+                    "type": "course",
+                    "author": "Hugging Face",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "deep-learning"
+            ]
+        },
+        {
+            "id": "mlops",
+            "label": "MLOps & Deployment",
+            "description": "Model serving, tracking experiments (MLflow / Weights & Biases), and deploying ML models as APIs (FastAPI).",
+            "icon": "cloud_sync",
+            "zone": "Production",
+            "resources": [
+                {
+                    "id": "madewithml-mlops",
+                    "title": "MLOps Basics",
+                    "url": "https://madewithml.com/",
+                    "type": "course",
+                    "author": "Goku Mohandas",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "deep-learning",
+                "classic-machine-learning"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-py-pre",
+            "source": "python-programming",
+            "target": "data-preprocessing"
+        },
+        {
+            "id": "e-math-pre",
+            "source": "math-statistics",
+            "target": "data-preprocessing"
+        },
+        {
+            "id": "e-pre-ml",
+            "source": "data-preprocessing",
+            "target": "classic-machine-learning"
+        },
+        {
+            "id": "e-ml-dl",
+            "source": "classic-machine-learning",
+            "target": "deep-learning"
+        },
+        {
+            "id": "e-dl-cv",
+            "source": "deep-learning",
+            "target": "computer-vision"
+        },
+        {
+            "id": "e-dl-nlp",
+            "source": "deep-learning",
+            "target": "nlp"
+        },
+        {
+            "id": "e-ml-ops",
+            "source": "classic-machine-learning",
+            "target": "mlops"
+        },
+        {
+            "id": "e-dl-ops",
+            "source": "deep-learning",
+            "target": "mlops"
+        }
+    ]
+}

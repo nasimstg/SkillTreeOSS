@@ -1,0 +1,170 @@
+{
+    "treeId": "neuroscience",
+    "title": "Neuroscience & Cognitive Science",
+    "category": "Interdisciplinary Science",
+    "difficulty": "hard",
+    "description": "Investigate the human brain from cellular action potentials up to high-level cognition and consciousness.",
+    "version": "1.0",
+    "estimatedMonths": 10,
+    "totalNodes": 6,
+    "icon": "psychology",
+    "nodes": [
+        {
+            "id": "cellular-neuroscience",
+            "label": "Cellular/Molecular Neuroscience",
+            "description": "Neurons, glia, resting potential, action potentials, synapses, and neurotransmitters.",
+            "icon": "biotech",
+            "zone": "Micro Level",
+            "resources": [
+                {
+                    "id": "neuro-crash-course",
+                    "title": "The Nervous System",
+                    "url": "https://www.youtube.com/watch?v=qPix_X-9t7E",
+                    "type": "video",
+                    "author": "CrashCourse",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "neuroanatomy",
+            "label": "Neuroanatomy",
+            "description": "Structure of the brain, spinal cord, lobes (Frontal, Parietal, Temporal, Occipital), and the limbic system.",
+            "icon": "visibility",
+            "zone": "Macro Level",
+            "resources": [
+                {
+                    "id": "2d-neuroanatomy",
+                    "title": "Interactive Brain Model",
+                    "url": "https://www.brainfacts.org/3d-brain",
+                    "type": "interactive",
+                    "author": "BrainFacts.org",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "cellular-neuroscience"
+            ]
+        },
+        {
+            "id": "systems-neuroscience",
+            "label": "Systems & Sensory Neuroscience",
+            "description": "How neural circuits process sensory information (vision, audition, touch) and control movement.",
+            "icon": "hub",
+            "zone": "Systems",
+            "resources": [
+                {
+                    "id": "vision-system",
+                    "title": "Visual Processing in the Brain",
+                    "url": "https://nba.uth.tmc.edu/neuroscience/m/s2/chapter14.html",
+                    "type": "article",
+                    "author": "Neuroscience Online",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "neuroanatomy"
+            ]
+        },
+        {
+            "id": "cognitive-neuroscience",
+            "label": "Cognitive Neuroscience",
+            "description": "The biological basis of learning, memory (hippocampus), language, attention, and decision-making.",
+            "icon": "lightbulb",
+            "zone": "Cognition",
+            "resources": [
+                {
+                    "id": "cog-neuro-mit",
+                    "title": "MIT 9.13 The Human Brain",
+                    "url": "https://ocw.mit.edu/courses/9-13-the-human-brain-spring-2019/",
+                    "type": "course",
+                    "author": "Nancy Kanwisher",
+                    "estimatedHours": 30,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "systems-neuroscience"
+            ]
+        },
+        {
+            "id": "computational-neuroscience",
+            "label": "Computational Neuroscience",
+            "description": "Mathematical models of neurons (Hodgkin-Huxley model) and simulating neural networks.",
+            "icon": "memory",
+            "zone": "Computation",
+            "resources": [
+                {
+                    "id": "comp-neuro-coursera",
+                    "title": "Computational Neuroscience",
+                    "url": "https://www.coursera.org/learn/computational-neuroscience",
+                    "type": "course",
+                    "author": "University of Washington",
+                    "estimatedHours": 25,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "cellular-neuroscience",
+                "systems-neuroscience"
+            ]
+        },
+        {
+            "id": "neuropsychology",
+            "label": "Neuropsychology & Pathology",
+            "description": "Studying brain damage (lesions), neurodegenerative diseases (Alzheimer's, Parkinson's), and psychiatric disorders.",
+            "icon": "healing",
+            "zone": "Clinical",
+            "resources": [
+                {
+                    "id": "sacks-book",
+                    "title": "The Man Who Mistook His Wife for a Hat",
+                    "url": "https://www.oliversacks.com/books-by-oliver-sacks/man-mistook-wife-hat/",
+                    "type": "docs",
+                    "author": "Oliver Sacks",
+                    "estimatedHours": 10,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "cognitive-neuroscience"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-cn-na",
+            "source": "cellular-neuroscience",
+            "target": "neuroanatomy"
+        },
+        {
+            "id": "e-na-sn",
+            "source": "neuroanatomy",
+            "target": "systems-neuroscience"
+        },
+        {
+            "id": "e-sn-cgn",
+            "source": "systems-neuroscience",
+            "target": "cognitive-neuroscience"
+        },
+        {
+            "id": "e-cn-cpn",
+            "source": "cellular-neuroscience",
+            "target": "computational-neuroscience"
+        },
+        {
+            "id": "e-sn-cpn",
+            "source": "systems-neuroscience",
+            "target": "computational-neuroscience"
+        },
+        {
+            "id": "e-cgn-np",
+            "source": "cognitive-neuroscience",
+            "target": "neuropsychology"
+        }
+    ]
+}

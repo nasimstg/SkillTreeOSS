@@ -1,0 +1,144 @@
+{
+    "treeId": "spanish-basics",
+    "title": "Spanish conversational Basics",
+    "category": "Language",
+    "difficulty": "easy",
+    "description": "Learn the basics of the Spanish language to hold simple conversations.",
+    "version": "1.0",
+    "estimatedMonths": 2,
+    "totalNodes": 5,
+    "icon": "language",
+    "nodes": [
+        {
+            "id": "greetings",
+            "label": "Greetings & Introductions",
+            "description": "Learn how to say hello, goodbye, ask how someone is doing, and introduce yourself.",
+            "icon": "handshake",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "spanish-greetings",
+                    "title": "Basic Spanish Greetings",
+                    "url": "https://www.youtube.com/watch?v=kdMlsM2Bngw",
+                    "type": "video",
+                    "author": "SpanishPod101",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "numbers-colors",
+            "label": "Numbers & Colors",
+            "description": "Count to 100, identify basic colors, and ask about prices.",
+            "icon": "palette",
+            "zone": "Vocabulary",
+            "resources": [
+                {
+                    "id": "spanish-numbers",
+                    "title": "Numbers 1-100 in Spanish",
+                    "url": "https://www.studyingspanish.com/grammar/lessons/cardinal-numbers-11-29",
+                    "type": "article",
+                    "author": "Studying Spanish",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "greetings"
+            ]
+        },
+        {
+            "id": "basic-verbs",
+            "label": "Basic Verbs (Ser, Estar, Tener)",
+            "description": "Understand the two verbs for 'to be' (ser vs. estar) and 'to have' (tener).",
+            "icon": "directions_run",
+            "zone": "Grammar",
+            "resources": [
+                {
+                    "id": "ser-vs-estar",
+                    "title": "Ser vs Estar",
+                    "url": "https://www.youtube.com/watch?v=ZJ1_y-9Gg-w",
+                    "type": "video",
+                    "author": "Butterfly Spanish",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "greetings"
+            ]
+        },
+        {
+            "id": "forming-questions",
+            "label": "Forming Questions",
+            "description": "Who, what, where, when, why, and how (Quién, qué, dónde, cuándo, por qué, cómo).",
+            "icon": "help",
+            "zone": "Grammar",
+            "resources": [
+                {
+                    "id": "spanish-questions",
+                    "title": "Asking Questions in Spanish",
+                    "url": "https://www.spanishdict.com/guide/asking-questions-in-spanish",
+                    "type": "article",
+                    "author": "SpanishDict",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "basic-verbs"
+            ]
+        },
+        {
+            "id": "ordering-food",
+            "label": "Ordering Food & Navigating",
+            "description": "Practical phrases for ordering at a restaurant and asking for directions.",
+            "icon": "restaurant",
+            "zone": "Application",
+            "resources": [
+                {
+                    "id": "restaurant-spanish",
+                    "title": "How to order food in Spanish",
+                    "url": "https://www.youtube.com/watch?v=WkG1XhQ1dWY",
+                    "type": "video",
+                    "author": "SpanishPod101",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "numbers-colors",
+                "forming-questions"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-gr-num",
+            "source": "greetings",
+            "target": "numbers-colors"
+        },
+        {
+            "id": "e-gr-vb",
+            "source": "greetings",
+            "target": "basic-verbs"
+        },
+        {
+            "id": "e-vb-qs",
+            "source": "basic-verbs",
+            "target": "forming-questions"
+        },
+        {
+            "id": "e-num-fd",
+            "source": "numbers-colors",
+            "target": "ordering-food"
+        },
+        {
+            "id": "e-qs-fd",
+            "source": "forming-questions",
+            "target": "ordering-food"
+        }
+    ]
+}

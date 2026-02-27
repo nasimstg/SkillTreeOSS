@@ -1,0 +1,170 @@
+{
+    "treeId": "bioinformatics",
+    "title": "Bioinformatics & Computational Biology",
+    "category": "Interdisciplinary Science",
+    "difficulty": "hard",
+    "description": "Utilizing programming, statistics, and mathematics to analyze massive biological data such as genomic sequences.",
+    "version": "1.0",
+    "estimatedMonths": 10,
+    "totalNodes": 6,
+    "icon": "biotech",
+    "nodes": [
+        {
+            "id": "molecular-biology",
+            "label": "Molecular Biology Foundation",
+            "description": "Understanding DNA, RNA, proteins, the central dogma, transcription, translation, and gene expression.",
+            "icon": "science",
+            "zone": "Biology",
+            "resources": [
+                {
+                    "id": "mit-biology",
+                    "title": "MIT 7.016 Introductory Biology",
+                    "url": "https://ocw.mit.edu/courses/7-016-introductory-biology-fall-2018/",
+                    "type": "course",
+                    "author": "Eric Lander",
+                    "estimatedHours": 35,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "biostats",
+            "label": "Biostatistics & R Programming",
+            "description": "Statistical testing, probability distributions, p-values, and using the R language for data analysis.",
+            "icon": "bar_chart",
+            "zone": "Mathematics",
+            "resources": [
+                {
+                    "id": "r-bioc-course",
+                    "title": "Data Analysis for the Life Sciences",
+                    "url": "https://rafaalab.github.io/pages/biocBook.html",
+                    "type": "docs",
+                    "author": "Rafael Irizarry",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "molecular-biology"
+            ]
+        },
+        {
+            "id": "python-bio",
+            "label": "Python & Biopython",
+            "description": "Using Python and the Biopython library to parse FASTA/FASTQ files and manipulate sequences programmatically.",
+            "icon": "code",
+            "zone": "Computer Science",
+            "resources": [
+                {
+                    "id": "rosalind-platform",
+                    "title": "Rosalind: Bioinformatics Practice",
+                    "url": "https://rosalind.info/",
+                    "type": "interactive",
+                    "author": "Rosalind Team",
+                    "estimatedHours": 40,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "molecular-biology"
+            ]
+        },
+        {
+            "id": "sequence-alignment",
+            "label": "Sequence Alignment Algorithms",
+            "description": "Dynamic programming, Needleman-Wunsch (global), Smith-Waterman (local), and heuristic algorithms (BLAST).",
+            "icon": "align_horizontal_left",
+            "zone": "Algorithms",
+            "resources": [
+                {
+                    "id": "blast-course",
+                    "title": "Algorithms for DNA Sequencing",
+                    "url": "https://www.coursera.org/learn/dna-sequencing",
+                    "type": "course",
+                    "author": "Johns Hopkins",
+                    "estimatedHours": 15,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "python-bio",
+                "biostats"
+            ]
+        },
+        {
+            "id": "genomics-ngs",
+            "label": "Next-Generation Sequencing (NGS)",
+            "description": "Analyzing RNA-Seq, ChIP-Seq, and Variant Calling using the command-line tools (BWA, Bowtie2, Samtools).",
+            "icon": "dns",
+            "zone": "Applied Bioinformatics",
+            "resources": [
+                {
+                    "id": "ngs-analysis",
+                    "title": "Introduction to NGS Analysis",
+                    "url": "https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/",
+                    "type": "docs",
+                    "author": "Harvard Chan Bioinformatics",
+                    "estimatedHours": 25,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "sequence-alignment"
+            ]
+        },
+        {
+            "id": "structural-biology",
+            "label": "Structural Bioinformatics",
+            "description": "Protein folding, 3D structure visualization (PyMOL), and AlphaFold 2 applications.",
+            "icon": "schema",
+            "zone": "Advanced Topics",
+            "resources": [
+                {
+                    "id": "alphafold-course",
+                    "title": "Using AlphaFold",
+                    "url": "https://www.ebi.ac.uk/training/materials/alphafold-introduction/",
+                    "type": "article",
+                    "author": "EMBL-EBI",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "python-bio"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-mb-bs",
+            "source": "molecular-biology",
+            "target": "biostats"
+        },
+        {
+            "id": "e-mb-py",
+            "source": "molecular-biology",
+            "target": "python-bio"
+        },
+        {
+            "id": "e-py-sa",
+            "source": "python-bio",
+            "target": "sequence-alignment"
+        },
+        {
+            "id": "e-bs-sa",
+            "source": "biostats",
+            "target": "sequence-alignment"
+        },
+        {
+            "id": "e-sa-ngs",
+            "source": "sequence-alignment",
+            "target": "genomics-ngs"
+        },
+        {
+            "id": "e-py-sb",
+            "source": "python-bio",
+            "target": "structural-biology"
+        }
+    ]
+}

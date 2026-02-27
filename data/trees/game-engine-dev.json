@@ -1,0 +1,221 @@
+{
+    "treeId": "game-engine-dev",
+    "title": "Game Engine Development",
+    "category": "Computer Science & Math",
+    "difficulty": "hard",
+    "description": "Building a custom 3D game engine from scratch using C++, OpenGL/Vulkan, and intense linear algebra.",
+    "version": "1.0",
+    "estimatedMonths": 18,
+    "totalNodes": 8,
+    "icon": "videogame_asset",
+    "nodes": [
+        {
+            "id": "cpp-mastery",
+            "label": "C++ Mastery",
+            "description": "Memory management, pointers, RAII, move semantics, templates, and low-level performance optimization.",
+            "icon": "code",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "learn-cpp",
+                    "title": "Learn C++",
+                    "url": "https://www.learncpp.com/",
+                    "type": "docs",
+                    "author": "Alex",
+                    "estimatedHours": 60,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "engine-math",
+            "label": "Math for 3D Graphics",
+            "description": "Vector math, matrices, quaternions, transformations, and dot/cross products.",
+            "icon": "calculate",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "3d-math-primer",
+                    "title": "3D Math Primer for Graphics and Game Development",
+                    "url": "https://gamemath.com/",
+                    "type": "docs",
+                    "author": "Fletcher Dunn",
+                    "estimatedHours": 40,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "windowing-input",
+            "label": "Windowing & Input",
+            "description": "Creating an OS window, handling events, and processing keyboard/mouse/gamepad input using GLFW or SDL2.",
+            "icon": "keyboard",
+            "zone": "Architecture",
+            "resources": [
+                {
+                    "id": "game-engine-series",
+                    "title": "Game Engine Series (Hazel)",
+                    "url": "https://www.youtube.com/playlist?list=PLlrATfBNZ98dC-V-N3m0Go4deliWHPFwT",
+                    "type": "video",
+                    "author": "The Cherno",
+                    "estimatedHours": 50,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "cpp-mastery"
+            ]
+        },
+        {
+            "id": "graphics-api",
+            "label": "Graphics API (OpenGL/Vulkan/DirectX)",
+            "description": "The graphics pipeline, Vertex/Fragment Shaders (GLSL/HLSL), buffers (VBO, VAO), and drawing triangles.",
+            "icon": "broken_image",
+            "zone": "Rendering",
+            "resources": [
+                {
+                    "id": "learn-opengl",
+                    "title": "Learn OpenGL",
+                    "url": "https://learnopengl.com/",
+                    "type": "docs",
+                    "author": "Joey de Vries",
+                    "estimatedHours": 50,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "windowing-input",
+                "engine-math"
+            ]
+        },
+        {
+            "id": "ecs",
+            "label": "Entity Component System (ECS)",
+            "description": "Designing a data-oriented architecture to manage thousands of game objects efficiently.",
+            "icon": "category",
+            "zone": "Architecture",
+            "resources": [
+                {
+                    "id": "data-oriented-design",
+                    "title": "Data-Oriented Design Book",
+                    "url": "https://www.dataorienteddesign.com/dodmain/",
+                    "type": "docs",
+                    "author": "Richard Fabian",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "cpp-mastery"
+            ]
+        },
+        {
+            "id": "lighting-materials",
+            "label": "Lighting & Materials",
+            "description": "Phong illumination, diffuse/specular maps, normal mapping, and Physically Based Rendering (PBR).",
+            "icon": "wb_incandescent",
+            "zone": "Rendering",
+            "resources": [
+                {
+                    "id": "pbr-theory",
+                    "title": "PBR Theory - LearnOpenGL",
+                    "url": "https://learnopengl.com/PBR/Theory",
+                    "type": "article",
+                    "author": "Joey de Vries",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "graphics-api"
+            ]
+        },
+        {
+            "id": "physics-collision",
+            "label": "Physics & Collision Detection",
+            "description": "AABB collision, Raycasting, rigid body dynamics, integration methods (Euler/Verlet).",
+            "icon": "animation",
+            "zone": "Systems",
+            "resources": [
+                {
+                    "id": "game-physics-engine",
+                    "title": "Game Physics Engine Development",
+                    "url": "https://www.amazon.com/Game-Physics-Engine-Development-Commercial-Grade/dp/0123819768",
+                    "type": "docs",
+                    "author": "Ian Millington",
+                    "estimatedHours": 30,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "engine-math",
+                "ecs"
+            ]
+        },
+        {
+            "id": "scene-graph",
+            "label": "Scene Management & Culling",
+            "description": "Octrees, frustum culling, and spatial partitioning to avoid rendering objects outside the camera.",
+            "icon": "account_tree",
+            "zone": "Optimization",
+            "resources": [
+                {
+                    "id": "spatial-partition",
+                    "title": "Spatial Partitioning Patterns",
+                    "url": "https://gameprogrammingpatterns.com/spatial-partition.html",
+                    "type": "article",
+                    "author": "Robert Nystrom",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "lighting-materials"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-cpp-win",
+            "source": "cpp-mastery",
+            "target": "windowing-input"
+        },
+        {
+            "id": "e-cpp-ecs",
+            "source": "cpp-mastery",
+            "target": "ecs"
+        },
+        {
+            "id": "e-math-gfx",
+            "source": "engine-math",
+            "target": "graphics-api"
+        },
+        {
+            "id": "e-win-gfx",
+            "source": "windowing-input",
+            "target": "graphics-api"
+        },
+        {
+            "id": "e-gfx-lt",
+            "source": "graphics-api",
+            "target": "lighting-materials"
+        },
+        {
+            "id": "e-math-phys",
+            "source": "engine-math",
+            "target": "physics-collision"
+        },
+        {
+            "id": "e-ecs-phys",
+            "source": "ecs",
+            "target": "physics-collision"
+        },
+        {
+            "id": "e-lt-scene",
+            "source": "lighting-materials",
+            "target": "scene-graph"
+        }
+    ]
+}

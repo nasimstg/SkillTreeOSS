@@ -1,0 +1,112 @@
+{
+    "treeId": "public-speaking",
+    "title": "Public Speaking Confidence",
+    "category": "Personal Development",
+    "difficulty": "easy",
+    "description": "Learn to overcome stage fright and deliver compelling presentations to audiences.",
+    "version": "1.0",
+    "estimatedMonths": 1,
+    "totalNodes": 4,
+    "icon": "record_voice_over",
+    "nodes": [
+        {
+            "id": "overcoming-fear",
+            "label": "Overcoming Stage Fright",
+            "description": "Strategies for managing anxiety and re-framing nervousness into excitement.",
+            "icon": "psychology",
+            "zone": "Mindset",
+            "resources": [
+                {
+                    "id": "anxiety-ted",
+                    "title": "How I Overcame My Fear of Public Speaking",
+                    "url": "https://www.youtube.com/watch?v=80VQGWxEtoM",
+                    "type": "video",
+                    "author": "TEDx",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "speech-structure",
+            "label": "Structuring Your Speech",
+            "description": "Creating an engaging hook, a clear body with three points, and a memorable conclusion.",
+            "icon": "format_list_bulleted",
+            "zone": "Preparation",
+            "resources": [
+                {
+                    "id": "toastmasters-outline",
+                    "title": "Speech Outline Guide",
+                    "url": "https://www.toastmasters.org/resources/speech-outline",
+                    "type": "docs",
+                    "author": "Toastmasters",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "overcoming-fear"
+            ]
+        },
+        {
+            "id": "body-language",
+            "label": "Body Language & Voice Tone",
+            "description": "Using hand gestures, eye contact, movement, and vocal variety (pitch, pace, pauses).",
+            "icon": "accessibility",
+            "zone": "Delivery",
+            "resources": [
+                {
+                    "id": "body-language-vid",
+                    "title": "Body Language for Presentations",
+                    "url": "https://www.youtube.com/watch?v=Zf1z_T1Tvwc",
+                    "type": "video",
+                    "author": "Science of People",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "speech-structure"
+            ]
+        },
+        {
+            "id": "storytelling",
+            "label": "The Art of Storytelling",
+            "description": "Using personal anecdotes and the hero's journey to connect emotionally with the audience.",
+            "icon": "auto_stories",
+            "zone": "Advanced",
+            "resources": [
+                {
+                    "id": "storytelling-speakers",
+                    "title": "Storytelling for Public Speaking",
+                    "url": "https://hbr.org/2003/06/storytelling-that-moves-people",
+                    "type": "article",
+                    "author": "Harvard Business Review",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "body-language"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-of-ss",
+            "source": "overcoming-fear",
+            "target": "speech-structure"
+        },
+        {
+            "id": "e-ss-bl",
+            "source": "speech-structure",
+            "target": "body-language"
+        },
+        {
+            "id": "e-bl-st",
+            "source": "body-language",
+            "target": "storytelling"
+        }
+    ]
+}

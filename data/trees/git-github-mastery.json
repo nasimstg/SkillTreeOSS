@@ -1,0 +1,112 @@
+{
+    "treeId": "git-github-mastery",
+    "title": "Git & GitHub Mastery",
+    "category": "Developer Tools",
+    "difficulty": "easy",
+    "description": "A very short but crucial path to master version control for any developer.",
+    "version": "1.0",
+    "estimatedMonths": 1,
+    "totalNodes": 4,
+    "icon": "merge",
+    "nodes": [
+        {
+            "id": "git-basics",
+            "label": "Git Basics",
+            "description": "init, add, commit, status, log. The bread and butter of local version control.",
+            "icon": "save",
+            "zone": "Local",
+            "resources": [
+                {
+                    "id": "git-fcc",
+                    "title": "Git basics for beginners",
+                    "url": "https://www.youtube.com/watch?v=8JJ101D3knE",
+                    "type": "video",
+                    "author": "Programming with Mosh",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "git-branching",
+            "label": "Branching & Merging",
+            "description": "Creating branches, switching, merging, and resolving basic merge conflicts.",
+            "icon": "call_split",
+            "zone": "Local",
+            "resources": [
+                {
+                    "id": "learn-git-branching",
+                    "title": "Learn Git Branching",
+                    "url": "https://learngitbranching.js.org/",
+                    "type": "interactive",
+                    "author": "Peter Cottle",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "git-basics"
+            ]
+        },
+        {
+            "id": "github-remotes",
+            "label": "Remote Repositories",
+            "description": "Push, pull, clone, and fork using GitHub or GitLab.",
+            "icon": "cloud_upload",
+            "zone": "Remote",
+            "resources": [
+                {
+                    "id": "github-docs",
+                    "title": "GitHub Setup Docs",
+                    "url": "https://docs.github.com/en/get-started",
+                    "type": "docs",
+                    "author": "GitHub",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "git-branching"
+            ]
+        },
+        {
+            "id": "collaboration",
+            "label": "Pull Requests & Code Review",
+            "description": "Opening PRs, reviewing code, requesting changes, and squashing commits.",
+            "icon": "rate_review",
+            "zone": "Remote",
+            "resources": [
+                {
+                    "id": "pr-best-practices",
+                    "title": "The anatomy of a perfect pull request",
+                    "url": "https://hugooodias.medium.com/the-anatomy-of-a-perfect-pull-request-567382bb6067",
+                    "type": "article",
+                    "author": "Hugo Dias",
+                    "estimatedHours": 0.5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "github-remotes"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-basics-br",
+            "source": "git-basics",
+            "target": "git-branching"
+        },
+        {
+            "id": "e-br-rem",
+            "source": "git-branching",
+            "target": "github-remotes"
+        },
+        {
+            "id": "e-rem-coll",
+            "source": "github-remotes",
+            "target": "collaboration"
+        }
+    ]
+}

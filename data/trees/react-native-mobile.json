@@ -1,0 +1,228 @@
+{
+    "treeId": "react-native-mobile",
+    "title": "React Native Mobile Dev",
+    "category": "Mobile Development",
+    "difficulty": "medium",
+    "description": "Learn to build cross-platform mobile apps for iOS and Android using React Native and Expo.",
+    "version": "1.0",
+    "estimatedMonths": 5,
+    "totalNodes": 8,
+    "icon": "phone_iphone",
+    "nodes": [
+        {
+            "id": "js-prerequisites",
+            "label": "JavaScript & React Prerequisites",
+            "description": "Solid understanding of modern JS (ES6+), React fundamentals (hooks, state, props).",
+            "icon": "javascript",
+            "zone": "Prerequisites",
+            "resources": [
+                {
+                    "id": "react-crash-course",
+                    "title": "React JS Crash Course",
+                    "url": "https://www.youtube.com/watch?v=w7ejDZ8SWv8",
+                    "type": "video",
+                    "author": "Traversy Media",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "expo-basics",
+            "label": "Expo & Setup",
+            "description": "Setting up the development environment, Expo Go, and the basics of React Native core components (View, Text, Image, ScrollView, TextInput).",
+            "icon": "install_mobile",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "react-native-docs",
+                    "title": "React Native Basics",
+                    "url": "https://reactnative.dev/docs/getting-started",
+                    "type": "docs",
+                    "author": "Meta",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "js-prerequisites"
+            ]
+        },
+        {
+            "id": "styling-rn",
+            "label": "Styling & Flexbox",
+            "description": "Styling components using StyleSheet, Flexbox layout, and responsive UI design across devices.",
+            "icon": "palette",
+            "zone": "UI Design",
+            "resources": [
+                {
+                    "id": "rn-flexbox",
+                    "title": "Flexbox in React Native",
+                    "url": "https://reactnative.dev/docs/flexbox",
+                    "type": "docs",
+                    "author": "Meta",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "expo-basics"
+            ]
+        },
+        {
+            "id": "navigation",
+            "label": "Navigation",
+            "description": "Implementing screens and navigation using React Navigation (Stack, Tab, Drawer).",
+            "icon": "explore",
+            "zone": "Architecture",
+            "resources": [
+                {
+                    "id": "react-navigation-docs",
+                    "title": "React Navigation Fundamentals",
+                    "url": "https://reactnavigation.org/docs/getting-started/",
+                    "type": "docs",
+                    "author": "React Navigation",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "styling-rn"
+            ]
+        },
+        {
+            "id": "state-management",
+            "label": "State Management & Data Fetching",
+            "description": "Using Context API, Zustand, or Redux. Fetching data with fetch or Axios.",
+            "icon": "sync",
+            "zone": "Architecture",
+            "resources": [
+                {
+                    "id": "zustand-course",
+                    "title": "Zustand Crash Course",
+                    "url": "https://www.youtube.com/watch?v=_VqKB-KzH7s",
+                    "type": "video",
+                    "author": "PedroTech",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "expo-basics"
+            ]
+        },
+        {
+            "id": "device-features",
+            "label": "Device Features",
+            "description": "Accessing the camera, location, local storage (AsyncStorage), and push notifications.",
+            "icon": "camera_alt",
+            "zone": "Advanced",
+            "resources": [
+                {
+                    "id": "expo-camera-docs",
+                    "title": "Expo Camera API",
+                    "url": "https://docs.expo.dev/versions/latest/sdk/camera/",
+                    "type": "docs",
+                    "author": "Expo",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "navigation",
+                "state-management"
+            ]
+        },
+        {
+            "id": "animations",
+            "label": "Animations",
+            "description": "Creating smooth 60fps animations using Reanimated 2/3 and the Animated API.",
+            "icon": "animation",
+            "zone": "Advanced",
+            "resources": [
+                {
+                    "id": "reanimated-course",
+                    "title": "React Native Reanimated Tutorial",
+                    "url": "https://www.youtube.com/watch?v=kROAEgKzKjI",
+                    "type": "video",
+                    "author": "William Candillon",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "navigation"
+            ]
+        },
+        {
+            "id": "deployment",
+            "label": "Publishing & EAS",
+            "description": "Building native binaries with EAS (Expo Application Services) and publishing to the App Store and Google Play.",
+            "icon": "cloud_upload",
+            "zone": "Deployment",
+            "resources": [
+                {
+                    "id": "eas-build-docs",
+                    "title": "EAS Build Documentation",
+                    "url": "https://docs.expo.dev/build/introduction/",
+                    "type": "docs",
+                    "author": "Expo",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "device-features",
+                "animations"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-prereq-expo",
+            "source": "js-prerequisites",
+            "target": "expo-basics"
+        },
+        {
+            "id": "e-expo-style",
+            "source": "expo-basics",
+            "target": "styling-rn"
+        },
+        {
+            "id": "e-expo-state",
+            "source": "expo-basics",
+            "target": "state-management"
+        },
+        {
+            "id": "e-style-nav",
+            "source": "styling-rn",
+            "target": "navigation"
+        },
+        {
+            "id": "e-nav-dev",
+            "source": "navigation",
+            "target": "device-features"
+        },
+        {
+            "id": "e-state-dev",
+            "source": "state-management",
+            "target": "device-features"
+        },
+        {
+            "id": "e-nav-anim",
+            "source": "navigation",
+            "target": "animations"
+        },
+        {
+            "id": "e-dev-deploy",
+            "source": "device-features",
+            "target": "deployment"
+        },
+        {
+            "id": "e-anim-deploy",
+            "source": "animations",
+            "target": "deployment"
+        }
+    ]
+}

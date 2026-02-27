@@ -608,6 +608,9 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
           </>
         )}
       </AnimatePresence>
+
+      {/* Suggest a better resource */}
+      <SuggestResourceButton treeId={treeId} nodeId={nodeId} nodeLabel={node.label} />
     </div>
   )
 }
@@ -692,6 +695,183 @@ function ResourceVote({
         <span className="material-symbols-outlined text-[14px]">thumb_down</span>
         No
       </button>
+    </div>
+  )
+}
+
+// ── SuggestResourceButton ──────────────────────────────────────────────────────
+
+function SuggestResourceButton({
+  treeId,
+  nodeId,
+  nodeLabel,
+}: {
+  treeId:    string
+  nodeId:    string
+  nodeLabel: string
+}) {
+  const [open,    setOpen]    = useState(false)
+  const [message, setMessage] = useState('')
+  const [url,     setUrl]     = useState('')
+  const [title,   setTitle]   = useState('')
+  const [state,   setState]   = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!message.trim()) return
+    setState('loading')
+    try {
+      const res = await fetch('/api/resources/suggest', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ treeId, nodeId, nodeLabel, message, url, title }),
+      })
+      if (!res.ok) throw new Error('failed')
+      setState('done')
+    } catch {
+      setState('error')
+    }
+  }
+
+  function reset() {
+    setOpen(false)
+    setMessage('')
+    setUrl('')
+    setTitle('')
+    setState('idle')
+  }
+
+  return (
+    <div className="mt-2 pt-4 border-t border-white/[0.06]">
+      {/* Toggle button */}
+      <button
+        onClick={() => { setOpen(v => !v); if (state === 'done') reset() }}
+        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-dashed text-xs font-semibold transition-all ${
+          open
+            ? 'border-primary/30 text-primary bg-primary/5'
+            : 'border-white/10 text-slate-500 hover:border-white/20 hover:text-slate-300'
+        }`}
+      >
+        <span className="material-symbols-outlined text-sm leading-none">
+          {open ? 'expand_less' : 'post_add'}
+        </span>
+        {open ? 'Cancel' : 'Suggest a better resource'}
+      </button>
+
+      {/* Collapsible form */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="suggest-form"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="pt-4 pb-1">
+              {state === 'done' ? (
+                /* ── Success state ── */
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-col items-center gap-3 py-6 text-center"
+                >
+                  <div className="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary text-2xl">check_circle</span>
+                  </div>
+                  <p className="text-sm font-bold text-white">Thanks for your suggestion!</p>
+                  <p className="text-xs text-slate-500 max-w-[220px] leading-relaxed">
+                    We'll review it and update the resource list if it's a better fit.
+                  </p>
+                  <button onClick={reset} className="text-xs text-primary hover:underline mt-1">
+                    Close
+                  </button>
+                </motion.div>
+              ) : (
+                /* ── Form ── */
+                <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+
+                  {/* What's wrong / explanation */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                      What's wrong or missing?
+                      <span className="text-red-400 ml-1">*</span>
+                    </label>
+                    <textarea
+                      value={message}
+                      onChange={e => setMessage(e.target.value)}
+                      placeholder="e.g. The recommended video is outdated — the API changed in 2024. I found a free course that covers the new version..."
+                      rows={3}
+                      required
+                      className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary/40 resize-none leading-relaxed transition-colors"
+                    />
+                  </div>
+
+                  {/* Suggested URL */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                      Suggested URL
+                      <span className="text-slate-600 ml-1 normal-case font-normal">(optional)</span>
+                    </label>
+                    <input
+                      type="url"
+                      value={url}
+                      onChange={e => setUrl(e.target.value)}
+                      placeholder="https://..."
+                      className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary/40 transition-colors"
+                    />
+                  </div>
+
+                  {/* Resource title */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                      Resource title
+                      <span className="text-slate-600 ml-1 normal-case font-normal">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={e => setTitle(e.target.value)}
+                      placeholder="e.g. Full Stack Open 2024"
+                      className="w-full bg-black/30 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-primary/40 transition-colors"
+                    />
+                  </div>
+
+                  {/* Error */}
+                  {state === 'error' && (
+                    <p className="text-xs text-red-400 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-sm leading-none">error</span>
+                      Something went wrong — please try again.
+                    </p>
+                  )}
+
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={!message.trim() || state === 'loading'}
+                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary/15 border border-primary/30 text-primary text-sm font-bold hover:bg-primary/25 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {state === 'loading' ? (
+                      <>
+                        <span className="material-symbols-outlined text-base leading-none animate-spin">
+                          progress_activity
+                        </span>
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-base leading-none">send</span>
+                        Submit Suggestion
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

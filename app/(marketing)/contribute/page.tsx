@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Contribute — The Skill-Tree',
+  title: 'Contribute — SkilleTreeOSS',
   description: 'Add your own skill tree. All trees are open-source JSON files contributed via GitHub pull requests.',
 }
 

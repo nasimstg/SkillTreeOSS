@@ -1,0 +1,164 @@
+{
+    "treeId": "writing-novel",
+    "title": "Writing a Novel",
+    "category": "Literature",
+    "difficulty": "hard",
+    "description": "From a blank page to a finished manuscript: outline, draft, and edit your first book.",
+    "version": "1.0",
+    "estimatedMonths": 12,
+    "totalNodes": 6,
+    "icon": "menu_book",
+    "nodes": [
+        {
+            "id": "story-idea",
+            "label": "Premise & Concept",
+            "description": "Developing a \"what if\" question, defining the genre, and summarizing the core conflict in one sentence.",
+            "icon": "lightbulb",
+            "zone": "Pre-Production",
+            "resources": [
+                {
+                    "id": "brandon-sanderson-1",
+                    "title": "Brandon Sanderson Lecture 1",
+                    "url": "https://www.youtube.com/watch?v=-6HOdHEeosc",
+                    "type": "video",
+                    "author": "Brandon Sanderson",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "outlining",
+            "label": "Outlining & Worldbuilding",
+            "description": "The 3-act structure, character arcs, setting the rules of the world, and scene-by-scene planning.",
+            "icon": "schema",
+            "zone": "Pre-Production",
+            "resources": [
+                {
+                    "id": "save-the-cat",
+                    "title": "Save the Cat! Writes a Novel (Summary)",
+                    "url": "https://savethecat.com/",
+                    "type": "article",
+                    "author": "Jessica Brody",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "story-idea"
+            ]
+        },
+        {
+            "id": "first-draft",
+            "label": "The First Draft",
+            "description": "Writing 50,000 to 80,000 words. Pushing through writer's block without editing as you go (NaNoWriMo style).",
+            "icon": "edit_document",
+            "zone": "Production",
+            "resources": [
+                {
+                    "id": "nanowrimo",
+                    "title": "National Novel Writing Month",
+                    "url": "https://nanowrimo.org/",
+                    "type": "interactive",
+                    "author": "NaNoWriMo",
+                    "estimatedHours": 60,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "outlining"
+            ]
+        },
+        {
+            "id": "rest-period",
+            "label": "The Rest Period",
+            "description": "Stepping away from the manuscript for 2-4 weeks to gain fresh perspective before editing.",
+            "icon": "bedtime",
+            "zone": "Post-Production",
+            "resources": [
+                {
+                    "id": "step-king-rest",
+                    "title": "Stephen King on Resting",
+                    "url": "https://www.masterclass.com/articles/stephen-king-writing-tips",
+                    "type": "article",
+                    "author": "Masterclass",
+                    "estimatedHours": 0.5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "first-draft"
+            ]
+        },
+        {
+            "id": "structural-edit",
+            "label": "Developmental Editing",
+            "description": "Fixing plot holes, pacing issues, weak character motivations, and cutting unnecessary scenes.",
+            "icon": "architecture",
+            "zone": "Post-Production",
+            "resources": [
+                {
+                    "id": "dev-edit-vid",
+                    "title": "How to edit your own novel",
+                    "url": "https://www.youtube.com/watch?v=Fj-87p3hX7g",
+                    "type": "video",
+                    "author": "Ellen Brock",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "rest-period"
+            ]
+        },
+        {
+            "id": "line-edit",
+            "label": "Line Editing & Polish",
+            "description": "Refining sentence structure, word choice, dialogue tags, and fixing grammar/spelling.",
+            "icon": "spellcheck",
+            "zone": "Post-Production",
+            "resources": [
+                {
+                    "id": "line-editing-tips",
+                    "title": "The Magic of Line Editing",
+                    "url": "https://annerallen.com/2016/11/magic-of-line-editing/",
+                    "type": "article",
+                    "author": "Anne R. Allen",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "structural-edit"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-si-out",
+            "source": "story-idea",
+            "target": "outlining"
+        },
+        {
+            "id": "e-out-fd",
+            "source": "outlining",
+            "target": "first-draft"
+        },
+        {
+            "id": "e-fd-rp",
+            "source": "first-draft",
+            "target": "rest-period"
+        },
+        {
+            "id": "e-rp-se",
+            "source": "rest-period",
+            "target": "structural-edit"
+        },
+        {
+            "id": "e-se-le",
+            "source": "structural-edit",
+            "target": "line-edit"
+        }
+    ]
+}

@@ -1,0 +1,176 @@
+{
+    "treeId": "marathon-training",
+    "title": "Marathon Training (26.2 Miles)",
+    "category": "Fitness",
+    "difficulty": "hard",
+    "description": "A physical conditioning path to train your body to safely complete a full marathon.",
+    "version": "1.0",
+    "estimatedMonths": 6,
+    "totalNodes": 6,
+    "icon": "directions_run",
+    "nodes": [
+        {
+            "id": "base-building",
+            "label": "Base Building",
+            "description": "Establish a consistent habit of running 3-4 times a week for 20-30 minutes.",
+            "icon": "directions_walk",
+            "zone": "Phase 1: Foundation",
+            "resources": [
+                {
+                    "id": "c25k",
+                    "title": "Couch to 5K Plan",
+                    "url": "https://c25k.com/",
+                    "type": "interactive",
+                    "author": "C25K",
+                    "estimatedHours": 24,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "nutrition-hydration",
+            "label": "Nutrition & Hydration",
+            "description": "Understanding macros, pre-run fueling, and mid-run hydration (gels/water).",
+            "icon": "local_dining",
+            "zone": "Maintenance",
+            "resources": [
+                {
+                    "id": "runner-nutrition",
+                    "title": "Marathon Nutrition Guide",
+                    "url": "https://www.runnersworld.com/nutrition-weight-loss/a22710218/marathon-nutrition/",
+                    "type": "article",
+                    "author": "Runner's World",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "base-building"
+            ]
+        },
+        {
+            "id": "distance-increase",
+            "label": "Increasing Distance (10K to Half)",
+            "description": "Gradually adding mileage to a weekend long run until you can comfortably run 13.1 miles.",
+            "icon": "trending_up",
+            "zone": "Phase 2: Endurance",
+            "resources": [
+                {
+                    "id": "hal-higdon-half",
+                    "title": "Hal Higdon Half Marathon Novice 1",
+                    "url": "https://www.halhigdon.com/training-programs/half-marathon-training/novice-1-half-marathon/",
+                    "type": "docs",
+                    "author": "Hal Higdon",
+                    "estimatedHours": 48,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "base-building"
+            ]
+        },
+        {
+            "id": "speed-strength",
+            "label": "Speed Work & Strength Training",
+            "description": "Incorporating interval runs, tempo runs, and lower-body weight lifting to prevent injury.",
+            "icon": "fitness_center",
+            "zone": "Maintenance",
+            "resources": [
+                {
+                    "id": "strength-for-runners",
+                    "title": "Strength Training for Runners",
+                    "url": "https://www.youtube.com/watch?v=1bZgI7m4f48",
+                    "type": "video",
+                    "author": "Global Triathlon Network",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "distance-increase"
+            ]
+        },
+        {
+            "id": "the-long-runs",
+            "label": "The 18-20 Mile Long Runs",
+            "description": "Peak weeks testing your limits and fueling strategy on 3+ hour runs.",
+            "icon": "timer",
+            "zone": "Phase 3: Peak",
+            "resources": [
+                {
+                    "id": "marathon-long-run",
+                    "title": "How to Survive the Long Run",
+                    "url": "https://www.runnersworld.com/training/a20822180/the-long-run/",
+                    "type": "article",
+                    "author": "Runner's World",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "distance-increase",
+                "nutrition-hydration"
+            ]
+        },
+        {
+            "id": "taper-race",
+            "label": "Taper & Race Day",
+            "description": "Reducing mileage to rest legs, carb-loading, and running the actual marathon.",
+            "icon": "emoji_events",
+            "zone": "Phase 4: Execution",
+            "resources": [
+                {
+                    "id": "how-to-taper",
+                    "title": "The Art of the Marathon Taper",
+                    "url": "https://www.runnersworld.com/training/a20786518/the-art-of-the-marathon-taper/",
+                    "type": "article",
+                    "author": "Runner's World",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "the-long-runs",
+                "speed-strength"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-base-nut",
+            "source": "base-building",
+            "target": "nutrition-hydration"
+        },
+        {
+            "id": "e-base-up",
+            "source": "base-building",
+            "target": "distance-increase"
+        },
+        {
+            "id": "e-up-ss",
+            "source": "distance-increase",
+            "target": "speed-strength"
+        },
+        {
+            "id": "e-up-long",
+            "source": "distance-increase",
+            "target": "the-long-runs"
+        },
+        {
+            "id": "e-nut-long",
+            "source": "nutrition-hydration",
+            "target": "the-long-runs"
+        },
+        {
+            "id": "e-long-taper",
+            "source": "the-long-runs",
+            "target": "taper-race"
+        },
+        {
+            "id": "e-ss-taper",
+            "source": "speed-strength",
+            "target": "taper-race"
+        }
+    ]
+}

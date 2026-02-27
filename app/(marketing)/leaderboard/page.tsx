@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Leaderboard — The Skill-Tree',
+  title: 'Leaderboard — SkilleTreeOSS',
   description: 'Global XP rankings and streak competitions. Coming soon.',
 }
 

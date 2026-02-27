@@ -1,0 +1,196 @@
+{
+    "treeId": "cybersecurity-basics",
+    "title": "Cybersecurity Basics",
+    "category": "Security",
+    "difficulty": "medium",
+    "description": "Essential knowledge for protecting systems and networks from digital attacks.",
+    "version": "1.0",
+    "estimatedMonths": 4,
+    "totalNodes": 7,
+    "icon": "security",
+    "nodes": [
+        {
+            "id": "it-fundamentals",
+            "label": "IT Fundamentals",
+            "description": "Basic hardware, software, operating systems, and networking concepts.",
+            "icon": "computer",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "comptia-a-plus",
+                    "title": "CompTIA A+ Certification Course",
+                    "url": "https://www.youtube.com/watch?v=F3Grs12L8j0",
+                    "type": "video",
+                    "author": "Professor Messer",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "network-security",
+            "label": "Network Security",
+            "description": "Firewalls, VPNs, IDS/IPS, and securing network protocols.",
+            "icon": "router",
+            "zone": "Defense",
+            "resources": [
+                {
+                    "id": "comptia-network",
+                    "title": "Network+ Training",
+                    "url": "https://www.youtube.com/watch?v=6mJb8_lO3cQ",
+                    "type": "video",
+                    "author": "NetworkChuck",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "it-fundamentals"
+            ]
+        },
+        {
+            "id": "osint",
+            "label": "OSINT (Open Source Intelligence)",
+            "description": "Information gathering from publicly available sources.",
+            "icon": "travel_explore",
+            "zone": "Reconnaissance",
+            "resources": [
+                {
+                    "id": "osint-framework",
+                    "title": "OSINT Framework",
+                    "url": "https://osintframework.com/",
+                    "type": "interactive",
+                    "author": "OSINT Framework",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "it-fundamentals"
+            ]
+        },
+        {
+            "id": "cryptography",
+            "label": "Cryptography Basics",
+            "description": "Encryption, hashing, digital signatures, and PKI.",
+            "icon": "key",
+            "zone": "Concepts",
+            "resources": [
+                {
+                    "id": "crypto-course",
+                    "title": "Cryptography for Beginners",
+                    "url": "https://www.youtube.com/watch?v=jhXCTbFnK8o",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "it-fundamentals"
+            ]
+        },
+        {
+            "id": "ethical-hacking",
+            "label": "Ethical Hacking / Pentesting",
+            "description": "Vulnerability scanning, exploitation, and post-exploitation using Kali Linux.",
+            "icon": "bug_report",
+            "zone": "Offense",
+            "resources": [
+                {
+                    "id": "pentesting-full",
+                    "title": "Full Ethical Hacking Course",
+                    "url": "https://www.youtube.com/watch?v=3Kq1MIfTWCE",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "network-security",
+                "osint"
+            ]
+        },
+        {
+            "id": "web-security",
+            "label": "Web Application Security",
+            "description": "OWASP Top 10, SQL injection, XSS, CSRF, and secure coding practices.",
+            "icon": "language",
+            "zone": "Defense",
+            "resources": [
+                {
+                    "id": "portswigger-academy",
+                    "title": "Web Security Academy",
+                    "url": "https://portswigger.net/web-security",
+                    "type": "interactive",
+                    "author": "PortSwigger",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "ethical-hacking"
+            ]
+        },
+        {
+            "id": "incident-response",
+            "label": "Incident Response & Forensics",
+            "description": "Handling security breaches, tracking indicators of compromise (IoC), and analyzing malware.",
+            "icon": "policy",
+            "zone": "Operations",
+            "resources": [
+                {
+                    "id": "dfir-madness",
+                    "title": "Digital Forensics & Incident Response",
+                    "url": "https://dfirmadness.com/",
+                    "type": "article",
+                    "author": "DFIR Madness",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "network-security"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-it-net",
+            "source": "it-fundamentals",
+            "target": "network-security"
+        },
+        {
+            "id": "e-it-os",
+            "source": "it-fundamentals",
+            "target": "osint"
+        },
+        {
+            "id": "e-it-cr",
+            "source": "it-fundamentals",
+            "target": "cryptography"
+        },
+        {
+            "id": "e-net-eh",
+            "source": "network-security",
+            "target": "ethical-hacking"
+        },
+        {
+            "id": "e-os-eh",
+            "source": "osint",
+            "target": "ethical-hacking"
+        },
+        {
+            "id": "e-eh-web",
+            "source": "ethical-hacking",
+            "target": "web-security"
+        },
+        {
+            "id": "e-net-ir",
+            "source": "network-security",
+            "target": "incident-response"
+        }
+    ]
+}

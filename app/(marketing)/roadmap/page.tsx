@@ -2,8 +2,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Roadmap — The Skill-Tree',
-  description: 'See what\'s planned, in progress, and shipped for The Skill-Tree platform.',
+  title: 'Roadmap — SkilleTreeOSS',
+  description: 'See what\'s planned, in progress, and shipped for SkilleTreeOSS platform.',
 }
 
 const SHIPPED = [
@@ -62,7 +62,7 @@ export default function RoadmapPage() {
               What we&apos;re building
             </h1>
             <p className="text-slate-400 text-lg max-w-xl mx-auto">
-              The Skill-Tree is open source. Suggest features or vote on ideas by opening a GitHub Discussion.
+              SkilleTreeOSS is open source. Suggest features or vote on ideas by opening a GitHub Discussion.
             </p>
             <a
               href="https://github.com/nasimstg/SkillTreeOSS/discussions"

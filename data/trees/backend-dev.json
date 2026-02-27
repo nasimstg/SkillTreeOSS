@@ -1,0 +1,231 @@
+{
+    "treeId": "backend-dev",
+    "title": "Backend Web Developer",
+    "category": "Technology",
+    "difficulty": "hard",
+    "description": "Step by step guide to becoming a backend developer. Master APIs, databases, servers, and system design.",
+    "version": "1.0",
+    "estimatedMonths": 5,
+    "totalNodes": 8,
+    "icon": "dns",
+    "nodes": [
+        {
+            "id": "internet",
+            "label": "How the Internet Works",
+            "description": "Understand HTTP, DNS, hosting, and the basics of how data travels across the web.",
+            "icon": "public",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "internet-crash-course",
+                    "title": "How the Internet Works in 5 Minutes",
+                    "url": "https://www.youtube.com/watch?v=7_LPdttKXPc",
+                    "type": "video",
+                    "author": "Aaron",
+                    "estimatedHours": 0.5,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "os-general",
+            "label": "OS and General Knowledge",
+            "description": "Learn basic Terminal usage, how OS works, Memory management, and fundamental networking concepts.",
+            "icon": "terminal",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "linux-journey",
+                    "title": "Linux Journey",
+                    "url": "https://linuxjourney.com/",
+                    "type": "interactive",
+                    "author": "Linux Journey",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "internet"
+            ]
+        },
+        {
+            "id": "languages",
+            "label": "Programming Languages",
+            "description": "Learn a backend language. Options include Node.js, Python, Go, Rust, Java, or C#.",
+            "icon": "code",
+            "zone": "Backend",
+            "resources": [
+                {
+                    "id": "nodejs-docs",
+                    "title": "Node.js Official Documentation",
+                    "url": "https://nodejs.org/en/docs/",
+                    "type": "docs",
+                    "author": "Node.js",
+                    "estimatedHours": 8,
+                    "isFree": true
+                },
+                {
+                    "id": "python-tutorial",
+                    "title": "Python Tutorial",
+                    "url": "https://docs.python.org/3/tutorial/index.html",
+                    "type": "docs",
+                    "author": "Python Software Foundation",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "os-general"
+            ]
+        },
+        {
+            "id": "version-control",
+            "label": "Version Control Systems",
+            "description": "Track changes, branching and merging strategies, and collaborating using Git.",
+            "icon": "fork_right",
+            "zone": "Tools",
+            "resources": [
+                {
+                    "id": "git-docs",
+                    "title": "Pro Git Book",
+                    "url": "https://git-scm.com/book/en/v2",
+                    "type": "docs",
+                    "author": "Scott Chacon",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "os-general"
+            ]
+        },
+        {
+            "id": "databases-sql",
+            "label": "Relational Databases",
+            "description": "Learn SQL concepts, table design, joins, indexes, and normalization. PostgreSQL or MySQL.",
+            "icon": "storage",
+            "zone": "Databases",
+            "resources": [
+                {
+                    "id": "sqlbolt",
+                    "title": "SQLBolt",
+                    "url": "https://sqlbolt.com/",
+                    "type": "interactive",
+                    "author": "SQLBolt",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "languages"
+            ]
+        },
+        {
+            "id": "databases-nosql",
+            "label": "NoSQL Databases",
+            "description": "Understand document databases like MongoDB, key-value stores like Redis, and graph databases.",
+            "icon": "dataset",
+            "zone": "Databases",
+            "resources": [
+                {
+                    "id": "mongodb-university",
+                    "title": "MongoDB Basics",
+                    "url": "https://learn.mongodb.com/",
+                    "type": "course",
+                    "author": "MongoDB",
+                    "estimatedHours": 6,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "languages"
+            ]
+        },
+        {
+            "id": "apis",
+            "label": "APIs (REST, GraphQL, gRPC)",
+            "description": "Learn how to establish communication between clients and servers using modern API paradigms.",
+            "icon": "api",
+            "zone": "Protocols",
+            "resources": [
+                {
+                    "id": "rest-api-tutorial",
+                    "title": "REST API Tutorial",
+                    "url": "https://restfulapi.net/",
+                    "type": "article",
+                    "author": "REST API Tutorial",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "databases-sql",
+                "databases-nosql"
+            ]
+        },
+        {
+            "id": "caching",
+            "label": "Caching",
+            "description": "Learn caching strategies to improve application performance using Redis or Memcached.",
+            "icon": "memory",
+            "zone": "Architecture",
+            "resources": [
+                {
+                    "id": "redis-crash-course",
+                    "title": "Redis Crash Course",
+                    "url": "https://www.youtube.com/watch?v=jgpVdJB2sKQ",
+                    "type": "video",
+                    "author": "Traversy Media",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "apis"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-int-os",
+            "source": "internet",
+            "target": "os-general"
+        },
+        {
+            "id": "e-os-lang",
+            "source": "os-general",
+            "target": "languages"
+        },
+        {
+            "id": "e-os-vcs",
+            "source": "os-general",
+            "target": "version-control"
+        },
+        {
+            "id": "e-lang-sql",
+            "source": "languages",
+            "target": "databases-sql"
+        },
+        {
+            "id": "e-lang-nosql",
+            "source": "languages",
+            "target": "databases-nosql"
+        },
+        {
+            "id": "e-sql-api",
+            "source": "databases-sql",
+            "target": "apis"
+        },
+        {
+            "id": "e-nosql-api",
+            "source": "databases-nosql",
+            "target": "apis"
+        },
+        {
+            "id": "e-api-cache",
+            "source": "apis",
+            "target": "caching"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
-# Contributing to The Skill-Tree 🌳
+# Contributing to SkilleTreeOSS 🌳
 
-First off, thank you for considering contributing to The Skill-Tree! Our mission is the **Democratization of Mastery**, and we can only achieve that by crowdsourcing the best learning paths from people who have actually walked them.
+First off, thank you for considering contributing to SkilleTreeOSS! Our mission is the **Democratization of Mastery**, and we can only achieve that by crowdsourcing the best learning paths from people who have actually walked them.
 
 You do **not** need to be a programmer to contribute to this project. We welcome two types of contributions:
 
@@ -80,9 +80,11 @@ Here is a simple template:
 
 ### Step 2: Key Rules for JSON Editing
 
-* **No coordinates needed:** The app uses the Dagre layout engine to automatically compute node positions from the graph structure. You only need to define the `requires` relationships — the visual tree arranges itself.
-* **Edges:** The `source` is the ID of the prerequisite skill. The `target` is the ID of the skill it unlocks. Every edge should have a matching entry in the node's `requires` array.
+* **No coordinates needed:** The app uses the Dagre layout engine to automatically compute node positions from the graph structure. You only need to define the `requires` relationships — the visual tree arranges itself. Do **not** add `position` fields; they are ignored.
+* **`difficulty` values:** Use `"easy"`, `"medium"`, or `"hard"` (lowercase). The UI maps these to Beginner / Intermediate / Advanced labels.
+* **Edges:** The `source` is the ID of the prerequisite skill. The `target` is the ID of the skill it unlocks. Every edge must have a matching entry in the node's `requires` array.
 * **Resources:** We only link to **100% free** resources unless `"isFree": false` is explicitly set. Do not link to paid courses, bootcamps, or generic landing pages. Link directly to the specific YouTube video or article that teaches that exact node. Each node can have multiple resources — add alternatives across different formats (video + article + interactive).
+* **`totalNodes`:** Keep this field accurate (equal to the number of node objects in the `nodes` array). It is used for progress calculations and stats.
 
 ### Step 3: Submitting Your Tree
 
@@ -106,9 +108,12 @@ If you want to help build the platform's UI or backend, we are thrilled to have 
 
 ### Development Guidelines
 
-* **State Management:** For anything related to the canvas (dragging, zooming, selecting nodes), strictly use the Zustand store located in `lib/store.ts`. Do not use React Context for canvas state, as it will cause severe performance issues with React Flow.
-* **Styling:** Use Tailwind utility classes. For complex components (modals, dropdowns), check if there is an existing `shadcn/ui` component in `components/ui/` before building from scratch.
-* **Database (Supabase):** If your PR requires database schema changes, please open an Issue to discuss it first.
+* **State Management:** For anything related to the canvas (dragging, zooming, selecting nodes, XP), strictly use the Zustand store in `lib/store.ts`. Do not use React Context for canvas state — it causes severe performance issues with React Flow.
+* **XP / Levels:** `XP_PER_NODE`, `LEVEL_THRESHOLDS`, and `getLevelInfo()` are exported from `lib/utils.ts`. Import from there rather than redefining locally.
+* **Styling:** Use Tailwind utility classes. Theme tokens (colors, backgrounds) are defined in `app/globals.css`.
+* **Database (Supabase):** If your PR requires schema changes, add a migration file to `supabase/migrations/` and describe it in your PR. Use sequential filenames (`20240104_…`). Always enable RLS on new tables.
+* **Server Components & Cookies:** Use `createServerSupabaseClient()` from `lib/supabase-server.ts` in Server Components and Route Handlers. The `setAll` cookie handler silently no-ops in Server Components (by design) — session refresh is handled by middleware.
+* **Featured Trees:** To feature a different tree on the landing page, edit `lib/featured-trees.ts` — no other code changes needed.
 
 ---
 

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — The Skill-Tree',
+  title: 'Terms of Service — SkilleTreeOSS',
 }
 
 export default function TermsPage() {
@@ -19,7 +19,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-white font-bold text-xl mb-3">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using The Skill-Tree ("the platform"), you agree to be bound by these Terms of Service.
+              By accessing or using SkilleTreeOSS ("the platform"), you agree to be bound by these Terms of Service.
               If you do not agree, please do not use the platform.
             </p>
           </section>
@@ -27,7 +27,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-white font-bold text-xl mb-3">2. Description of Service</h2>
             <p>
-              The Skill-Tree is a free, open-source learning platform that organises curated educational resources
+              SkilleTreeOSS is a free, open-source learning platform that organises curated educational resources
               into interactive skill trees. All content (skill trees, nodes, and linked resources) is community-contributed
               and available under the MIT License.
             </p>
@@ -68,7 +68,7 @@ export default function TermsPage() {
             <h2 className="text-white font-bold text-xl mb-3">6. Disclaimer of Warranties</h2>
             <p>
               The platform is provided "as is" without warranties of any kind. We do not guarantee the accuracy,
-              completeness, or quality of any linked third-party resource. The Skill-Tree is not affiliated with
+              completeness, or quality of any linked third-party resource. SkilleTreeOSS is not affiliated with
               YouTube, freeCodeCamp, or any other third-party content provider.
             </p>
           </section>
@@ -76,7 +76,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-white font-bold text-xl mb-3">7. Limitation of Liability</h2>
             <p>
-              To the maximum extent permitted by law, The Skill-Tree and its contributors shall not be liable
+              To the maximum extent permitted by law, SkilleTreeOSS and its contributors shall not be liable
               for any indirect, incidental, or consequential damages arising from your use of the platform.
             </p>
           </section>

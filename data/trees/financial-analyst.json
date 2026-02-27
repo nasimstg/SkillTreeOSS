@@ -1,0 +1,202 @@
+{
+    "treeId": "financial-analyst",
+    "title": "Corporate Financial Analyst",
+    "category": "Finance",
+    "difficulty": "hard",
+    "description": "Learn accounting principles, financial modeling, valuation, and Excel wizardry to break into corporate finance or investment banking.",
+    "version": "1.0",
+    "estimatedMonths": 8,
+    "totalNodes": 7,
+    "icon": "account_balance",
+    "nodes": [
+        {
+            "id": "accounting-basics",
+            "label": "Accounting Fundamentals",
+            "description": "The 3 financial statements (Income Statement, Balance Sheet, Cash Flow), debits/credits, and revenue recognition.",
+            "icon": "receipt_long",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "accounting-crash-course",
+                    "title": "Accounting Basics Explained",
+                    "url": "https://www.youtube.com/watch?v=yYNCAOAb-sI",
+                    "type": "video",
+                    "author": "Corporate Finance Institute",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "excel-finance",
+            "label": "Excel for Finance",
+            "description": "Keyboard shortcuts without mouse, formatting, VLOOKUP, INDEX/MATCH, SUMIFS, and Pivot Tables.",
+            "icon": "table_chart",
+            "zone": "Tools",
+            "resources": [
+                {
+                    "id": "excel-cfi",
+                    "title": "Excel Crash Course for Finance",
+                    "url": "https://corporatefinanceinstitute.com/course/free-excel-crash-course-for-finance/",
+                    "type": "course",
+                    "author": "CFI",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "accounting-basics"
+            ]
+        },
+        {
+            "id": "reading-reports",
+            "label": "Reading Annual Reports (10-K)",
+            "description": "Understanding MD&A, finding historical data, calculating margins, and assessing company health.",
+            "icon": "library_books",
+            "zone": "Analysis",
+            "resources": [
+                {
+                    "id": "sec-10k-guide",
+                    "title": "How to Read a 10-K",
+                    "url": "https://www.sec.gov/oiea/investor-alerts-and-bulletins/how-read-10-k",
+                    "type": "article",
+                    "author": "SEC",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "accounting-basics"
+            ]
+        },
+        {
+            "id": "financial-modeling",
+            "label": "Financial Modeling (3-Statement)",
+            "description": "Projecting the 3 statements into the future, linking them dynamically, and balancing the balance sheet.",
+            "icon": "polyline",
+            "zone": "Core Skills",
+            "resources": [
+                {
+                    "id": "3-statement-model",
+                    "title": "3 Statement Modeling",
+                    "url": "https://corporatefinanceinstitute.com/resources/financial-modeling/3-statement-model/",
+                    "type": "article",
+                    "author": "CFI",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "excel-finance",
+                "reading-reports"
+            ]
+        },
+        {
+            "id": "valuation-dcf",
+            "label": "DCF Valuation",
+            "description": "Discounted Cash Flow modeling, calculating WACC, Terminal Value, and Enterprise Value to Equity Value.",
+            "icon": "price_change",
+            "zone": "Advanced Analysis",
+            "resources": [
+                {
+                    "id": "dcf-guide",
+                    "title": "DCF Model Training",
+                    "url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/webcastdcf.htm",
+                    "type": "video",
+                    "author": "Aswath Damodaran (NYU)",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "financial-modeling"
+            ]
+        },
+        {
+            "id": "valuation-comps",
+            "label": "Comparable Company Analysis",
+            "description": "Using public comparables and precedent transactions to value a company using multiples (EV/EBITDA, P/E).",
+            "icon": "compare_arrows",
+            "zone": "Advanced Analysis",
+            "resources": [
+                {
+                    "id": "comps-guide",
+                    "title": "Comparable Company Analysis",
+                    "url": "https://mergersandinquisitions.com/comparable-company-analysis/",
+                    "type": "article",
+                    "author": "Mergers & Inquisitions",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "financial-modeling"
+            ]
+        },
+        {
+            "id": "presentation",
+            "label": "Pitch Books & Presentations",
+            "description": "Creating visually appealing PowerPoint presentations to summarize financial findings for management/clients.",
+            "icon": "slideshow",
+            "zone": "Delivery",
+            "resources": [
+                {
+                    "id": "pitchbook-guide",
+                    "title": "How to Build a Pitch Book",
+                    "url": "https://www.wallstreetprep.com/knowledge/investment-banking-pitch-book/",
+                    "type": "article",
+                    "author": "Wall Street Prep",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "valuation-dcf",
+                "valuation-comps"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-acc-ex",
+            "source": "accounting-basics",
+            "target": "excel-finance"
+        },
+        {
+            "id": "e-acc-rep",
+            "source": "accounting-basics",
+            "target": "reading-reports"
+        },
+        {
+            "id": "e-ex-mod",
+            "source": "excel-finance",
+            "target": "financial-modeling"
+        },
+        {
+            "id": "e-rep-mod",
+            "source": "reading-reports",
+            "target": "financial-modeling"
+        },
+        {
+            "id": "e-mod-dcf",
+            "source": "financial-modeling",
+            "target": "valuation-dcf"
+        },
+        {
+            "id": "e-mod-comp",
+            "source": "financial-modeling",
+            "target": "valuation-comps"
+        },
+        {
+            "id": "e-dcf-pres",
+            "source": "valuation-dcf",
+            "target": "presentation"
+        },
+        {
+            "id": "e-comp-pres",
+            "source": "valuation-comps",
+            "target": "presentation"
+        }
+    ]
+}

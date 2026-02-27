@@ -1,0 +1,169 @@
+{
+    "treeId": "cryptography",
+    "title": "Cryptography & Blockchain Architecture",
+    "category": "Computer Science & Security",
+    "difficulty": "hard",
+    "description": "Understand the mathematics behind encryption, hashing, and the design of decentralized ledger technologies.",
+    "version": "1.0",
+    "estimatedMonths": 9,
+    "totalNodes": 6,
+    "icon": "vpn_key",
+    "nodes": [
+        {
+            "id": "number-theory",
+            "label": "Number Theory & Modular Arithmetic",
+            "description": "Prime numbers, greatest common divisors, Euclidean algorithm, Euler's totient function, and modular exponentiation.",
+            "icon": "exposure_zero",
+            "zone": "Mathematics",
+            "resources": [
+                {
+                    "id": "number-theory-crypto",
+                    "title": "Number Theory for Cryptography",
+                    "url": "https://www.youtube.com/watch?v=Nn1kXtKOU_M",
+                    "type": "video",
+                    "author": "Khan Academy",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "symmetric-crypto",
+            "label": "Symmetric-Key Cryptography",
+            "description": "Block ciphers, stream ciphers, DES, AES (Advanced Encryption Standard), and modes of operation (CBC, GCM).",
+            "icon": "lock",
+            "zone": "Core Cryptography",
+            "resources": [
+                {
+                    "id": "coursera-crypto",
+                    "title": "Cryptography I",
+                    "url": "https://www.coursera.org/learn/crypto",
+                    "type": "course",
+                    "author": "Stanford University (Dan Boneh)",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "asymmetric-crypto",
+            "label": "Public-Key Cryptography",
+            "description": "RSA encryption, Diffie-Hellman key exchange, Elliptic Curve Cryptography (ECC), and digital signatures.",
+            "icon": "enhanced_encryption",
+            "zone": "Core Cryptography",
+            "resources": [
+                {
+                    "id": "rsa-explained",
+                    "title": "How RSA works",
+                    "url": "https://www.youtube.com/watch?v=wXB-V_Keiu8",
+                    "type": "video",
+                    "author": "Spanning Tree",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "number-theory",
+                "symmetric-crypto"
+            ]
+        },
+        {
+            "id": "hash-functions",
+            "label": "Cryptographic Hash Functions",
+            "description": "Properties of hash functions (collision resistance, pre-image resistance), SHA-256, and Merkle Trees.",
+            "icon": "tag",
+            "zone": "Data Integrity",
+            "resources": [
+                {
+                    "id": "sha-256-vid",
+                    "title": "How secure is 256 bit security?",
+                    "url": "https://www.youtube.com/watch?v=S9JGmA5_unY",
+                    "type": "video",
+                    "author": "3Blue1Brown",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "symmetric-crypto"
+            ]
+        },
+        {
+            "id": "blockchain-fundamentals",
+            "label": "Distributed Ledgers & Consensus",
+            "description": "How a blockchain works, Proof of Work (PoW), Proof of Stake (PoS), Byzantine Fault Tolerance, and the double-spending problem.",
+            "icon": "link",
+            "zone": "Blockchain",
+            "resources": [
+                {
+                    "id": "bitcoin-whitepaper",
+                    "title": "Bitcoin: A Peer-to-Peer Electronic Cash System",
+                    "url": "https://bitcoin.org/bitcoin.pdf",
+                    "type": "article",
+                    "author": "Satoshi Nakamoto",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "asymmetric-crypto",
+                "hash-functions"
+            ]
+        },
+        {
+            "id": "smart-contracts",
+            "label": "Smart Contract Architecture",
+            "description": "The Ethereum Virtual Machine (EVM), Solidity programming, decentralized applications (dApps), and smart contract vulnerabilities (Reentrancy).",
+            "icon": "description",
+            "zone": "Blockchain",
+            "resources": [
+                {
+                    "id": "solidity-docs",
+                    "title": "Solidity Documentation",
+                    "url": "https://docs.soliditylang.org/",
+                    "type": "docs",
+                    "author": "Ethereum Foundation",
+                    "estimatedHours": 30,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "blockchain-fundamentals"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-nt-ac",
+            "source": "number-theory",
+            "target": "asymmetric-crypto"
+        },
+        {
+            "id": "e-sc-ac",
+            "source": "symmetric-crypto",
+            "target": "asymmetric-crypto"
+        },
+        {
+            "id": "e-sc-hf",
+            "source": "symmetric-crypto",
+            "target": "hash-functions"
+        },
+        {
+            "id": "e-ac-bf",
+            "source": "asymmetric-crypto",
+            "target": "blockchain-fundamentals"
+        },
+        {
+            "id": "e-hf-bf",
+            "source": "hash-functions",
+            "target": "blockchain-fundamentals"
+        },
+        {
+            "id": "e-bf-sm",
+            "source": "blockchain-fundamentals",
+            "target": "smart-contracts"
+        }
+    ]
+}

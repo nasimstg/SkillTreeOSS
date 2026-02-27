@@ -1,0 +1,176 @@
+{
+    "treeId": "digital-marketing",
+    "title": "Digital Marketing",
+    "category": "Business",
+    "difficulty": "medium",
+    "description": "Learn how to market products and services online using SEO, social media, and paid advertising.",
+    "version": "1.0",
+    "estimatedMonths": 4,
+    "totalNodes": 6,
+    "icon": "trending_up",
+    "nodes": [
+        {
+            "id": "marketing-fundamentals",
+            "label": "Marketing Fundamentals",
+            "description": "Customer personas, the marketing funnel, and unique value propositions.",
+            "icon": "insights",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "hubspot-inbound",
+                    "title": "Inbound Marketing Certification",
+                    "url": "https://academy.hubspot.com/courses/inbound",
+                    "type": "course",
+                    "author": "HubSpot Academy",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "content-marketing",
+            "label": "Content Marketing",
+            "description": "Creating valuable content (blogs, videos, podcasts) to attract and engage audiences.",
+            "icon": "article",
+            "zone": "Organic Strategy",
+            "resources": [
+                {
+                    "id": "content-marketing-guide",
+                    "title": "The Ultimate Guide to Content Marketing",
+                    "url": "https://blog.hubspot.com/marketing/content-marketing",
+                    "type": "article",
+                    "author": "HubSpot",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "marketing-fundamentals"
+            ]
+        },
+        {
+            "id": "seo",
+            "label": "Search Engine Optimization (SEO)",
+            "description": "Keyword research, on-page optimization, and building backlinks to rank on Google.",
+            "icon": "search",
+            "zone": "Organic Strategy",
+            "resources": [
+                {
+                    "id": "ahrefs-seo",
+                    "title": "SEO for Beginners",
+                    "url": "https://ahrefs.com/seo",
+                    "type": "course",
+                    "author": "Ahrefs",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "content-marketing"
+            ]
+        },
+        {
+            "id": "social-media",
+            "label": "Social Media Marketing",
+            "description": "Building an audience on platforms like Instagram, LinkedIn, X, and TikTok.",
+            "icon": "share",
+            "zone": "Organic Strategy",
+            "resources": [
+                {
+                    "id": "smm-course",
+                    "title": "Social Media Marketing Course",
+                    "url": "https://www.youtube.com/watch?v=Jb-kIQ_wY-U",
+                    "type": "video",
+                    "author": "Brian Dean",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "content-marketing"
+            ]
+        },
+        {
+            "id": "paid-advertising",
+            "label": "Paid Advertising (PPC)",
+            "description": "Running ads on Google (Search/Display) and Meta (Facebook/Instagram).",
+            "icon": "ads_click",
+            "zone": "Paid Strategy",
+            "resources": [
+                {
+                    "id": "google-ads-certification",
+                    "title": "Google Ads Certifications",
+                    "url": "https://skillshop.exceedlms.com/student/catalog",
+                    "type": "course",
+                    "author": "Google Skillshop",
+                    "estimatedHours": 6,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "marketing-fundamentals"
+            ]
+        },
+        {
+            "id": "analytics",
+            "label": "Analytics & CRO",
+            "description": "Using Google Analytics to track performance and optimizing conversion rates.",
+            "icon": "bar_chart",
+            "zone": "Measurement",
+            "resources": [
+                {
+                    "id": "ga4-tutorial",
+                    "title": "Google Analytics 4 (GA4) Tutorial",
+                    "url": "https://www.youtube.com/watch?v=o04i3w1_KzM",
+                    "type": "video",
+                    "author": "Analytics Mania",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "seo",
+                "social-media",
+                "paid-advertising"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-mf-cm",
+            "source": "marketing-fundamentals",
+            "target": "content-marketing"
+        },
+        {
+            "id": "e-cm-seo",
+            "source": "content-marketing",
+            "target": "seo"
+        },
+        {
+            "id": "e-cm-smm",
+            "source": "content-marketing",
+            "target": "social-media"
+        },
+        {
+            "id": "e-mf-ppc",
+            "source": "marketing-fundamentals",
+            "target": "paid-advertising"
+        },
+        {
+            "id": "e-seo-an",
+            "source": "seo",
+            "target": "analytics"
+        },
+        {
+            "id": "e-smm-an",
+            "source": "social-media",
+            "target": "analytics"
+        },
+        {
+            "id": "e-ppc-an",
+            "source": "paid-advertising",
+            "target": "analytics"
+        }
+    ]
+}

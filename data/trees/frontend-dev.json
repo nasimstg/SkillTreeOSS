@@ -1,0 +1,216 @@
+{
+    "treeId": "frontend-dev",
+    "title": "Frontend Web Developer",
+    "category": "Technology",
+    "difficulty": "medium",
+    "description": "Step by step guide to becoming a modern frontend developer. Master HTML, CSS, JavaScript, and React.",
+    "version": "1.0",
+    "estimatedMonths": 4,
+    "totalNodes": 8,
+    "icon": "web",
+    "nodes": [
+        {
+            "id": "internet",
+            "label": "How the Internet Works",
+            "description": "Understand HTTP, DNS, hosting, and the basics of how data travels across the web.",
+            "icon": "public",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "internet-crash-course",
+                    "title": "How the Internet Works in 5 Minutes",
+                    "url": "https://www.youtube.com/watch?v=7_LPdttKXPc",
+                    "type": "video",
+                    "author": "Aaron",
+                    "estimatedHours": 0.5,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "html",
+            "label": "HTML Basics",
+            "description": "Learn the skeleton of the web. Master semantic HTML5, forms, tables, and document structure.",
+            "icon": "html",
+            "zone": "Frontend",
+            "resources": [
+                {
+                    "id": "html-mdn",
+                    "title": "HTML: HyperText Markup Language",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+                    "type": "docs",
+                    "author": "MDN",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "internet"
+            ]
+        },
+        {
+            "id": "css",
+            "label": "CSS Fundamentals",
+            "description": "Style your web pages with selectors, the box model, Flexbox, and CSS Grid.",
+            "icon": "style",
+            "zone": "Frontend",
+            "resources": [
+                {
+                    "id": "css-mdn",
+                    "title": "CSS: Cascading Style Sheets",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/CSS",
+                    "type": "docs",
+                    "author": "MDN",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "html"
+            ]
+        },
+        {
+            "id": "javascript",
+            "label": "JavaScript Basics",
+            "description": "Learn variables, functions, DOM manipulation, events, and asynchronous programming.",
+            "icon": "javascript",
+            "zone": "Frontend",
+            "resources": [
+                {
+                    "id": "js-info",
+                    "title": "The Modern JavaScript Tutorial",
+                    "url": "https://javascript.info",
+                    "type": "article",
+                    "author": "Ilya Kantor",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "html"
+            ]
+        },
+        {
+            "id": "version-control",
+            "label": "Version Control (Git)",
+            "description": "Track code changes and collaborate using Git and GitHub.",
+            "icon": "fork_right",
+            "zone": "Tools",
+            "resources": [
+                {
+                    "id": "git-docs",
+                    "title": "Pro Git Book",
+                    "url": "https://git-scm.com/book/en/v2",
+                    "type": "docs",
+                    "author": "Scott Chacon",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "internet"
+            ]
+        },
+        {
+            "id": "react",
+            "label": "React.js",
+            "description": "Build component-based UIs with React. Master JSX, hooks, state, and props.",
+            "icon": "data_object",
+            "zone": "Framework",
+            "resources": [
+                {
+                    "id": "react-docs",
+                    "title": "React Official Docs",
+                    "url": "https://react.dev/learn",
+                    "type": "docs",
+                    "author": "React Team",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "javascript"
+            ]
+        },
+        {
+            "id": "tailwind",
+            "label": "Tailwind CSS",
+            "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+            "icon": "palette",
+            "zone": "Framework",
+            "resources": [
+                {
+                    "id": "tailwind-docs",
+                    "title": "Tailwind CSS Documentation",
+                    "url": "https://tailwindcss.com/docs",
+                    "type": "docs",
+                    "author": "Tailwind Labs",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "css"
+            ]
+        },
+        {
+            "id": "nextjs",
+            "label": "Next.js",
+            "description": "The React Framework for the Web. Master SSR, SSG, and file-based routing.",
+            "icon": "rocket_launch",
+            "zone": "Framework",
+            "resources": [
+                {
+                    "id": "next-docs",
+                    "title": "Next.js Documentation",
+                    "url": "https://nextjs.org/docs",
+                    "type": "docs",
+                    "author": "Vercel",
+                    "estimatedHours": 6,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "react"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-int-html",
+            "source": "internet",
+            "target": "html"
+        },
+        {
+            "id": "e-int-git",
+            "source": "internet",
+            "target": "version-control"
+        },
+        {
+            "id": "e-html-css",
+            "source": "html",
+            "target": "css"
+        },
+        {
+            "id": "e-html-js",
+            "source": "html",
+            "target": "javascript"
+        },
+        {
+            "id": "e-js-react",
+            "source": "javascript",
+            "target": "react"
+        },
+        {
+            "id": "e-css-tailwind",
+            "source": "css",
+            "target": "tailwind"
+        },
+        {
+            "id": "e-react-next",
+            "source": "react",
+            "target": "nextjs"
+        }
+    ]
+}

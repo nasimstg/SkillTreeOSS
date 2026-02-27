@@ -1,12 +1,14 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import {
   ReactFlow,
   Background,
   BackgroundVariant,
   MarkerType,
   Panel,
+  Position,
   useNodesState,
   useEdgesState,
   type Node,
@@ -17,19 +19,26 @@ import {
 import '@xyflow/react/dist/style.css'
 
 import { useSkillTreeStore } from '@/lib/store'
-import { getNodeStatus, getProgressPercent } from '@/lib/utils'
+import { getNodeStatus, getProgressPercent, getLevelInfo, XP_PER_NODE } from '@/lib/utils'
 import { computeAutoLayout } from '@/lib/autoLayout'
 import { allNodeTypes } from './CustomNode'
 import NodeSidebar from './NodeSidebar'
 import CanvasFAB, { type LayoutDir } from './CanvasFAB'
 import CanvasContextMenu, { type ContextMenuState } from './CanvasContextMenu'
+import { CanvasToast, type ToastItem } from './CanvasToast'
+import CanvasConfirmModal from './CanvasConfirmModal'
+import RatingModal from './RatingModal'
 import type { SkillTree, CanvasView, TreeNode } from '@/types/tree'
 import type { SkillNodeData } from './CustomNode'
 
 interface Props {
   tree: SkillTree
   initialCompletedIds?: string[]
+  userRating?: number | null
 }
+
+// ─── XP / level helpers ──────────────────────────────────────────────────────
+
 
 // ─── position helpers ────────────────────────────────────────────────────────
 
@@ -80,6 +89,8 @@ function buildNodes(
       id: node.id,
       type: view,
       position,
+      sourcePosition: dir === 'LR' ? Position.Right  : Position.Bottom,
+      targetPosition: dir === 'LR' ? Position.Left   : Position.Top,
       data: data as unknown as Record<string, unknown>,
       draggable: true,
       style: {
@@ -246,7 +257,7 @@ const DIFF_STYLE: Record<string, string> = {
 
 // ─── component ───────────────────────────────────────────────────────────────
 
-export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
+export default function SkillCanvas({ tree, initialCompletedIds = [], userRating = null }: Props) {
   const {
     completedNodeIds,
     setCompletedNodeIds,
@@ -255,6 +266,7 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
     setSelectedNode,
     selectedNode,
     hoveredPrereqId,
+    setGlobalXp,
   } = useSkillTreeStore()
 
   const [layoutDir, setLayoutDir] = useState<LayoutDir>('LR')
@@ -270,6 +282,22 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
   // Tracks whether the last selectedNode change came from a canvas click,
   // so we don't double-center when the sidebar also triggers centering.
   const clickedFromCanvasRef = useRef(false)
+
+  // ── toasts ────────────────────────────────────────────────────────────────
+  const [toasts, setToasts] = useState<ToastItem[]>([])
+  // prevRef is seeded with initialCompletedIds so the hydration pass never fires toasts
+  const prevIdsForToastRef = useRef<string[]>(initialCompletedIds)
+  // Delayed activation — stays false until after the init effects settle
+  const toastActiveRef = useRef(false)
+
+  const addToast = useCallback((item: Omit<ToastItem, 'id'>) => {
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+    setToasts((prev) => [...prev, { id, ...item }].slice(-4))
+  }, [])
+
+  const dismissToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id))
+  }, [])
 
   // ── prerequisite highlighting ──────────────────────────────────────────────
   // When a locked node is selected, highlight its unmet prerequisites.
@@ -300,11 +328,15 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
     return Array.from(visited).filter((id) => !completedNodeIds.includes(id))
   }, [lockedSelectedId, selectedNode, completedNodeIds, tree.nodes])
 
-  // Wrap setLayoutDir so switching direction clears any auto-arrange override
+  // Wrap setLayoutDir so switching direction re-runs Dagre (if in auto-layout mode)
+  // or falls back to static JSON positions (if positions are defined on nodes).
   const handleLayoutDirChange = useCallback((dir: LayoutDir) => {
     setLayoutDir(dir)
-    setAutoPositions(null)
-  }, [])
+    if (autoPositions !== null) {
+      setAutoPositions(computeAutoLayout(tree, canvasView, dir))
+      setTimeout(() => rfInstance.current?.fitView({ duration: 700, padding: 0.18 }), 80)
+    }
+  }, [tree, canvasView, autoPositions])
 
   // Holds the ReactFlow instance so we can call fitView from outside the RF context
   const rfInstance = useRef<ReactFlowInstance | null>(null)
@@ -312,11 +344,85 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([])
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
 
-  // Init on mount
+  // Init on mount: hydrate progress from server data (logged-in) or localStorage (guest/offline)
   useEffect(() => {
     setCurrentTree(tree)
-    if (initialCompletedIds.length > 0) setCompletedNodeIds(initialCompletedIds)
+
+    if (initialCompletedIds.length > 0) {
+      // Server returned authoritative DB data — use it and keep localStorage in sync
+      setCompletedNodeIds(initialCompletedIds)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(`progress:${tree.treeId}`, JSON.stringify(initialCompletedIds))
+      }
+    } else if (typeof window !== 'undefined') {
+      // No server data (guest or new user) — restore from localStorage
+      try {
+        const local = JSON.parse(
+          localStorage.getItem(`progress:${tree.treeId}`) ?? '[]'
+        ) as string[]
+        if (local.length > 0) setCompletedNodeIds(local)
+      } catch {
+        // Ignore malformed localStorage data
+      }
+    }
   }, [tree, initialCompletedIds, setCurrentTree, setCompletedNodeIds])
+
+  // Activate toasts after the init effects have settled (setTimeout(0) fires
+  // after all synchronous state updates from mount effects are processed)
+  useEffect(() => {
+    const t = setTimeout(() => { toastActiveRef.current = true }, 0)
+    return () => clearTimeout(t)
+  }, [])
+
+  // Detect node completions/unlocks/level-ups and fire toasts
+  useEffect(() => {
+    if (!toastActiveRef.current) return
+
+    const prev = prevIdsForToastRef.current
+    prevIdsForToastRef.current = completedNodeIds
+
+    const newlyCompleted = completedNodeIds.filter((id) => !prev.includes(id))
+    const newlyRemoved   = prev.filter((id) => !completedNodeIds.includes(id))
+
+    // ── Completion + XP toasts ──────────────────────────────────────────────
+    newlyCompleted.forEach((nodeId) => {
+      const node = tree.nodes.find((n) => n.id === nodeId)
+      if (!node) return
+      addToast({ type: 'complete', title: node.label, body: `+${XP_PER_NODE} XP · ${node.zone}` })
+    })
+
+    // ── Level-up toast ───────────────────────────────────────────────────────
+    if (newlyCompleted.length > 0) {
+      const oldLevel = getLevelInfo(prev.length * XP_PER_NODE).level
+      const newXp    = completedNodeIds.length * XP_PER_NODE
+      const { level: newLevel, title } = getLevelInfo(newXp)
+      if (newLevel > oldLevel) {
+        addToast({ type: 'levelup', title: `Level ${newLevel} · ${title}`, body: `${newXp} XP total`, duration: 4500 })
+      }
+    }
+
+    // ── Unlock toasts — nodes whose prerequisites just became satisfied ──────
+    if (newlyCompleted.length > 0) {
+      const newlyUnlocked = tree.nodes.filter((node) => {
+        if (completedNodeIds.includes(node.id) || node.requires.length === 0) return false
+        const wasAvail = node.requires.every((r) => prev.includes(r))
+        const isAvail  = node.requires.every((r) => completedNodeIds.includes(r))
+        return !wasAvail && isAvail
+      })
+      if (newlyUnlocked.length === 1) {
+        addToast({ type: 'unlock', title: newlyUnlocked[0].label, body: `Unlocked in ${newlyUnlocked[0].zone}` })
+      } else if (newlyUnlocked.length > 1) {
+        addToast({ type: 'unlock', title: `${newlyUnlocked.length} skills unlocked`, body: newlyUnlocked.slice(0, 2).map((n) => n.label).join(', ') })
+      }
+    }
+
+    // ── Reset toast ──────────────────────────────────────────────────────────
+    newlyRemoved.forEach((nodeId) => {
+      const node = tree.nodes.find((n) => n.id === nodeId)
+      if (!node) return
+      addToast({ type: 'reset', title: 'Progress reset', body: node.label, duration: 2500 })
+    })
+  }, [completedNodeIds, tree.nodes, addToast])
 
   // Detect newly completed + newly unlocked nodes and trigger animations
   useEffect(() => {
@@ -436,9 +542,35 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
   const handleLayoutToggle = useCallback(() => {
     const next = layoutDir === 'LR' ? 'TB' : 'LR'
     setLayoutDir(next)
-    setAutoPositions(null) // clear override so direction switch uses JSON positions
+    if (autoPositions !== null) {
+      setAutoPositions(computeAutoLayout(tree, canvasView, next))
+    }
     setTimeout(() => rfInstance.current?.fitView({ duration: 600, padding: 0.15 }), 80)
-  }, [layoutDir])
+  }, [layoutDir, tree, canvasView, autoPositions])
+
+  // ── reset all progress ────────────────────────────────────────────────────
+  const [resetModalOpen, setResetModalOpen] = useState(false)
+
+  const confirmResetProgress = useCallback(() => {
+    const treeId = tree.treeId
+    setResetModalOpen(false)
+    setCompletedNodeIds([])
+    setGlobalXp(0)
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(`progress:${treeId}`)
+    }
+    fetch('/api/progress', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ treeId, completedNodeIds: [] }),
+    }).catch(() => {/* Non-critical */})
+  }, [tree.treeId, setCompletedNodeIds, setGlobalXp])
+
+  const handleResetProgress = useCallback(() => setResetModalOpen(true), [])
+
+  // ── tree rating ────────────────────────────────────────────────────────────
+  const [ratingModalOpen, setRatingModalOpen] = useState(false)
+  const [currentRating,   setCurrentRating]   = useState<number | null>(userRating)
 
   // ── auto-arrange via dagre ─────────────────────────────────────────────────
   const handleAutoArrange = useCallback(() => {
@@ -482,8 +614,8 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
           color="#171717"
         />
 
-        {/* ── Floating info pill (top-left) ── */}
-        <Panel position="top-left" className="!m-4">
+        {/* ── Floating info pill + toasts (top-left) ── */}
+        <Panel position="top-left" className="!m-4 flex flex-col gap-2.5 pointer-events-none">
           <div className="bg-background-dark/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden w-64">
 
             {/* Row 1 — identity */}
@@ -535,6 +667,17 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
               </p>
             </div>
           </div>
+
+          {/* Toast stack — below info pill */}
+          {toasts.length > 0 && (
+            <div className="relative h-12">
+              <AnimatePresence mode="popLayout">
+                {toasts.map((t, i) => (
+                  <CanvasToast key={t.id} {...t} index={i} onDismiss={dismissToast} />
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
         </Panel>
 
         {/* ── Canvas controls pill (bottom-center) ── */}
@@ -543,12 +686,35 @@ export default function SkillCanvas({ tree, initialCompletedIds = [] }: Props) {
             layoutDir={layoutDir}
             onLayoutDirChange={handleLayoutDirChange}
             onAutoArrange={handleAutoArrange}
+            onResetProgress={handleResetProgress}
+            onRateTree={() => setRatingModalOpen(true)}
+            userRating={currentRating}
           />
         </Panel>
       </ReactFlow>
 
       {/* Node detail sidebar — rendered outside ReactFlow so it overlays correctly */}
       <NodeSidebar tree={tree} />
+
+      {/* Reset-progress confirmation modal */}
+      <CanvasConfirmModal
+        open={resetModalOpen}
+        title="Reset all progress?"
+        description="This will permanently clear your progress on this tree from both your device and account. This cannot be undone."
+        confirmLabel="Reset progress"
+        onConfirm={confirmResetProgress}
+        onCancel={() => setResetModalOpen(false)}
+      />
+
+      {/* Tree rating modal */}
+      <RatingModal
+        open={ratingModalOpen}
+        treeTitle={tree.title}
+        treeId={tree.treeId}
+        existingRating={currentRating}
+        onClose={() => setRatingModalOpen(false)}
+        onSubmitted={(rating) => setCurrentRating(rating)}
+      />
 
       {/* Context menu — rendered outside ReactFlow, uses fixed positioning */}
       {contextMenu && (

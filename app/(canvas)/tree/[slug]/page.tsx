@@ -15,11 +15,11 @@ export async function generateMetadata({ params }: Props) {
     const treePath = join(process.cwd(), 'data', 'trees', `${slug}.json`)
     const tree = JSON.parse(readFileSync(treePath, 'utf-8')) as SkillTree
     return {
-      title: `${tree.title} — The Skill-Tree`,
+      title: `${tree.title} — SkilleTreeOSS`,
       description: tree.description,
     }
   } catch {
-    return { title: 'Skill Tree — The Skill-Tree' }
+    return { title: 'Skill Tree — SkilleTreeOSS' }
   }
 }
 
@@ -34,22 +34,32 @@ export default async function TreePage({ params }: Props) {
     notFound()
   }
 
-  // Load user progress from Supabase if logged in
+  // Load user progress + existing rating from Supabase if logged in
   let initialCompletedIds: string[] = []
+  let userRating: number | null = null
   try {
     const supabase = await createServerSupabaseClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser()
     if (user) {
-      const { data } = await supabase
-        .from('user_progress')
-        .select('completed_node_ids')
-        .eq('user_id', user.id)
-        .eq('tree_id', slug)
-        .single()
-      if (data?.completed_node_ids) {
-        initialCompletedIds = data.completed_node_ids
+      const [progressResult, ratingResult] = await Promise.all([
+        supabase
+          .from('user_progress')
+          .select('completed_node_ids')
+          .eq('user_id', user.id)
+          .eq('tree_id', slug)
+          .single(),
+        supabase
+          .from('tree_ratings')
+          .select('rating')
+          .eq('user_id', user.id)
+          .eq('tree_id', slug)
+          .single(),
+      ])
+      if (progressResult.data?.completed_node_ids) {
+        initialCompletedIds = progressResult.data.completed_node_ids
+      }
+      if (ratingResult.data?.rating) {
+        userRating = ratingResult.data.rating
       }
     }
   } catch {
@@ -58,7 +68,7 @@ export default async function TreePage({ params }: Props) {
 
   return (
     <div className="w-full h-full">
-      <SkillCanvas tree={tree} initialCompletedIds={initialCompletedIds} />
+      <SkillCanvas tree={tree} initialCompletedIds={initialCompletedIds} userRating={userRating} />
     </div>
   )
 }

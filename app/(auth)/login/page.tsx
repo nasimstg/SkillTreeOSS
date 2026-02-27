@@ -45,7 +45,7 @@ export default function LoginPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/20 text-primary border border-primary/30 group-hover:bg-primary/30 transition-colors">
               <span className="material-symbols-outlined text-2xl">account_tree</span>
             </div>
-            <span className="text-2xl font-bold tracking-tight text-white">The Skill-Tree</span>
+            <span className="text-2xl font-bold tracking-tight text-white">SkilleTreeOSS</span>
           </Link>
         </div>
 

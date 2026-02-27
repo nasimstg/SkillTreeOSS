@@ -1,0 +1,144 @@
+{
+    "treeId": "astronomy-101",
+    "title": "Astronomy 101",
+    "category": "Science",
+    "difficulty": "easy",
+    "description": "A beginner's guide to our solar system, stars, galaxies, and observing the night sky.",
+    "version": "1.0",
+    "estimatedMonths": 3,
+    "totalNodes": 5,
+    "icon": "bedtime",
+    "nodes": [
+        {
+            "id": "solar-system",
+            "label": "The Solar System",
+            "description": "The Sun, the 8 planets, dwarf planets, moons, asteroids, and comets.",
+            "icon": "public",
+            "zone": "Local Astronomy",
+            "resources": [
+                {
+                    "id": "crash-course-solar",
+                    "title": "Introduction to the Solar System",
+                    "url": "https://www.youtube.com/watch?v=libKVRa01L8",
+                    "type": "video",
+                    "author": "CrashCourse",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "telescopes",
+            "label": "Telescopes & Stargazing",
+            "description": "How to choose binoculars or a telescope, light pollution, and using star charts/apps.",
+            "icon": "center_focus_weak",
+            "zone": "Observation",
+            "resources": [
+                {
+                    "id": "telescope-buying",
+                    "title": "Telescope Buying Guide",
+                    "url": "https://skyandtelescope.org/astronomy-equipment/how-to-choose-a-telescope/",
+                    "type": "article",
+                    "author": "Sky & Telescope",
+                    "estimatedHours": 1.5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "solar-system"
+            ]
+        },
+        {
+            "id": "stellar-evolution",
+            "label": "The Lifecycle of Stars",
+            "description": "Nebulas, main sequence stars, red giants, white dwarfs, supernovas, and black holes.",
+            "icon": "star",
+            "zone": "Deep Space",
+            "resources": [
+                {
+                    "id": "stellar-evolution-vid",
+                    "title": "Life and Death of a Star",
+                    "url": "https://www.youtube.com/watch?v=PM9CQDlQI0A",
+                    "type": "video",
+                    "author": "Kurzgesagt",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "solar-system"
+            ]
+        },
+        {
+            "id": "galaxies-cosmology",
+            "label": "Galaxies & The Universe",
+            "description": "The Milky Way, types of galaxies, the Big Bang theory, and the expansion of the universe.",
+            "icon": "language",
+            "zone": "Deep Space",
+            "resources": [
+                {
+                    "id": "cosmology-crash-course",
+                    "title": "Cosmology & Galaxies",
+                    "url": "https://www.youtube.com/watch?v=I82aDNvqwsM",
+                    "type": "video",
+                    "author": "CrashCourse",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "stellar-evolution"
+            ]
+        },
+        {
+            "id": "exoplanets",
+            "label": "Exoplanets & Astrobiology",
+            "description": "How we discover planets around other stars and the search for extraterrestrial life.",
+            "icon": "radar",
+            "zone": "Frontiers",
+            "resources": [
+                {
+                    "id": "nasa-exoplanet",
+                    "title": "NASA Exoplanet Exploration",
+                    "url": "https://exoplanets.nasa.gov/",
+                    "type": "interactive",
+                    "author": "NASA",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "galaxies-cosmology",
+                "telescopes"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-sol-tel",
+            "source": "solar-system",
+            "target": "telescopes"
+        },
+        {
+            "id": "e-sol-star",
+            "source": "solar-system",
+            "target": "stellar-evolution"
+        },
+        {
+            "id": "e-star-gal",
+            "source": "stellar-evolution",
+            "target": "galaxies-cosmology"
+        },
+        {
+            "id": "e-gal-exo",
+            "source": "galaxies-cosmology",
+            "target": "exoplanets"
+        },
+        {
+            "id": "e-tel-exo",
+            "source": "telescopes",
+            "target": "exoplanets"
+        }
+    ]
+}

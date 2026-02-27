@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — The Skill-Tree',
+  title: 'Privacy Policy — SkilleTreeOSS',
 }
 
 export default function PrivacyPage() {
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-white font-bold text-xl mb-3">1. What We Collect</h2>
-            <p className="mb-3">When you use The Skill-Tree, we collect only what is necessary to provide the service:</p>
+            <p className="mb-3">When you use SkilleTreeOSS, we collect only what is necessary to provide the service:</p>
             <ul className="list-disc list-inside space-y-2 text-slate-400">
               <li><strong className="text-slate-300">Account data</strong> — email address, display name, and OAuth profile picture (if you sign in with GitHub or Google).</li>
               <li><strong className="text-slate-300">Progress data</strong> — which skill tree nodes you have marked as completed.</li>

@@ -1,0 +1,170 @@
+{
+    "treeId": "culinary-arts",
+    "title": "Culinary Arts Fundamentals",
+    "category": "Culinary",
+    "difficulty": "medium",
+    "description": "Master essential cooking techniques, flavor profiles, and kitchen safety derived from professional culinary schools.",
+    "version": "1.0",
+    "estimatedMonths": 4,
+    "totalNodes": 6,
+    "icon": "restaurant",
+    "nodes": [
+        {
+            "id": "knife-skills",
+            "label": "Knife Skills & Safety",
+            "description": "Holding a chef's knife, honing, sharpening, and mastering classic cuts: julienne, brunoise, and dice.",
+            "icon": "cut",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "knife-skills-gordon",
+                    "title": "Gordon Ramsay's Knife Skills",
+                    "url": "https://www.youtube.com/watch?v=v1ZyzgA8-H4",
+                    "type": "video",
+                    "author": "Gordon Ramsay",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "mise-en-place",
+            "label": "Mise en Place",
+            "description": "The French philosophy of \"everything in its place\"—organizing ingredients and stations before cooking.",
+            "icon": "kitchen",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "mise-article",
+                    "title": "Mise En Place Guide",
+                    "url": "https://www.seriouseats.com/how-to-mise-en-place",
+                    "type": "article",
+                    "author": "Serious Eats",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "knife-skills"
+            ]
+        },
+        {
+            "id": "stocks-sauces",
+            "label": "Stocks & The Mother Sauces",
+            "description": "Creating rich stocks, and the 5 French mother sauces: Béchamel, Velouté, Espagnole, Hollandaise, and Tomato.",
+            "icon": "soup_kitchen",
+            "zone": "Technique",
+            "resources": [
+                {
+                    "id": "mother-sauces",
+                    "title": "The 5 Mother Sauces",
+                    "url": "https://www.escoffier.edu/blog/recipes/5-mother-sauces-every-cook-should-know/",
+                    "type": "article",
+                    "author": "Escoffier School of Culinary Arts",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "mise-en-place"
+            ]
+        },
+        {
+            "id": "dry-heat",
+            "label": "Dry-Heat Cooking",
+            "description": "Sautéing, searing, roasting, broiling, and frying. Understanding the Maillard Reaction.",
+            "icon": "local_fire_department",
+            "zone": "Technique",
+            "resources": [
+                {
+                    "id": "maillard-reaction",
+                    "title": "The Science of Searing",
+                    "url": "https://www.youtube.com/watch?v=pJeGq1P0dEA",
+                    "type": "video",
+                    "author": "Adam Ragusea",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "mise-en-place"
+            ]
+        },
+        {
+            "id": "moist-heat",
+            "label": "Moist-Heat & Combination",
+            "description": "Poaching, simmering, boiling, steaming, braising, and stewing tough cuts of meat.",
+            "icon": "water_drop",
+            "zone": "Technique",
+            "resources": [
+                {
+                    "id": "braising-guide",
+                    "title": "How to Braise Meat",
+                    "url": "https://www.bonappetit.com/test-kitchen/how-to/article/how-to-braise",
+                    "type": "article",
+                    "author": "Bon Appétit",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "dry-heat"
+            ]
+        },
+        {
+            "id": "flavor-profiles",
+            "label": "Flavor Balancing & Plating",
+            "description": "Balancing Salt, Fat, Acid, and Heat. Artistically presenting food on the plate.",
+            "icon": "dinner_dining",
+            "zone": "Mastery",
+            "resources": [
+                {
+                    "id": "salt-fat-acid",
+                    "title": "Salt Fat Acid Heat Overview",
+                    "url": "https://www.saltfatacidheat.com/",
+                    "type": "docs",
+                    "author": "Samin Nosrat",
+                    "estimatedHours": 6,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "stocks-sauces",
+                "moist-heat"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-ks-mep",
+            "source": "knife-skills",
+            "target": "mise-en-place"
+        },
+        {
+            "id": "e-mep-ss",
+            "source": "mise-en-place",
+            "target": "stocks-sauces"
+        },
+        {
+            "id": "e-mep-dh",
+            "source": "mise-en-place",
+            "target": "dry-heat"
+        },
+        {
+            "id": "e-dh-mh",
+            "source": "dry-heat",
+            "target": "moist-heat"
+        },
+        {
+            "id": "e-ss-fp",
+            "source": "stocks-sauces",
+            "target": "flavor-profiles"
+        },
+        {
+            "id": "e-mh-fp",
+            "source": "moist-heat",
+            "target": "flavor-profiles"
+        }
+    ]
+}

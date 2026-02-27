@@ -7,7 +7,7 @@ import type { SkillTree, TreeNode } from '@/types/tree'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Dashboard — The Skill-Tree',
+  title: 'Dashboard — SkilleTreeOSS',
 }
 
 // XP awarded per completed node
@@ -253,11 +253,10 @@ export default async function DashboardPage() {
                     {completedNodes.map((node, i) => (
                       <div key={node.id} className="relative group">
                         <div
-                          className={`absolute -left-[21px] top-1.5 h-3 w-3 rounded-full border-2 ring-4 ring-surface-dark transition-all ${
-                            i === 0
+                          className={`absolute -left-[21px] top-1.5 h-3 w-3 rounded-full border-2 ring-4 ring-surface-dark transition-all ${i === 0
                               ? 'bg-primary border-primary group-hover:ring-primary/20'
                               : 'bg-surface-dark border-accent-blue'
-                          }`}
+                            }`}
                         />
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                           <div>
@@ -314,8 +313,8 @@ export default async function DashboardPage() {
                       {completedNodeIds.length >= tree.totalNodes
                         ? 'emoji_events'
                         : completedNodeIds.length > 5
-                        ? 'workspace_premium'
-                        : 'account_tree'}
+                          ? 'workspace_premium'
+                          : 'account_tree'}
                     </span>
                   </div>
                   <p className="text-white font-bold text-sm">{levelTitle}</p>
@@ -374,9 +373,8 @@ export default async function DashboardPage() {
                 {Array.from({ length: STREAK_DAYS }).map((_, i) => (
                   <div
                     key={i}
-                    className={`flex-1 rounded-full transition-colors ${
-                      i < FAKE_STREAK ? 'bg-orange-500' : 'bg-white/5'
-                    }`}
+                    className={`flex-1 rounded-full transition-colors ${i < FAKE_STREAK ? 'bg-orange-500' : 'bg-white/5'
+                      }`}
                   />
                 ))}
               </div>

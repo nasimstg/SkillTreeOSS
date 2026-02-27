@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Space_Grotesk } from 'next/font/google'
 import './globals.css'
+import AuthProvider from '@/components/auth/AuthProvider'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -9,7 +10,7 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: 'The Skill-Tree — Democratize Mastery',
+  title: 'SkilleTreeOSS — Democratize Mastery',
   description:
     'Interactive, gamified learning paths built on the best free resources the internet has to offer. Level up your life, one node at a time.',
   keywords: ['skill tree', 'learning path', 'free resources', 'gamified learning', 'open source'],
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-background-dark text-slate-100 font-display antialiased">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   )

@@ -1,0 +1,265 @@
+{
+    "treeId": "devops-engineer",
+    "title": "DevOps Engineer",
+    "category": "Operations",
+    "difficulty": "hard",
+    "description": "Learn the tools and practices to automate software deployment, monitor infrastructure, and bridge the gap between dev and ops.",
+    "version": "1.0",
+    "estimatedMonths": 8,
+    "totalNodes": 9,
+    "icon": "all_inclusive",
+    "nodes": [
+        {
+            "id": "os-linux",
+            "label": "Linux and OS Concepts",
+            "description": "Master the command line, bash scripting, file permissions, and process management.",
+            "icon": "terminal",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "linux-upskill",
+                    "title": "Linux Upskill Challenge",
+                    "url": "https://linuxupskillchallenge.com/",
+                    "type": "interactive",
+                    "author": "Linux Upskill",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "networking",
+            "label": "Networking & Security",
+            "description": "Understand OSI model, TCP/IP, DNS, HTTP/HTTPS, SSH, and basic network troubleshooting (ping, traceroute, netstat).",
+            "icon": "router",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "network-chuck",
+                    "title": "Free CCNA 200-301 Course",
+                    "url": "https://www.youtube.com/playlist?list=PLIhvC56v63IJVXv0GJG9v1SyhDOeM9t1s",
+                    "type": "video",
+                    "author": "NetworkChuck",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "os-linux"
+            ]
+        },
+        {
+            "id": "version-control",
+            "label": "Version Control (Git)",
+            "description": "Branching strategies, resolving conflicts, and working securely with GitHub/GitLab.",
+            "icon": "fork_right",
+            "zone": "Tools",
+            "resources": [
+                {
+                    "id": "git-udacity",
+                    "title": "Version Control with Git",
+                    "url": "https://www.udacity.com/course/version-control-with-git--ud123",
+                    "type": "course",
+                    "author": "Udacity",
+                    "estimatedHours": 6,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "os-linux"
+            ]
+        },
+        {
+            "id": "containers",
+            "label": "Containers (Docker)",
+            "description": "Learn Docker basics, crafting Dockerfiles, Docker Compose, and running containers securely.",
+            "icon": "inventory_2",
+            "zone": "Infrastructure",
+            "resources": [
+                {
+                    "id": "docker-fcc",
+                    "title": "Docker Crash Course for Absolute Beginners",
+                    "url": "https://www.youtube.com/watch?v=pg19Z8LL06w",
+                    "type": "video",
+                    "author": "TechWorld with Nana",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "os-linux"
+            ]
+        },
+        {
+            "id": "ci-cd",
+            "label": "CI/CD Pipelines",
+            "description": "Automate testing and deployment using GitHub Actions, GitLab CI, or Jenkins.",
+            "icon": "published_with_changes",
+            "zone": "Automation",
+            "resources": [
+                {
+                    "id": "github-actions-docs",
+                    "title": "GitHub Actions Documentation",
+                    "url": "https://docs.github.com/en/actions",
+                    "type": "docs",
+                    "author": "GitHub",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "version-control",
+                "containers"
+            ]
+        },
+        {
+            "id": "cloud-providers",
+            "label": "Cloud Providers (AWS/Azure/GCP)",
+            "description": "Understand core cloud services: Compute (EC2), Storage (S3), Networking (VPC), and IAM.",
+            "icon": "cloud",
+            "zone": "Infrastructure",
+            "resources": [
+                {
+                    "id": "aws-practitioner",
+                    "title": "AWS Certified Cloud Practitioner - Full Course",
+                    "url": "https://www.youtube.com/watch?v=SOTamWNgDKc",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 14,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "networking"
+            ]
+        },
+        {
+            "id": "iac",
+            "label": "Infrastructure as Code (Terraform)",
+            "description": "Provision and manage infrastructure through code instead of manual processes.",
+            "icon": "account_tree",
+            "zone": "Automation",
+            "resources": [
+                {
+                    "id": "terraform-course",
+                    "title": "Terraform Course - Beginner to Advanced",
+                    "url": "https://www.youtube.com/watch?v=7xngnjfIlK4",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "cloud-providers"
+            ]
+        },
+        {
+            "id": "kubernetes",
+            "label": "Container Orchestration (K8s)",
+            "description": "Automate deployment, scaling, and management of containerized applications.",
+            "icon": "directions_boat",
+            "zone": "Infrastructure",
+            "resources": [
+                {
+                    "id": "k8s-nana",
+                    "title": "Kubernetes Tutorial for Beginners",
+                    "url": "https://www.youtube.com/watch?v=X48VuDVv0do",
+                    "type": "video",
+                    "author": "TechWorld with Nana",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "containers",
+                "cloud-providers"
+            ]
+        },
+        {
+            "id": "monitoring",
+            "label": "Monitoring & Observability",
+            "description": "Track logs, metrics, and traces using Prometheus, Grafana, ELK stack, or Datadog.",
+            "icon": "query_stats",
+            "zone": "Operations",
+            "resources": [
+                {
+                    "id": "prometheus-grafana",
+                    "title": "Prometheus and Grafana Tutorial",
+                    "url": "https://www.youtube.com/watch?v=hDIh3K13BqQ",
+                    "type": "video",
+                    "author": "TechWorld with Nana",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "kubernetes",
+                "os-linux"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-os-net",
+            "source": "os-linux",
+            "target": "networking"
+        },
+        {
+            "id": "e-os-vcs",
+            "source": "os-linux",
+            "target": "version-control"
+        },
+        {
+            "id": "e-os-cont",
+            "source": "os-linux",
+            "target": "containers"
+        },
+        {
+            "id": "e-net-cloud",
+            "source": "networking",
+            "target": "cloud-providers"
+        },
+        {
+            "id": "e-vcs-cicd",
+            "source": "version-control",
+            "target": "ci-cd"
+        },
+        {
+            "id": "e-cont-cicd",
+            "source": "containers",
+            "target": "ci-cd"
+        },
+        {
+            "id": "e-cloud-iac",
+            "source": "cloud-providers",
+            "target": "iac"
+        },
+        {
+            "id": "e-cont-k8s",
+            "source": "containers",
+            "target": "kubernetes"
+        },
+        {
+            "id": "e-cloud-k8s",
+            "source": "cloud-providers",
+            "target": "kubernetes"
+        },
+        {
+            "id": "e-cicd-k8s",
+            "source": "ci-cd",
+            "target": "kubernetes"
+        },
+        {
+            "id": "e-k8s-mon",
+            "source": "kubernetes",
+            "target": "monitoring"
+        },
+        {
+            "id": "e-os-mon",
+            "source": "os-linux",
+            "target": "monitoring"
+        }
+    ]
+}

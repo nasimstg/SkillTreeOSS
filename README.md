@@ -1,93 +1,136 @@
-# 🌳 The Skill-Tree
+# 🌳 SkilleTreeOSS
 
-**The Democratization of Mastery.** The Skill-Tree is an open-source, gamified learning platform. We map out complex skills (like "Full-Stack Developer," "Botanist," or "Urban Sketcher") into beautiful, interactive RPG-style skill trees. Click a node, find the absolute best free resource on the internet, and level up your life in the real world.
+**The Democratization of Mastery.** SkilleTreeOSS is an open-source, gamified learning platform. We map out complex skills (like "Full-Stack Developer," "ML Engineer," or "Photography") into beautiful, interactive RPG-style skill trees. Click a node, find the best free resource on the internet, and level up your life.
 
 ---
 
 ## 🎯 The Vision
 
-Most learning sites are either hidden behind expensive paywalls or are overwhelming, messy lists of links. Self-learners often face a "curriculum gap"—they don't know *what* they should learn next.
+Most learning sites are either hidden behind expensive paywalls or are overwhelming, messy lists of links. Self-learners often face a "curriculum gap" — they don't know *what* they should learn next.
 
-The Skill-Tree solves this by turning education into a visual progression system.
+SkilleTreeOSS solves this by turning education into a visual progression system.
 
 * **Zero Overwhelm:** See exactly where you are and what to tackle next.
-* **Community Curated:** Nodes link to the single highest-voted free resource (YouTube, interactive tutorials, articles) for that specific sub-skill.
+* **Community Curated:** Nodes link to the single highest-voted free resource for that specific sub-skill.
 * **Gamified Progression:** Watch your tree light up as you complete nodes, unlocking advanced branches.
+
+---
+
+## ✨ Features
+
+### 🗺️ Interactive Skill Canvas
+- **4 visual themes** — World Map, RPG, Terminal, Neural
+- Dagre auto-layout with toggleable LR ↔ TB direction
+- Node sidebar with resources, prerequisite timeline, resource voting, and resource suggestions
+- Animated node state transitions (locked → available → completed)
+
+### 🔐 Auth & Progress
+- Supabase auth (email/password, OAuth)
+- Progress synced to DB in real time; localStorage fallback
+- **XP & level system** — 50 XP per completed node, 8 levels (Apprentice → Legend)
+- Navbar **UserMenu** with SVG level-ring progress indicator and Lv badge
+- Reset-progress button with confirmation modal
+
+### 🌐 Explore Page
+- Full-text search across titles, descriptions, categories, node labels, zones, and resource titles
+- Filter by **category** (dynamically derived from tree files) and **difficulty**
+- Sort by: A→Z, Most Popular (enrolled), Top Rated, Easiest First, Shortest First
+- **"Continue your journey"** strip for in-progress trees
+- Pagination (12 per page)
+
+### ⭐ Tree Ratings & Enrollment
+- 1–5 star rating modal on the canvas toolbar
+- Enrollment auto-detected from completed nodes (no separate join flow)
+- Per-tree enrolled counts and average ratings shown in Explore and landing page
+
+### 📊 Live Platform Stats
+- Landing page stats (Active Learners, Skill Trees, Nodes Unlocked) served from a **`site_stats` singleton** kept current by a Postgres trigger — O(1) read, no full table scans
+- Featured trees configurable in `lib/featured-trees.ts` with real data from tree JSON + DB
+
+### 💡 Community Feedback
+- Per-resource **upvote / downvote** on every resource card
+- **"Suggest a better resource"** inline form on every node — stores explanation, optional URL, and title in a `resource_suggestions` table with a status workflow (`pending → reviewed → accepted/rejected`)
 
 ---
 
 ## 🛠️ Tech Stack
 
-We chose a modern, performant, and contributor-friendly stack:
-
-* **Framework:** Next.js (App Router)
-* **Language:** TypeScript
-* **Canvas Engine:** React Flow (by xyflow)
-* **State Management:** Zustand
-* **Styling:** Tailwind CSS + shadcn/ui + Framer Motion
-* **Database & Auth:** Supabase
-* **Data Validation:** Zod
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript |
+| Canvas Engine | ReactFlow (`@xyflow/react`) + Dagre |
+| State | Zustand (with localStorage persistence) |
+| Styling | Tailwind CSS v4, Framer Motion |
+| Auth + DB | Supabase (Postgres, RLS, SSR client) |
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🗄️ Database Migrations
 
-Want to run The Skill-Tree locally? Follow these steps:
+Run these in order from `supabase/migrations/` via the Supabase SQL editor:
+
+| File | Table | Purpose |
+|---|---|---|
+| `20240101_tree_ratings.sql` | `tree_ratings` | 1–5 star ratings per user per tree |
+| `20240102_site_stats.sql` | `site_stats` | Singleton counter + Postgres trigger for landing-page stats |
+| `20240103_resource_suggestions.sql` | `resource_suggestions` | Community resource feedback queue |
+
+> **`user_progress`** (existing) — stores `completed_node_ids text[]` per user per tree. Enrollment is implicit: any row with ≥1 completed node counts as enrolled.
+
+---
+
+## 🚀 Quick Start
 
 1. **Clone the repository**
 ```bash
 git clone https://github.com/nasimstg/SkillTreeOSS.git
 cd SkillTreeOSS
-
 ```
-
 
 2. **Install dependencies**
 ```bash
 npm install
-
 ```
-
 
 3. **Set up environment variables**
-Copy the example environment file and add your local/test Supabase keys.
 ```bash
 cp .env.local.example .env.local
-
+# Fill in NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY
 ```
 
+4. **Run database migrations** — paste each file from `supabase/migrations/` into the Supabase SQL editor and execute in order.
 
-4. **Run the development server**
+5. **Run the dev server**
 ```bash
 npm run dev
-
 ```
 
-
-Open [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) in your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🤝 How to Contribute
+## 🌲 Adding or Editing Trees
 
-The heart of this project is the community. You **do not** need to be a React developer to contribute! The actual skill trees are generated from simple JSON files.
+All skill trees live in `data/trees/` as JSON files. You do **not** need to be a developer — just edit a JSON file and open a PR.
 
-**Want to add a new skill tree or fix a broken YouTube link?**
+See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the full schema, rules, and PR process.
 
-1. Navigate to the `data/trees/` directory.
-2. Duplicate an existing JSON file or edit one to update a resource link.
-3. Follow the schema rules (e.g., ensuring your node has `x` and `y` coordinates).
-4. Submit a Pull Request!
+To change the featured trees on the landing page, edit `lib/featured-trees.ts`:
+```ts
+export const FEATURED_TREE_IDS = ['full-stack-dev', 'ml-ai-engineer', 'photography-mastery']
+```
 
-For a detailed guide on how the JSON schema works and how to structure a tree, please read our full **[CONTRIBUTING.md](https://www.google.com/search?q=./CONTRIBUTING.md)**.
+---
 
-**Are you a developer?**
-Check out the **Issues** tab for labels like `good first issue` or `help wanted` to tackle UI improvements, animation tweaks, or Supabase integrations.
+## 🤝 Contributing
+
+We welcome new trees, bug fixes, UI improvements, and backend integrations. Check the **Issues** tab for `good first issue` and `help wanted` labels.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup and developer guidelines.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details. Education should be free, and so is this code.
-
----
+MIT — see [LICENCE.md](./LICENCE.md). Education should be free, and so is this code.

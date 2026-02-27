@@ -1,0 +1,233 @@
+{
+    "treeId": "data-analyst",
+    "title": "Data Analyst",
+    "category": "Data Science",
+    "difficulty": "medium",
+    "description": "Learn to extract meaning from data through SQL, Python, Excel, and visualization tools like Tableau or PowerBI.",
+    "version": "1.0",
+    "estimatedMonths": 5,
+    "totalNodes": 8,
+    "icon": "query_stats",
+    "nodes": [
+        {
+            "id": "excel-basics",
+            "label": "Excel & Spreadsheets",
+            "description": "Pivot tables, VLOOKUP, INDEX/MATCH, and basic data cleaning in Excel/Google Sheets.",
+            "icon": "table_view",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "excel-tutorial",
+                    "title": "Excel Tutorial for Beginners",
+                    "url": "https://www.youtube.com/watch?v=k1VUZEVuDJ8",
+                    "type": "video",
+                    "author": "Kevin Stratvert",
+                    "estimatedHours": 2,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "math-stats",
+            "label": "Basic Statistics",
+            "description": "Mean, median, mode, standard deviation, probability, and hypothesis testing.",
+            "icon": "calculate",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "stats-crash-course",
+                    "title": "Crash Course Statistics",
+                    "url": "https://www.youtube.com/playlist?list=PL8dPuuaLjXtNM_Y-bUAhblSAdWRnmBUcr",
+                    "type": "video",
+                    "author": "CrashCourse",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "sql-data",
+            "label": "SQL for Analysts",
+            "description": "Querying databases, JOINs, aggregations, Window Functions, and CTEs.",
+            "icon": "storage",
+            "zone": "Core Skills",
+            "resources": [
+                {
+                    "id": "sql-select-star",
+                    "title": "Select Star SQL",
+                    "url": "https://selectstarsql.com/",
+                    "type": "interactive",
+                    "author": "Zi Chong Kao",
+                    "estimatedHours": 4,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "excel-basics"
+            ]
+        },
+        {
+            "id": "bi-tools",
+            "label": "Business Intelligence (BI) Tools",
+            "description": "Creating dashboards and reports in Tableau or Power BI.",
+            "icon": "bar_chart",
+            "zone": "Visualization",
+            "resources": [
+                {
+                    "id": "powerbi-full",
+                    "title": "Power BI Full Course",
+                    "url": "https://www.youtube.com/watch?v=AGrl-H87pRU",
+                    "type": "video",
+                    "author": "Edureka",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "sql-data",
+                "excel-basics"
+            ]
+        },
+        {
+            "id": "python-data",
+            "label": "Python for Data Analysis",
+            "description": "Using Python with Pandas and Numpy for advanced data manipulation.",
+            "icon": "code",
+            "zone": "Advanced Skills",
+            "resources": [
+                {
+                    "id": "pandas-tutorial",
+                    "title": "Data Analysis with Python Course",
+                    "url": "https://www.youtube.com/watch?v=r-uOLxNrNk8",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "math-stats",
+                "sql-data"
+            ]
+        },
+        {
+            "id": "python-viz",
+            "label": "Python Data Visualization",
+            "description": "Creating programmatic charts with Matplotlib and Seaborn.",
+            "icon": "pie_chart",
+            "zone": "Visualization",
+            "resources": [
+                {
+                    "id": "seaborn-tutorial",
+                    "title": "Seaborn Tutorial",
+                    "url": "https://seaborn.pydata.org/tutorial.html",
+                    "type": "docs",
+                    "author": "Seaborn docs",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "python-data"
+            ]
+        },
+        {
+            "id": "data-storytelling",
+            "label": "Data Storytelling",
+            "description": "Presenting data effectively to stakeholders to drive business decisions.",
+            "icon": "record_voice_over",
+            "zone": "Soft Skills",
+            "resources": [
+                {
+                    "id": "storytelling-with-data",
+                    "title": "Storytelling with Data Workshop",
+                    "url": "https://www.youtube.com/watch?v=8EMW7io4rSI",
+                    "type": "video",
+                    "author": "Cole Nussbaumer Knaflic",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "bi-tools",
+                "python-viz"
+            ]
+        },
+        {
+            "id": "ab-testing",
+            "label": "A/B Testing",
+            "description": "Understanding experiment design, statistical significance, and interpreting test results.",
+            "icon": "science",
+            "zone": "Experimentation",
+            "resources": [
+                {
+                    "id": "ab-testing-udacity",
+                    "title": "A/B Testing Course",
+                    "url": "https://www.udacity.com/course/ab-testing--ud257",
+                    "type": "course",
+                    "author": "Google / Udacity",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "math-stats",
+                "data-storytelling"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-ex-sql",
+            "source": "excel-basics",
+            "target": "sql-data"
+        },
+        {
+            "id": "e-ex-bi",
+            "source": "excel-basics",
+            "target": "bi-tools"
+        },
+        {
+            "id": "e-sql-bi",
+            "source": "sql-data",
+            "target": "bi-tools"
+        },
+        {
+            "id": "e-math-py",
+            "source": "math-stats",
+            "target": "python-data"
+        },
+        {
+            "id": "e-sql-py",
+            "source": "sql-data",
+            "target": "python-data"
+        },
+        {
+            "id": "e-py-viz",
+            "source": "python-data",
+            "target": "python-viz"
+        },
+        {
+            "id": "e-bi-story",
+            "source": "bi-tools",
+            "target": "data-storytelling"
+        },
+        {
+            "id": "e-viz-story",
+            "source": "python-viz",
+            "target": "data-storytelling"
+        },
+        {
+            "id": "e-math-ab",
+            "source": "math-stats",
+            "target": "ab-testing"
+        },
+        {
+            "id": "e-story-ab",
+            "source": "data-storytelling",
+            "target": "ab-testing"
+        }
+    ]
+}

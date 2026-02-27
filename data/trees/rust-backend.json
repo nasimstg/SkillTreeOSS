@@ -1,0 +1,222 @@
+{
+    "treeId": "rust-backend",
+    "title": "Systems Programming in Rust",
+    "category": "Backend Development",
+    "difficulty": "hard",
+    "description": "Master memory safety, fearless concurrency, and system-level performance using the Rust programming language.",
+    "version": "1.0",
+    "estimatedMonths": 6,
+    "totalNodes": 8,
+    "icon": "memory",
+    "nodes": [
+        {
+            "id": "rust-basics",
+            "label": "Rust Syntax & Basics",
+            "description": "Variables, mutability, data types, functions, and control flow in Rust.",
+            "icon": "code",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "rust-book-ch1-3",
+                    "title": "The Rust Programming Language (Chapters 1-3)",
+                    "url": "https://doc.rust-lang.org/book/ch01-00-getting-started.html",
+                    "type": "docs",
+                    "author": "Steve Klabnik and Carol Nichols",
+                    "estimatedHours": 6,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "ownership-borrowing",
+            "label": "Ownership & Borrowing",
+            "description": "The unique memory management system of Rust without a garbage collector: ownership, references, borrowing, and the borrow checker.",
+            "icon": "shield",
+            "zone": "Core Concept",
+            "resources": [
+                {
+                    "id": "rust-book-ch4",
+                    "title": "Understanding Ownership",
+                    "url": "https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html",
+                    "type": "docs",
+                    "author": "Rust Team",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "rust-basics"
+            ]
+        },
+        {
+            "id": "structs-enums",
+            "label": "Structs, Enums, & Pattern Matching",
+            "description": "Defining custom data types, the Option enum, Result enum, and the match control flow construct.",
+            "icon": "account_tree",
+            "zone": "Data Structures",
+            "resources": [
+                {
+                    "id": "rust-book-ch5-6",
+                    "title": "Structs and Enums",
+                    "url": "https://doc.rust-lang.org/book/ch05-00-structs.html",
+                    "type": "docs",
+                    "author": "Rust Team",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "ownership-borrowing"
+            ]
+        },
+        {
+            "id": "modules-packages",
+            "label": "Modules, Crates, & Cargo",
+            "description": "Managing projects, dependencies, making modules public/private, and publishing crates.",
+            "icon": "inventory",
+            "zone": "Tooling",
+            "resources": [
+                {
+                    "id": "rust-book-ch7",
+                    "title": "Managing Growing Projects",
+                    "url": "https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html",
+                    "type": "docs",
+                    "author": "Rust Team",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "structs-enums"
+            ]
+        },
+        {
+            "id": "error-handling",
+            "label": "Error Handling & Generics",
+            "description": "Recoverable errors with Result, non-recoverable with panic!, generic data types, Traits, and Lifetimes.",
+            "icon": "warning",
+            "zone": "Advanced Core",
+            "resources": [
+                {
+                    "id": "rust-book-ch9-10",
+                    "title": "Error Handling and Generics",
+                    "url": "https://doc.rust-lang.org/book/ch09-00-error-handling.html",
+                    "type": "docs",
+                    "author": "Rust Team",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "structs-enums"
+            ]
+        },
+        {
+            "id": "concurrency",
+            "label": "Fearless Concurrency",
+            "description": "Threads, message passing with channels, shared-state concurrency (Mutex, Arc), and Send/Sync traits.",
+            "icon": "mediation",
+            "zone": "Advanced Features",
+            "resources": [
+                {
+                    "id": "rust-book-ch16",
+                    "title": "Fearless Concurrency",
+                    "url": "https://doc.rust-lang.org/book/ch16-00-concurrency.html",
+                    "type": "docs",
+                    "author": "Rust Team",
+                    "estimatedHours": 7,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "error-handling"
+            ]
+        },
+        {
+            "id": "async-rust",
+            "label": "Asynchronous Rust",
+            "description": "Futures, async/await, runtimes like Tokio, and writing non-blocking code.",
+            "icon": "bolt",
+            "zone": "Advanced Features",
+            "resources": [
+                {
+                    "id": "async-book",
+                    "title": "Asynchronous Programming in Rust",
+                    "url": "https://rust-lang.github.io/async-book/",
+                    "type": "docs",
+                    "author": "Rust Lang",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "concurrency"
+            ]
+        },
+        {
+            "id": "web-frameworks",
+            "label": "Rust Web Frameworks (Actix/Axum)",
+            "description": "Building blazingly fast backend APIs using the Actix-Web or Axum frameworks.",
+            "icon": "dns",
+            "zone": "Application",
+            "resources": [
+                {
+                    "id": "zero-to-prod",
+                    "title": "Zero to Production in Rust",
+                    "url": "https://www.zero2prod.com/",
+                    "type": "course",
+                    "author": "Luca Palmieri",
+                    "estimatedHours": 25,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "async-rust",
+                "modules-packages"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-base-own",
+            "source": "rust-basics",
+            "target": "ownership-borrowing"
+        },
+        {
+            "id": "e-own-struct",
+            "source": "ownership-borrowing",
+            "target": "structs-enums"
+        },
+        {
+            "id": "e-struct-mod",
+            "source": "structs-enums",
+            "target": "modules-packages"
+        },
+        {
+            "id": "e-struct-err",
+            "source": "structs-enums",
+            "target": "error-handling"
+        },
+        {
+            "id": "e-err-conc",
+            "source": "error-handling",
+            "target": "concurrency"
+        },
+        {
+            "id": "e-conc-async",
+            "source": "concurrency",
+            "target": "async-rust"
+        },
+        {
+            "id": "e-async-web",
+            "source": "async-rust",
+            "target": "web-frameworks"
+        },
+        {
+            "id": "e-mod-web",
+            "source": "modules-packages",
+            "target": "web-frameworks"
+        }
+    ]
+}

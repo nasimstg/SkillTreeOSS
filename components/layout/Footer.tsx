@@ -11,7 +11,7 @@ export default function Footer() {
               <div className="flex h-6 w-6 items-center justify-center rounded bg-primary/20 text-primary">
                 <span className="material-symbols-outlined text-sm">account_tree</span>
               </div>
-              <span className="text-lg font-bold text-white">The Skill-Tree</span>
+              <span className="text-lg font-bold text-white">SkilleTreeOSS</span>
             </div>
             <p className="text-sm text-slate-400 max-w-xs mb-6 leading-relaxed">
               An open-source initiative to map human knowledge into gamified skill trees.
@@ -79,7 +79,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-slate-500">© {new Date().getFullYear()} The Skill-Tree. Open source under MIT License.</p>
+          <p className="text-xs text-slate-500">© {new Date().getFullYear()} SkilleTreeOSS. Open source under MIT License.</p>
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
             All systems operational

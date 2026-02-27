@@ -1,0 +1,214 @@
+{
+    "treeId": "quantitative-finance",
+    "title": "Quantitative Finance (Algorithmic Trading)",
+    "category": "Finance & Mathematics",
+    "difficulty": "hard",
+    "description": "The math and programming required to design mathematical models for financial markets and algorithmic trading.",
+    "version": "1.0",
+    "estimatedMonths": 14,
+    "totalNodes": 7,
+    "icon": "candlestick_chart",
+    "nodes": [
+        {
+            "id": "stochastic-calculus",
+            "label": "Stochastic Calculus & Probability",
+            "description": "Brownian motion, Ito's Lemma, martingales, and stochastic differential equations (SDEs).",
+            "icon": "functions",
+            "zone": "Mathematics",
+            "resources": [
+                {
+                    "id": "stochastic-processes-mit",
+                    "title": "MIT 18.S096: Topics in Mathematics with Applications in Finance",
+                    "url": "https://ocw.mit.edu/courses/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/",
+                    "type": "course",
+                    "author": "MIT OCW",
+                    "estimatedHours": 30,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "derivatives-pricing",
+            "label": "Derivatives & Options Pricing",
+            "description": "Understanding options, forwards, futures, and the Black-Scholes-Merton model.",
+            "icon": "trending_flat",
+            "zone": "Financial Theory",
+            "resources": [
+                {
+                    "id": "hull-options",
+                    "title": "Options, Futures, and Other Derivatives",
+                    "url": "https://www.pearson.com/en-us/subject-catalog/p/options-futures-and-other-derivatives/P200000006276",
+                    "type": "docs",
+                    "author": "John C. Hull",
+                    "estimatedHours": 50,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "stochastic-calculus"
+            ]
+        },
+        {
+            "id": "time-series-analysis",
+            "label": "Time Series Analysis",
+            "description": "Stationarity, ARMA/ARIMA models, Volatility modeling (GARCH), and cointegration.",
+            "icon": "show_chart",
+            "zone": "Statistics",
+            "resources": [
+                {
+                    "id": "time-series-course",
+                    "title": "Time Series Analysis in Python",
+                    "url": "https://www.machinelearningplus.com/time-series/time-series-analysis-python/",
+                    "type": "article",
+                    "author": "Machine Learning Plus",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "stochastic-calculus"
+            ]
+        },
+        {
+            "id": "python-cplusplus",
+            "label": "C++ & Python for Finance",
+            "description": "Python for rapid research and data analysis (pandas, numpy), C++ for low-latency execution systems.",
+            "icon": "code",
+            "zone": "Computer Science",
+            "resources": [
+                {
+                    "id": "cpp-finance",
+                    "title": "C++ Design Patterns and Derivatives Pricing",
+                    "url": "https://www.markjoshi.com/design/",
+                    "type": "docs",
+                    "author": "Mark Joshi",
+                    "estimatedHours": 40,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "derivatives-pricing",
+                "time-series-analysis"
+            ]
+        },
+        {
+            "id": "machine-learning-finance",
+            "label": "Machine Learning in Finance",
+            "description": "Applying Random Forests, SVMs, and Deep Learning to financial datasets for alpha generation.",
+            "icon": "smart_toy",
+            "zone": "Advanced Modeling",
+            "resources": [
+                {
+                    "id": "ml-finance-lopez",
+                    "title": "Advances in Financial Machine Learning",
+                    "url": "https://www.wiley.com/en-us/Advances+in+Financial+Machine+Learning-p-9781119482086",
+                    "type": "docs",
+                    "author": "Marcos Lopez de Prado",
+                    "estimatedHours": 35,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "time-series-analysis",
+                "python-cplusplus"
+            ]
+        },
+        {
+            "id": "algorithmic-trading",
+            "label": "Algorithmic Trading Strategies",
+            "description": "Statistical arbitrage, market making, mean reversion, and momentum strategies.",
+            "icon": "swap_horiz",
+            "zone": "Application",
+            "resources": [
+                {
+                    "id": "algo-trading-quantconnect",
+                    "title": "QuantConnect Boot Camp",
+                    "url": "https://www.quantconnect.com/tutorials/introduction-to-financial-python/introduction",
+                    "type": "interactive",
+                    "author": "QuantConnect",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "time-series-analysis",
+                "derivatives-pricing"
+            ]
+        },
+        {
+            "id": "risk-management",
+            "label": "Risk Management & Backtesting",
+            "description": "Value at Risk (VaR), Expected Shortfall, avoiding overfitting, and building robust backtesting engines.",
+            "icon": "gpp_maybe",
+            "zone": "Application",
+            "resources": [
+                {
+                    "id": "backtesting-pitfalls",
+                    "title": "The Dangers of Backtesting",
+                    "url": "https://www.investopedia.com/articles/trading/05/030205.asp",
+                    "type": "article",
+                    "author": "Investopedia",
+                    "estimatedHours": 5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "algorithmic-trading",
+                "machine-learning-finance"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-sc-dp",
+            "source": "stochastic-calculus",
+            "target": "derivatives-pricing"
+        },
+        {
+            "id": "e-sc-ts",
+            "source": "stochastic-calculus",
+            "target": "time-series-analysis"
+        },
+        {
+            "id": "e-dp-pc",
+            "source": "derivatives-pricing",
+            "target": "python-cplusplus"
+        },
+        {
+            "id": "e-ts-pc",
+            "source": "time-series-analysis",
+            "target": "python-cplusplus"
+        },
+        {
+            "id": "e-ts-ml",
+            "source": "time-series-analysis",
+            "target": "machine-learning-finance"
+        },
+        {
+            "id": "e-pc-ml",
+            "source": "python-cplusplus",
+            "target": "machine-learning-finance"
+        },
+        {
+            "id": "e-ts-algo",
+            "source": "time-series-analysis",
+            "target": "algorithmic-trading"
+        },
+        {
+            "id": "e-dp-algo",
+            "source": "derivatives-pricing",
+            "target": "algorithmic-trading"
+        },
+        {
+            "id": "e-algo-risk",
+            "source": "algorithmic-trading",
+            "target": "risk-management"
+        },
+        {
+            "id": "e-ml-risk",
+            "source": "machine-learning-finance",
+            "target": "risk-management"
+        }
+    ]
+}

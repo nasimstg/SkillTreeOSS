@@ -1,0 +1,179 @@
+{
+    "treeId": "quantum-computing",
+    "title": "Quantum Computing",
+    "category": "Science & Computer Science",
+    "difficulty": "hard",
+    "description": "Deep dive into the intersection of quantum mechanics, linear algebra, and computer science to program quantum computers.",
+    "version": "1.0",
+    "estimatedMonths": 12,
+    "totalNodes": 6,
+    "icon": "blur_on",
+    "nodes": [
+        {
+            "id": "linear-algebra-qc",
+            "label": "Advanced Linear Algebra",
+            "description": "Complex vector spaces, inner products, eigenvectors, eigenvalues, and unitary matrices.",
+            "icon": "calculate",
+            "zone": "Mathematics",
+            "resources": [
+                {
+                    "id": "mit-linear-algebra",
+                    "title": "MIT 18.06 Linear Algebra",
+                    "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
+                    "type": "course",
+                    "author": "Gilbert Strang",
+                    "estimatedHours": 40,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "quantum-mechanics-basics",
+            "label": "Quantum Mechanics Postulates",
+            "description": "State vectors, superposition, observables, the Schrodinger equation, and entanglement.",
+            "icon": "science",
+            "zone": "Physics",
+            "resources": [
+                {
+                    "id": "susskind-qm",
+                    "title": "Quantum Mechanics - The Theoretical Minimum",
+                    "url": "https://theoreticalminimum.com/courses/quantum-mechanics/2012/winter",
+                    "type": "video",
+                    "author": "Leonard Susskind",
+                    "estimatedHours": 20,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "linear-algebra-qc"
+            ]
+        },
+        {
+            "id": "quantum-gates",
+            "label": "Qubits and Quantum Gates",
+            "description": "The Bloch sphere, Pauli matrices (X, Y, Z), Hadamard gates, CNOT, and quantum circuits.",
+            "icon": "memory",
+            "zone": "Information Theory",
+            "resources": [
+                {
+                    "id": "qiskit-textbook-qubits",
+                    "title": "Multiple Qubits and Entanglement",
+                    "url": "https://qiskit.org/textbook/ch-gates/multiple-qubits-entangled-states.html",
+                    "type": "article",
+                    "author": "IBM Qiskit",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "quantum-mechanics-basics"
+            ]
+        },
+        {
+            "id": "quantum-algorithms",
+            "label": "Quantum Algorithms",
+            "description": "Deutsch-Jozsa, Grover's Search Algorithm, and Shor's Algorithm for integer factorization.",
+            "icon": "account_tree",
+            "zone": "Computer Science",
+            "resources": [
+                {
+                    "id": "shors-algorithm-vid",
+                    "title": "Shor's Algorithm Explained",
+                    "url": "https://www.youtube.com/watch?v=lvTqbM5Dq4Q",
+                    "type": "video",
+                    "author": "MinutePhysics",
+                    "estimatedHours": 1,
+                    "isFree": true
+                },
+                {
+                    "id": "qiskit-textbook-algs",
+                    "title": "Quantum Algorithms Overview",
+                    "url": "https://qiskit.org/textbook/ch-algorithms/index.html",
+                    "type": "article",
+                    "author": "IBM",
+                    "estimatedHours": 15,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "quantum-gates"
+            ]
+        },
+        {
+            "id": "qiskit-programming",
+            "label": "Programming with Qiskit",
+            "description": "Translating theory into code using IBM's Qiskit framework in Python to run circuits on real quantum hardware.",
+            "icon": "terminal",
+            "zone": "Implementation",
+            "resources": [
+                {
+                    "id": "coding-with-qiskit",
+                    "title": "Coding with Qiskit Series",
+                    "url": "https://www.youtube.com/playlist?list=PLOFEBzvs-Vvp2xg9-POLJhQwtVktlYpW0",
+                    "type": "video",
+                    "author": "IBM Quantum",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "quantum-gates",
+                "quantum-algorithms"
+            ]
+        },
+        {
+            "id": "quantum-error-correction",
+            "label": "Quantum Error Correction",
+            "description": "Addressing quantum decoherence, the No-Cloning Theorem, and Shor's code.",
+            "icon": "bug_report",
+            "zone": "Advanced Theory",
+            "resources": [
+                {
+                    "id": "qec-introduction",
+                    "title": "Introduction to Quantum Error Correction",
+                    "url": "https://qiskit.org/textbook/ch-quantum-hardware/error-correction.html",
+                    "type": "article",
+                    "author": "IBM Qiskit",
+                    "estimatedHours": 12,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "quantum-algorithms"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-la-qm",
+            "source": "linear-algebra-qc",
+            "target": "quantum-mechanics-basics"
+        },
+        {
+            "id": "e-qm-qg",
+            "source": "quantum-mechanics-basics",
+            "target": "quantum-gates"
+        },
+        {
+            "id": "e-qg-qa",
+            "source": "quantum-gates",
+            "target": "quantum-algorithms"
+        },
+        {
+            "id": "e-qg-qis",
+            "source": "quantum-gates",
+            "target": "qiskit-programming"
+        },
+        {
+            "id": "e-qa-qis",
+            "source": "quantum-algorithms",
+            "target": "qiskit-programming"
+        },
+        {
+            "id": "e-qa-qec",
+            "source": "quantum-algorithms",
+            "target": "quantum-error-correction"
+        }
+    ]
+}

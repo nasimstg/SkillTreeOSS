@@ -1,0 +1,170 @@
+{
+    "treeId": "advanced-mathematics",
+    "title": "Advanced Pure Mathematics",
+    "category": "Mathematics",
+    "difficulty": "hard",
+    "description": "Journey past engineering math into the abstract realms of real analysis, abstract algebra, and topology.",
+    "version": "1.0",
+    "estimatedMonths": 18,
+    "totalNodes": 6,
+    "icon": "functions",
+    "nodes": [
+        {
+            "id": "proofs-logic",
+            "label": "Logic & Mathematical Proofs",
+            "description": "Propositional logic, set theory basics, direct proofs, induction, and proof by contradiction.",
+            "icon": "rule",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "book-of-proof",
+                    "title": "Book of Proof",
+                    "url": "https://www.people.vcu.edu/~rhammack/BookOfProof/",
+                    "type": "docs",
+                    "author": "Richard Hammack",
+                    "estimatedHours": 30,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "real-analysis",
+            "label": "Real Analysis",
+            "description": "The rigorous foundation of calculus: limits, continuity, differentiability, Riemann integration, and metric spaces.",
+            "icon": "show_chart",
+            "zone": "Analysis",
+            "resources": [
+                {
+                    "id": "understanding-analysis",
+                    "title": "Understanding Analysis",
+                    "url": "https://link.springer.com/book/10.1007/978-1-4939-2712-8",
+                    "type": "docs",
+                    "author": "Stephen Abbott",
+                    "estimatedHours": 60,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "proofs-logic"
+            ]
+        },
+        {
+            "id": "abstract-algebra",
+            "label": "Abstract Algebra",
+            "description": "The study of algebraic structures: Groups, Rings, Fields, isomorphism theorems, and Galois theory.",
+            "icon": "cyclone",
+            "zone": "Algebra",
+            "resources": [
+                {
+                    "id": "algebra-artin",
+                    "title": "Algebra",
+                    "url": "https://www.pearson.com/en-us/subject-catalog/p/algebra/P200000003259",
+                    "type": "docs",
+                    "author": "Michael Artin",
+                    "estimatedHours": 70,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "proofs-logic"
+            ]
+        },
+        {
+            "id": "topology",
+            "label": "Point-Set Topology",
+            "description": "Topological spaces, open/closed sets, compactness, connectedness, and continuous functions.",
+            "icon": "donut_large",
+            "zone": "Geometry/Topology",
+            "resources": [
+                {
+                    "id": "topology-munkres",
+                    "title": "Topology",
+                    "url": "https://www.pearson.com/en-us/subject-catalog/p/topology/P200000003277",
+                    "type": "docs",
+                    "author": "James Munkres",
+                    "estimatedHours": 50,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "real-analysis"
+            ]
+        },
+        {
+            "id": "complex-analysis",
+            "label": "Complex Analysis",
+            "description": "Analytic functions, Cauchy-Riemann equations, contour integration, and the Residue Theorem.",
+            "icon": "blur_on",
+            "zone": "Analysis",
+            "resources": [
+                {
+                    "id": "visual-complex-analysis",
+                    "title": "Visual Complex Analysis",
+                    "url": "https://global.oup.com/academic/product/visual-complex-analysis-9780198534464",
+                    "type": "docs",
+                    "author": "Tristan Needham",
+                    "estimatedHours": 40,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "real-analysis"
+            ]
+        },
+        {
+            "id": "differential-geometry",
+            "label": "Differential Geometry",
+            "description": "Curves, surfaces, manifolds, curvature, and tensors. The mathematical basis for General Relativity.",
+            "icon": "architecture",
+            "zone": "Geometry/Topology",
+            "resources": [
+                {
+                    "id": "diff-geom-carmo",
+                    "title": "Differential Geometry of Curves and Surfaces",
+                    "url": "https://www.amazon.com/Differential-Geometry-Curves-Surfaces-Mathematics/dp/0486462420",
+                    "type": "docs",
+                    "author": "Manfredo P. do Carmo",
+                    "estimatedHours": 50,
+                    "isFree": false
+                }
+            ],
+            "requires": [
+                "topology",
+                "complex-analysis"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-pl-ra",
+            "source": "proofs-logic",
+            "target": "real-analysis"
+        },
+        {
+            "id": "e-pl-aa",
+            "source": "proofs-logic",
+            "target": "abstract-algebra"
+        },
+        {
+            "id": "e-ra-top",
+            "source": "real-analysis",
+            "target": "topology"
+        },
+        {
+            "id": "e-ra-ca",
+            "source": "real-analysis",
+            "target": "complex-analysis"
+        },
+        {
+            "id": "e-top-dg",
+            "source": "topology",
+            "target": "differential-geometry"
+        },
+        {
+            "id": "e-ca-dg",
+            "source": "complex-analysis",
+            "target": "differential-geometry"
+        }
+    ]
+}

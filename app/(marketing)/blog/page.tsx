@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Blog — The Skill-Tree',
+  title: 'Blog — SkilleTreeOSS',
   description: 'Articles on learning science, contributor spotlights, and platform updates. Coming soon.',
 }
 
@@ -34,7 +34,7 @@ export default function BlogPage() {
               Planned Feature
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
-              The Skill-Tree Blog
+              SkilleTreeOSS Blog
             </h1>
             <p className="text-slate-400 text-lg max-w-md mx-auto mb-8">
               Articles on learning science, contributor spotlights, tree announcements, and platform updates.

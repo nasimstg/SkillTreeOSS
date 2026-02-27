@@ -1,0 +1,138 @@
+{
+    "treeId": "ui-ux-design",
+    "title": "UI/UX Designer",
+    "category": "Design",
+    "difficulty": "easy",
+    "description": "Short and concise path to understand the principles of user experience and visual interface design.",
+    "version": "1.0",
+    "estimatedMonths": 3,
+    "totalNodes": 5,
+    "icon": "palette",
+    "nodes": [
+        {
+            "id": "design-thinking",
+            "label": "Design Thinking",
+            "description": "Empathize, Define, Ideate, Prototype, and Test framing for solving user problems.",
+            "icon": "psychology_alt",
+            "zone": "Process",
+            "resources": [
+                {
+                    "id": "nng-design",
+                    "title": "Design Thinking 101",
+                    "url": "https://www.nngroup.com/articles/design-thinking/",
+                    "type": "article",
+                    "author": "Norman Nielsen Group",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": []
+        },
+        {
+            "id": "ux-research",
+            "label": "User Research",
+            "description": "Creating user personas, conducting user interviews, and journey mapping.",
+            "icon": "search",
+            "zone": "UX",
+            "resources": [
+                {
+                    "id": "ux-research-crash",
+                    "title": "UX Research Tutorial",
+                    "url": "https://www.youtube.com/watch?v=1z1i192A0Lw",
+                    "type": "video",
+                    "author": "AJ&Smart",
+                    "estimatedHours": 1.5,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "design-thinking"
+            ]
+        },
+        {
+            "id": "wireframing",
+            "label": "Wireframing & Prototyping",
+            "description": "Low-fidelity sketches to high-fidelity clickable prototypes.",
+            "icon": "draw",
+            "zone": "UX",
+            "resources": [
+                {
+                    "id": "wireframe-guide",
+                    "title": "Beginner's Guide to Wireframing",
+                    "url": "https://balsamiq.com/learn/articles/what-are-wireframes/",
+                    "type": "article",
+                    "author": "Balsamiq",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "ux-research"
+            ]
+        },
+        {
+            "id": "ui-principles",
+            "label": "UI Design Principles",
+            "description": "Color theory, typography, spacing, contrast, and visual hierarchy.",
+            "icon": "contrast",
+            "zone": "UI",
+            "resources": [
+                {
+                    "id": "ui-crash-course",
+                    "title": "UI Design Crash Course",
+                    "url": "https://www.youtube.com/watch?v=c9Wg6Cb_YlM",
+                    "type": "video",
+                    "author": "DesignCourse",
+                    "estimatedHours": 1,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "wireframing"
+            ]
+        },
+        {
+            "id": "figma",
+            "label": "Figma Mastery",
+            "description": "Mastering the industry standard tool for UI/UX design, including components and auto layout.",
+            "icon": "design_services",
+            "zone": "Tools",
+            "resources": [
+                {
+                    "id": "figma-freecodecamp",
+                    "title": "Figma Tutorial for UI Design",
+                    "url": "https://www.youtube.com/watch?v=jwNmEqJ05Cg",
+                    "type": "video",
+                    "author": "freeCodeCamp",
+                    "estimatedHours": 3,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "ui-principles"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-dt-uxr",
+            "source": "design-thinking",
+            "target": "ux-research"
+        },
+        {
+            "id": "e-uxr-wf",
+            "source": "ux-research",
+            "target": "wireframing"
+        },
+        {
+            "id": "e-wf-ui",
+            "source": "wireframing",
+            "target": "ui-principles"
+        },
+        {
+            "id": "e-ui-figma",
+            "source": "ui-principles",
+            "target": "figma"
+        }
+    ]
+}
