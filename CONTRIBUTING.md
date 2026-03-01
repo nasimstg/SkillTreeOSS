@@ -48,6 +48,19 @@ Go to `/builder/[treeId]` — the tree is loaded from the published JSON and con
 
 Press `?` in the builder for the full interactive guide.
 
+<!-- TODO: Builder walkthrough GIF
+     Record a ~20s GIF of the complete builder contribution flow:
+     1. /builder opens (blank canvas + empty state text)
+     2. Open the Metadata panel (top-left) — type a title and pick an icon
+     3. Double-click to place 3 nodes; drag handles to connect them
+     4. Click a node → editor panel slides in from right; fill label + zone + add one resource
+     5. Click "Preview" tab — the full viewer renders with the live tree
+     6. Click "Submit PR" — the submit dialog appears (stop here, no need to actually submit)
+     Keep it at 1280×800, ≤10 MB. The goal is to show non-technical contributors how easy it is.
+     Save to: docs/images/builder-walkthrough.gif
+-->
+![Builder walkthrough](docs/images/builder-walkthrough.gif)
+
 ---
 
 ## 🗺️ 2. Contributing Content Manually (JSON)

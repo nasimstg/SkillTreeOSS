@@ -2,6 +2,17 @@
 
 **The Democratization of Mastery.** SkilleTreeOSS is an open-source, gamified learning platform. We map out complex skills (like "Full-Stack Developer," "ML Engineer," or "Photography") into beautiful, interactive RPG-style skill trees. Click a node, find the best free resource on the internet, and level up your life.
 
+<!-- TODO: Hero GIF
+     Record a ~10s GIF of the skill canvas in action:
+     - Start on the RPG-theme tree (full-stack-dev or similar)
+     - Hover over a few nodes so the sidebar slides in
+     - Click a node → unlock animation fires → XP counter ticks up in the navbar
+     - Switch the view theme (FAB pill) from RPG → Neural
+     Suggested tool: ScreenToGif (Windows) or Kap (Mac). Export at 1280×720, ≤5 MB.
+     Save to: docs/images/hero-demo.gif
+-->
+![SkilleTreeOSS — interactive skill tree demo](docs/images/hero-demo.gif)
+
 ---
 
 ## 🎯 The Vision
@@ -31,12 +42,34 @@ SkilleTreeOSS solves this by turning education into a visual progression system.
 - Auto-save drafts to `localStorage`; Supabase persistence for signed-in users
 - **Submit as PR** — anonymously (bot token) or from your own GitHub fork
 
+<!-- TODO: Builder GIF
+     Record a ~15s GIF showing the full builder flow:
+     1. Open /builder (blank canvas)
+     2. Double-click to add 2–3 nodes; watch smart placement kick in
+     3. Drag from one node's handle to another to connect them
+     4. Click a node → right panel slides in; type a label, pick a zone color chip
+     5. Press Ctrl+L → watch Dagre re-layout with the LR direction
+     6. Click "Preview" in the header → tree renders in the full viewer
+     Suggested tool: ScreenToGif at 1280×800. Export ≤8 MB.
+     Save to: docs/images/builder-demo.gif
+-->
+![Visual Tree Builder](docs/images/builder-demo.gif)
+
 ### 🗺️ Interactive Skill Canvas
 - **4 visual themes** — World Map, RPG, Terminal, Neural
 - Dagre auto-layout with toggleable LR ↔ TB direction
 - Node sidebar with resources, prerequisite timeline, resource voting, and resource suggestions
 - Animated node state transitions (locked → available → completed)
 - Right-click context menu; center-on-node with smooth `setViewport` animation
+
+<!-- TODO: Themes screenshot (static PNG is fine, or a short GIF cycling through themes)
+     Open the full-stack-dev tree. Take a 4-panel screenshot (or record switching themes via the FAB pill):
+     Panel 1 — RPG theme   | Panel 2 — World Map theme
+     Panel 3 — Terminal    | Panel 4 — Neural
+     Alternatively: record a 6s GIF clicking through all 4 themes.
+     Save to: docs/images/themes-preview.png  (or .gif)
+-->
+![4 visual themes — RPG, World Map, Terminal, Neural](docs/images/themes-preview.png)
 
 ### 🔐 Auth & Progress
 - Supabase auth (email/password, OAuth)
