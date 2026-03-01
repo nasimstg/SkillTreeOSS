@@ -69,7 +69,7 @@ SkilleTreeOSS solves this by turning education into a visual progression system.
      Alternatively: record a 6s GIF clicking through all 4 themes.
      Save to: docs/images/themes-preview.png  (or .gif)
 -->
-![4 visual themes — RPG, World Map, Terminal, Neural](docs/images/themes-preview.png)
+![4 visual themes — RPG, World Map, Terminal, Neural](docs/images/themes-preview.gif)
 
 ### 🔐 Auth & Progress
 - Supabase auth (email/password, OAuth)
