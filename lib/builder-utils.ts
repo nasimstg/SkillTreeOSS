@@ -1,6 +1,20 @@
 import type { SkillTree, TreeNode, TreeEdge, Resource } from '@/types/tree'
 import type { Node, Edge } from '@xyflow/react'
 
+// ─── Custom zone ─────────────────────────────────────────────────────────────
+
+export interface CustomZone {
+  name:  string
+  color: string
+}
+
+/** True when `str` is an emoji / non-symbol string (not a Material Symbol name). */
+export function isEmoji(str: string): boolean {
+  return str.length > 0 && !/^[a-z_]+$/.test(str)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export interface BuilderNodeData extends Record<string, unknown> {
   label:       string
   description: string
@@ -166,9 +180,11 @@ function hasCycle(nodeIds: string[], edges: Edge[]): boolean {
 // ─── Serialise / deserialise for localStorage ─────────────────────────────────
 
 export interface BuilderDraft {
-  meta:  BuilderMeta
-  nodes: Node<BuilderNodeData>[]
-  edges: Edge[]
+  meta:         BuilderMeta
+  nodes:        Node<BuilderNodeData>[]
+  edges:        Edge[]
+  customZones?: CustomZone[]
+  recentIcons?: string[]
 }
 
 export function saveDraftToLocal(draft: BuilderDraft, draftId = 'default'): void {
@@ -247,7 +263,9 @@ export const ZONE_COLORS: Record<string, string> = {
 
 export const DEFAULT_ZONE_COLOR = '#6b7280'
 
-export function zoneColor(zone: string): string {
+export function zoneColor(zone: string, customZones: CustomZone[] = []): string {
+  const custom = customZones.find(z => z.name === zone)
+  if (custom) return custom.color
   return ZONE_COLORS[zone] ?? DEFAULT_ZONE_COLOR
 }
 

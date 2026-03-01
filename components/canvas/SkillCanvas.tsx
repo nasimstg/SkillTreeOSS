@@ -28,6 +28,7 @@ import CanvasContextMenu, { type ContextMenuState } from './CanvasContextMenu'
 import { CanvasToast, type ToastItem } from './CanvasToast'
 import CanvasConfirmModal from './CanvasConfirmModal'
 import RatingModal from './RatingModal'
+import { ViewerHeader } from './ViewerHeader'
 import type { SkillTree, CanvasView, TreeNode } from '@/types/tree'
 import type { SkillNodeData } from './CustomNode'
 
@@ -35,6 +36,8 @@ interface Props {
   tree: SkillTree
   initialCompletedIds?: string[]
   userRating?: number | null
+  /** When true: hides FAB toolbar, sidebar, context menus, and modals (builder preview) */
+  preview?: boolean
 }
 
 // ─── XP / level helpers ──────────────────────────────────────────────────────
@@ -257,7 +260,7 @@ const DIFF_STYLE: Record<string, string> = {
 
 // ─── component ───────────────────────────────────────────────────────────────
 
-export default function SkillCanvas({ tree, initialCompletedIds = [], userRating = null }: Props) {
+export default function SkillCanvas({ tree, initialCompletedIds = [], userRating = null, preview = false }: Props) {
   const {
     completedNodeIds,
     setCompletedNodeIds,
@@ -586,6 +589,9 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
 
   return (
     <div className="relative w-full h-full bg-background-dark">
+      {/* Floating header — hidden inside builder preview (builder has its own header) */}
+      {!preview && <ViewerHeader treeId={tree.treeId} />}
+
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -593,8 +599,8 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
-        onNodeContextMenu={onNodeContextMenu}
-        onPaneContextMenu={onPaneContextMenu}
+        onNodeContextMenu={preview ? undefined : onNodeContextMenu}
+        onPaneContextMenu={preview ? undefined : onPaneContextMenu}
         onPaneClick={() => setContextMenu(null)}
         onInit={(instance) => { rfInstance.current = instance }}
         fitView
@@ -615,7 +621,8 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
         />
 
         {/* ── Floating info pill + toasts (top-left) ── */}
-        <Panel position="top-left" className="!m-4 flex flex-col gap-2.5 pointer-events-none">
+        {/* In builder preview, push down to clear the 56px floating BuilderHeader */}
+        <Panel position="top-left" className="!mt-16 !ml-4 flex flex-col gap-2.5 pointer-events-none">
           <div className="bg-background-dark/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden w-64">
 
             {/* Row 1 — identity */}
@@ -644,32 +651,41 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
             {/* Divider */}
             <div className="h-px bg-white/5 mx-4" />
 
-            {/* Row 2 — progress */}
-            <div className="px-4 pt-2.5 pb-3.5">
-              <div className="flex items-center justify-between text-[10px] mb-1.5">
-                <span className="text-slate-500 font-medium">
-                  {completedCount} / {tree.totalNodes} nodes
-                </span>
-                <span className="text-primary font-black tabular-nums">{progress}%</span>
+            {/* Row 2 — progress (hidden in builder preview) */}
+            {!preview ? (
+              <div className="px-4 pt-2.5 pb-3.5">
+                <div className="flex items-center justify-between text-[10px] mb-1.5">
+                  <span className="text-slate-500 font-medium">
+                    {completedCount} / {tree.totalNodes} nodes
+                  </span>
+                  <span className="text-primary font-black tabular-nums">{progress}%</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-surface-dark overflow-hidden">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all duration-700 ease-out"
+                    style={{
+                      width: `${progress}%`,
+                      boxShadow: progress > 0 ? '0 0 8px rgba(17,212,82,0.6)' : 'none',
+                    }}
+                  />
+                </div>
+                {/* Category + time estimate */}
+                <p className="text-[9px] text-slate-600 mt-1.5 leading-tight">
+                  {tree.category} · ~{tree.estimatedMonths} months
+                </p>
               </div>
-              <div className="h-1.5 w-full rounded-full bg-surface-dark overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all duration-700 ease-out"
-                  style={{
-                    width: `${progress}%`,
-                    boxShadow: progress > 0 ? '0 0 8px rgba(17,212,82,0.6)' : 'none',
-                  }}
-                />
+            ) : (
+              /* Preview: show node count + category but no progress bar */
+              <div className="px-4 pt-2 pb-3">
+                <p className="text-[9px] text-slate-600 leading-tight">
+                  {tree.totalNodes} nodes · {tree.category} · ~{tree.estimatedMonths} months
+                </p>
               </div>
-              {/* Category + time estimate */}
-              <p className="text-[9px] text-slate-600 mt-1.5 leading-tight">
-                {tree.category} · ~{tree.estimatedMonths} months
-              </p>
-            </div>
+            )}
           </div>
 
-          {/* Toast stack — below info pill */}
-          {toasts.length > 0 && (
+          {/* Toast stack — hidden in builder preview */}
+          {!preview && toasts.length > 0 && (
             <div className="relative h-12">
               <AnimatePresence mode="popLayout">
                 {toasts.map((t, i) => (
@@ -689,34 +705,39 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
             onResetProgress={handleResetProgress}
             onRateTree={() => setRatingModalOpen(true)}
             userRating={currentRating}
+            preview={preview}
           />
         </Panel>
       </ReactFlow>
 
-      {/* Node detail sidebar — rendered outside ReactFlow so it overlays correctly */}
-      <NodeSidebar tree={tree} />
+      {/* Node detail sidebar */}
+      <NodeSidebar tree={tree} preview={preview} />
 
-      {/* Reset-progress confirmation modal */}
-      <CanvasConfirmModal
-        open={resetModalOpen}
-        title="Reset all progress?"
-        description="This will permanently clear your progress on this tree from both your device and account. This cannot be undone."
-        confirmLabel="Reset progress"
-        onConfirm={confirmResetProgress}
-        onCancel={() => setResetModalOpen(false)}
-      />
+      {/* Reset-progress confirmation modal — not needed in builder preview */}
+      {!preview && (
+        <CanvasConfirmModal
+          open={resetModalOpen}
+          title="Reset all progress?"
+          description="This will permanently clear your progress on this tree from both your device and account. This cannot be undone."
+          confirmLabel="Reset progress"
+          onConfirm={confirmResetProgress}
+          onCancel={() => setResetModalOpen(false)}
+        />
+      )}
 
-      {/* Tree rating modal */}
-      <RatingModal
-        open={ratingModalOpen}
-        treeTitle={tree.title}
-        treeId={tree.treeId}
-        existingRating={currentRating}
-        onClose={() => setRatingModalOpen(false)}
-        onSubmitted={(rating) => setCurrentRating(rating)}
-      />
+      {/* Tree rating modal — not needed in builder preview */}
+      {!preview && (
+        <RatingModal
+          open={ratingModalOpen}
+          treeTitle={tree.title}
+          treeId={tree.treeId}
+          existingRating={currentRating}
+          onClose={() => setRatingModalOpen(false)}
+          onSubmitted={(rating) => setCurrentRating(rating)}
+        />
+      )}
 
-      {/* Context menu — rendered outside ReactFlow, uses fixed positioning */}
+      {/* Context menu */}
       {contextMenu && (
         <CanvasContextMenu
           menu={contextMenu}

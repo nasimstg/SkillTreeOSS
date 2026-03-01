@@ -20,23 +20,27 @@ SkilleTreeOSS solves this by turning education into a visual progression system.
 
 ### 🏗️ Visual Skill Tree Builder
 - **In-app editor** at `/builder` — no JSON or GitHub knowledge required
-- Double-click the canvas to add nodes; drag to connect them
-- Edit node label, description, zone, icon, and learning resources inline
-- **Preview mode** — instantly see how the tree looks in the viewer
-- **Anonymous submission** — bot token creates a PR on your behalf
-- **GitHub-connected submission** — PR opens from your own GitHub fork
-- Auto-save drafts to localStorage + Supabase (signed-in users)
-- Load and edit any existing tree at `/builder/[treeId]`
+- `/builder/[treeId]` — load and edit any existing published tree
+- Double-click the canvas (or press `N`) to add nodes; drag between node handles to connect them
+- Right-click anywhere for a context menu; rectangular drag to multi-select nodes
+- **Full keyboard shortcuts** — `V` Select, `H` Pan, `N` add at cursor, `Ctrl+A` select all, `Ctrl+L` toggle layout direction, `Delete` remove; press `?` for the built-in guide modal
+- Edit each node inline: label, description, zone, icon (searchable Material Symbols + emoji picker), and learning resources
+- **Liquid bubble animation** — tool and tab switches animate with a spring-physics bubble (Framer Motion `layoutId` shared layout)
+- **Dagre auto-layout** with LR ↔ TB direction toggle; smart node placement prevents stacking
+- **Preview mode** — switch between Build and Preview to see the tree exactly as learners will
+- Auto-save drafts to `localStorage`; Supabase persistence for signed-in users
+- **Submit as PR** — anonymously (bot token) or from your own GitHub fork
 
 ### 🗺️ Interactive Skill Canvas
 - **4 visual themes** — World Map, RPG, Terminal, Neural
 - Dagre auto-layout with toggleable LR ↔ TB direction
 - Node sidebar with resources, prerequisite timeline, resource voting, and resource suggestions
 - Animated node state transitions (locked → available → completed)
+- Right-click context menu; center-on-node with smooth `setViewport` animation
 
 ### 🔐 Auth & Progress
 - Supabase auth (email/password, OAuth)
-- Progress synced to DB in real time; localStorage fallback
+- Progress synced to DB in real time; `localStorage` fallback
 - **XP & level system** — 50 XP per completed node, 8 levels (Apprentice → Legend)
 - Navbar **UserMenu** with SVG level-ring progress indicator and Lv badge
 - Reset-progress button with confirmation modal
@@ -70,8 +74,9 @@ SkilleTreeOSS solves this by turning education into a visual progression system.
 | Framework | Next.js 16 (App Router, Turbopack) |
 | Language | TypeScript |
 | Canvas Engine | ReactFlow (`@xyflow/react`) + Dagre |
-| State | Zustand (with localStorage persistence) |
-| Styling | Tailwind CSS v4, Framer Motion |
+| State | Zustand — `lib/store.ts` (viewer) · `lib/builder-store.ts` (builder) |
+| Animations | Framer Motion (shared-layout `layoutId`, spring physics, `AnimatePresence`) |
+| Styling | Tailwind CSS v4 |
 | Auth + DB | Supabase (Postgres, RLS, SSR client) |
 
 ---
@@ -116,15 +121,15 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser. Go to [http://localhost:3000/builder](http://localhost:3000/builder) to try the visual tree builder.
 
 ---
 
 ## 🌲 Adding or Editing Trees
 
-All skill trees live in `data/trees/` as JSON files. You do **not** need to be a developer — just edit a JSON file and open a PR.
+The easiest way is the **in-app builder** at `/builder` — no coding required. See the [Builder section of CONTRIBUTING.md](./CONTRIBUTING.md) for a step-by-step walkthrough.
 
-See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the full schema, rules, and PR process.
+For direct JSON editing, all skill trees live in `data/trees/` as JSON files. See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the full schema, validation rules, and PR process.
 
 To change the featured trees on the landing page, edit `lib/featured-trees.ts`:
 ```ts

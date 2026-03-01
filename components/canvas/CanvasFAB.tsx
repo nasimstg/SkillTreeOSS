@@ -14,6 +14,8 @@ interface Props {
   onResetProgress: () => void
   onRateTree: () => void
   userRating?: number | null
+  /** Hide share / rate / reset buttons (used in builder preview) */
+  preview?: boolean
 }
 
 const VIEWS: { id: CanvasView; icon: string; label: string }[] = [
@@ -24,7 +26,7 @@ const VIEWS: { id: CanvasView; icon: string; label: string }[] = [
 ]
 
 export default function CanvasFAB({
-  layoutDir, onLayoutDirChange, onAutoArrange, onResetProgress, onRateTree, userRating,
+  layoutDir, onLayoutDirChange, onAutoArrange, onResetProgress, onRateTree, userRating, preview = false,
 }: Props) {
   const [copied,    setCopied]    = useState(false)
   const [arranging, setArranging] = useState(false)
@@ -121,47 +123,52 @@ export default function CanvasFAB({
         </span>
       </button>
 
-      {/* ── Share ── */}
-      <button
-        onClick={handleShare}
-        title={copied ? 'Link copied!' : 'Share tree'}
-        className={`p-2 rounded-full transition-colors ${
-          copied
-            ? 'text-primary bg-primary/10'
-            : 'text-slate-500 hover:text-primary hover:bg-white/5'
-        }`}
-      >
-        <span className="material-symbols-outlined text-base leading-none">
-          {copied ? 'check_circle' : 'share'}
-        </span>
-      </button>
+      {/* ── Share / Rate / Reset — hidden in builder preview ── */}
+      {!preview && (
+        <>
+          {/* ── Share ── */}
+          <button
+            onClick={handleShare}
+            title={copied ? 'Link copied!' : 'Share tree'}
+            className={`p-2 rounded-full transition-colors ${
+              copied
+                ? 'text-primary bg-primary/10'
+                : 'text-slate-500 hover:text-primary hover:bg-white/5'
+            }`}
+          >
+            <span className="material-symbols-outlined text-base leading-none">
+              {copied ? 'check_circle' : 'share'}
+            </span>
+          </button>
 
-      {/* ── Rate tree ── */}
-      <button
-        onClick={onRateTree}
-        title={userRating ? `Your rating: ${userRating}/5 — click to change` : 'Rate this tree'}
-        className={`p-2 rounded-full transition-colors ${
-          userRating
-            ? 'text-amber-400 hover:text-amber-300 hover:bg-white/5'
-            : 'text-slate-500 hover:text-amber-400 hover:bg-white/5'
-        }`}
-      >
-        <span
-          className="material-symbols-outlined text-base leading-none"
-          style={{ fontVariationSettings: userRating ? "'FILL' 1" : "'FILL' 0" }}
-        >
-          star
-        </span>
-      </button>
+          {/* ── Rate tree ── */}
+          <button
+            onClick={onRateTree}
+            title={userRating ? `Your rating: ${userRating}/5 — click to change` : 'Rate this tree'}
+            className={`p-2 rounded-full transition-colors ${
+              userRating
+                ? 'text-amber-400 hover:text-amber-300 hover:bg-white/5'
+                : 'text-slate-500 hover:text-amber-400 hover:bg-white/5'
+            }`}
+          >
+            <span
+              className="material-symbols-outlined text-base leading-none"
+              style={{ fontVariationSettings: userRating ? "'FILL' 1" : "'FILL' 0" }}
+            >
+              star
+            </span>
+          </button>
 
-      {/* ── Reset progress ── */}
-      <button
-        onClick={onResetProgress}
-        title="Reset progress"
-        className="p-2 rounded-full text-slate-500 hover:text-red-400 hover:bg-white/5 transition-colors"
-      >
-        <span className="material-symbols-outlined text-base leading-none">delete_sweep</span>
-      </button>
+          {/* ── Reset progress ── */}
+          <button
+            onClick={onResetProgress}
+            title="Reset progress"
+            className="p-2 rounded-full text-slate-500 hover:text-red-400 hover:bg-white/5 transition-colors"
+          >
+            <span className="material-symbols-outlined text-base leading-none">delete_sweep</span>
+          </button>
+        </>
+      )}
     </div>
   )
 }

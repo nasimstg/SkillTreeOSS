@@ -7,7 +7,7 @@ import {
   applyNodeChanges,
 } from '@xyflow/react'
 import type { Node, Edge, Connection, NodeChange, EdgeChange } from '@xyflow/react'
-import type { BuilderNodeData, BuilderMeta } from '@/lib/builder-utils'
+import type { BuilderNodeData, BuilderMeta, CustomZone } from '@/lib/builder-utils'
 import {
   saveDraftToLocal,
   loadDraftFromLocal,
@@ -34,6 +34,12 @@ interface BuilderState {
   isPreviewMode:   boolean
   isDirty:         boolean
   draftId:         string   // 'default' for new, treeId for edits
+  layoutDir:       'LR' | 'TB'
+  showShortcuts:   boolean
+
+  // Custom zones + recent icons
+  customZones:     CustomZone[]
+  recentIcons:     string[]
 
   // Meta actions
   setMeta:         (partial: Partial<BuilderMeta>) => void
@@ -52,8 +58,25 @@ interface BuilderState {
   // Preview mode
   setPreviewMode:  (enabled: boolean) => void
 
+  // Layout
+  setLayoutDir:    (dir: 'LR' | 'TB') => void
+  applyAutoLayout: (positions: Record<string, { x: number; y: number }>, dir: 'LR' | 'TB', markDirty?: boolean) => void
+
+  // Shortcuts + multi-select helpers
+  setShowShortcuts: (b: boolean) => void
+  duplicateNode:    (id: string) => string
+  selectAllNodes:   () => void
+
+  // Zone actions
+  addCustomZone:    (name: string, color: string) => void
+  updateCustomZone: (oldName: string, partial: Partial<CustomZone>) => void
+  removeCustomZone: (name: string) => void
+
+  // Icon recents
+  trackIconUsed:    (icon: string) => void
+
   // Load a full tree into the builder (edit-existing flow)
-  loadDraft:       (nodes: Node<BuilderNodeData>[], edges: Edge[], meta: BuilderMeta, draftId?: string) => void
+  loadDraft:       (nodes: Node<BuilderNodeData>[], edges: Edge[], meta: BuilderMeta, draftId?: string, customZones?: CustomZone[], recentIcons?: string[]) => void
   resetBuilder:    () => void
 
   // Persistence
@@ -69,6 +92,10 @@ export const useBuilderStore = create<BuilderState>((set, get) => ({
   isPreviewMode:  false,
   isDirty:        false,
   draftId:        'default',
+  layoutDir:      'TB',
+  showShortcuts:  false,
+  customZones:    [],
+  recentIcons:    [],
 
   setMeta: (partial) => {
     set(s => ({ meta: { ...s.meta, ...partial }, isDirty: true }))
@@ -142,8 +169,106 @@ export const useBuilderStore = create<BuilderState>((set, get) => ({
 
   setPreviewMode: (enabled) => set({ isPreviewMode: enabled }),
 
-  loadDraft: (nodes, edges, meta, draftId = 'default') => {
-    set({ nodes, edges, meta, selectedNodeId: null, isPreviewMode: false, isDirty: false, draftId })
+  addCustomZone: (name, color) => {
+    if (get().customZones.find(z => z.name === name)) return
+    set(s => ({ customZones: [...s.customZones, { name, color }], isDirty: true }))
+    get().persistDraft()
+  },
+
+  updateCustomZone: (oldName, partial) => {
+    set(s => ({
+      customZones: s.customZones.map(z => z.name === oldName ? { ...z, ...partial } : z),
+      // If renaming, migrate all nodes using the old zone name
+      nodes: partial.name !== undefined
+        ? s.nodes.map(n =>
+            n.data.zone === oldName ? { ...n, data: { ...n.data, zone: partial.name! } } : n
+          )
+        : s.nodes,
+      isDirty: true,
+    }))
+    get().persistDraft()
+  },
+
+  removeCustomZone: (name) => {
+    set(s => ({
+      customZones: s.customZones.filter(z => z.name !== name),
+      // Reset zone on nodes that used the deleted zone
+      nodes: s.nodes.map(n =>
+        n.data.zone === name ? { ...n, data: { ...n.data, zone: '' } } : n
+      ),
+      isDirty: true,
+    }))
+    get().persistDraft()
+  },
+
+  setLayoutDir: (dir) => set({ layoutDir: dir }),
+
+  applyAutoLayout: (positions, dir, markDirty = true) => {
+    set(s => ({
+      layoutDir: dir,
+      nodes: s.nodes.map(n => {
+        const pos = positions[n.id]
+        if (!pos) return n
+        return { ...n, position: pos }
+      }),
+      isDirty: markDirty ? true : s.isDirty,
+    }))
+  },
+
+  setShowShortcuts: (b) => set({ showShortcuts: b }),
+
+  duplicateNode: (id) => {
+    const s = get()
+    const original = s.nodes.find(n => n.id === id)
+    if (!original) return ''
+    const newId = newNodeId()
+
+    // Find a nearby free slot so duplicates never stack on top of each other
+    const W = 240, H = 212
+    const base = original.position
+    const candidates: [number, number][] = [
+      [1, 0], [0, 1], [-1, 0], [0, -1],
+      [1, 1], [-1, 1], [1, -1], [-1, -1],
+      [2, 0], [0, 2], [-2, 0], [0, -2],
+    ]
+    let pos = { x: base.x + 48, y: base.y + 48 }
+    for (const [dx, dy] of candidates) {
+      const tx = base.x + dx * W
+      const ty = base.y + dy * H
+      const occupied = s.nodes.some(
+        n => Math.abs(n.position.x - tx) < W * 0.7 && Math.abs(n.position.y - ty) < H * 0.7
+      )
+      if (!occupied) { pos = { x: tx, y: ty }; break }
+    }
+
+    const dup: Node<BuilderNodeData> = {
+      ...original,
+      id:       newId,
+      position: pos,
+      selected: true,
+      data:     { ...original.data },
+    }
+    set(prev => ({
+      nodes:          [...prev.nodes.map(n => ({ ...n, selected: false })), dup],
+      selectedNodeId: newId,
+      isDirty:        true,
+    }))
+    get().persistDraft()
+    return newId
+  },
+
+  selectAllNodes: () => {
+    set(s => ({ nodes: s.nodes.map(n => ({ ...n, selected: true })) }))
+  },
+
+  trackIconUsed: (icon) => {
+    set(s => ({
+      recentIcons: [icon, ...s.recentIcons.filter(i => i !== icon)].slice(0, 8),
+    }))
+  },
+
+  loadDraft: (nodes, edges, meta, draftId = 'default', customZones = [], recentIcons = []) => {
+    set({ nodes, edges, meta, customZones, recentIcons, selectedNodeId: null, isPreviewMode: false, isDirty: false, draftId, layoutDir: 'TB' })
   },
 
   resetBuilder: () => {
@@ -151,23 +276,34 @@ export const useBuilderStore = create<BuilderState>((set, get) => ({
       meta:           { ...DEFAULT_META },
       nodes:          [],
       edges:          [],
+      customZones:    [],
+      recentIcons:    [],
       selectedNodeId: null,
       isPreviewMode:  false,
       isDirty:        false,
       draftId:        'default',
+      layoutDir:      'TB',
+      showShortcuts:  false,
     })
   },
 
   persistDraft: () => {
-    const { meta, nodes, edges, draftId } = get()
-    saveDraftToLocal({ meta, nodes, edges }, draftId)
+    const { meta, nodes, edges, draftId, customZones, recentIcons } = get()
+    saveDraftToLocal({ meta, nodes, edges, customZones, recentIcons }, draftId)
   },
 
   hydrateFromLocal: () => {
     const { draftId } = get()
     const draft = loadDraftFromLocal(draftId)
     if (draft) {
-      set({ meta: draft.meta, nodes: draft.nodes, edges: draft.edges, isDirty: false })
+      set({
+        meta:        draft.meta,
+        nodes:       draft.nodes,
+        edges:       draft.edges,
+        customZones: draft.customZones ?? [],
+        recentIcons: draft.recentIcons ?? [],
+        isDirty:     false,
+      })
     }
   },
 }))

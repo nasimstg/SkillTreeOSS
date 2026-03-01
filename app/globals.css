@@ -30,17 +30,31 @@
   }
 
   /* Custom scrollbar */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #0f0f0f; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #444; }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f0f0f;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #444;
+  }
 }
 
 @layer utilities {
+
   /* Builder form input */
   .input-sm {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 4px 10px;
     font-size: 12px;
@@ -49,17 +63,36 @@
     transition: border-color 0.15s;
     min-height: 30px;
   }
+
   .input-sm:focus {
     border-color: rgba(17, 212, 82, 0.5);
     box-shadow: 0 0 0 2px rgba(17, 212, 82, 0.1);
   }
-  .input-sm::placeholder { color: #4a5568; }
-  .input-sm option { background: #1a1a1a; color: #e2e8f0; }
 
-  .glow-primary { box-shadow: 0 0 20px rgba(17, 212, 82, 0.4); }
-  .glow-primary-lg { box-shadow: 0 0 40px rgba(17, 212, 82, 0.5); }
-  .glow-blue { box-shadow: 0 0 20px rgba(43, 149, 255, 0.4); }
-  .glow-card { box-shadow: 0 10px 40px -10px rgba(17, 212, 82, 0.2); }
+  .input-sm::placeholder {
+    color: #4a5568;
+  }
+
+  .input-sm option {
+    background: #1a1a1a;
+    color: #e2e8f0;
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(17, 212, 82, 0.4);
+  }
+
+  .glow-primary-lg {
+    box-shadow: 0 0 40px rgba(17, 212, 82, 0.5);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(43, 149, 255, 0.4);
+  }
+
+  .glow-card {
+    box-shadow: 0 10px 40px -10px rgba(17, 212, 82, 0.2);
+  }
 
   .bg-grid-dark {
     background-image:
@@ -96,15 +129,44 @@
 }
 
 @keyframes ringPulse {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.08); }
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* React Flow overrides */
-.react-flow__background { background-color: #0f0f0f !important; }
-.react-flow__handle { opacity: 0 !important; pointer-events: none !important; }
+.react-flow__background {
+  background-color: #0f0f0f;
+}
+
+/* Viewer canvas — hide connection handles (read-only, users don't need to connect nodes) */
+.react-flow__handle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Builder canvas — handles must be visible and interactive for node connections */
+.builder-rf-wrapper .react-flow__handle {
+  opacity: 1 !important;
+  pointer-events: all !important;
+}

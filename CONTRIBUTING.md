@@ -11,18 +11,42 @@ You do **not** need to be a programmer to contribute to this project. We welcome
 
 ## 🏗️ 1. Using the Visual Builder (Easiest)
 
-The fastest way to create or update a skill tree is to use the **in-app builder** at [/builder](/builder). No JSON editing or GitHub knowledge required.
+The fastest way to create or update a skill tree is the **in-app builder** at [/builder](/builder). No JSON editing or GitHub knowledge required.
 
-1. Go to `/builder` (or `/builder/[treeId]` to edit an existing tree)
-2. Fill in the tree metadata (title, category, difficulty, description)
-3. Double-click the canvas to add nodes; drag between nodes to connect them
-4. Edit each node: label, description, zone, icon, and learning resources
-5. Click **Preview** to see exactly how the tree will look in the viewer
-6. Click **Submit Tree** to open a Pull Request:
+### Creating a new tree
+
+1. Go to `/builder`
+2. Click **Tree Metadata** (top-left panel) and fill in the title, category, difficulty, description, icon, and estimated months
+3. **Add nodes** — double-click the canvas, press `N` at the cursor, or click `+` in the left toolbar
+4. **Connect nodes** — drag from the bottom handle of one node to the top handle of another (or left→right in LR layout)
+5. **Edit a node** — click it to open the right editor panel; set label, description, zone, icon, and learning resources
+6. **Multi-select** — drag a rectangle in Select mode, or `Ctrl+click` to add nodes to the selection
+7. **Auto-layout** — press `Ctrl+L` or the toolbar button to toggle between Top-Bottom and Left-Right Dagre layout
+8. Click **Preview** in the header to see the tree exactly as learners will see it (all 4 themes, sidebar, prereq timeline)
+9. Click **Submit PR** to open a Pull Request:
    - **Anonymously** — the SkillTreeOSS bot opens the PR on your behalf
-   - **As your GitHub account** — connect GitHub first (Settings → Connect GitHub), then the PR comes from your own fork
+   - **As your GitHub account** — connect GitHub first (Settings → Connect GitHub)
 
-The PR will be reviewed by maintainers before it goes live.
+### Editing an existing tree
+
+Go to `/builder/[treeId]` — the tree is loaded from the published JSON and converted into builder nodes automatically.
+
+### Builder keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `V` | Select tool |
+| `H` | Pan tool |
+| `N` | Add node at cursor position |
+| `Double-click canvas` | Add node at that point |
+| `Ctrl+A` | Select all nodes |
+| `Ctrl+L` | Toggle layout direction (LR ↔ TB) |
+| `Delete` / `Backspace` | Delete selected node(s) |
+| `Ctrl+Z` / `Ctrl+Y` | Undo / Redo |
+| `?` | Open shortcuts & guide modal |
+| `Escape` | Deselect / close panels |
+
+Press `?` in the builder for the full interactive guide.
 
 ---
 
@@ -97,47 +121,77 @@ Here is a simple template:
 
 ### Step 2: Key Rules for JSON Editing
 
-* **No coordinates needed:** The app uses the Dagre layout engine to automatically compute node positions from the graph structure. You only need to define the `requires` relationships — the visual tree arranges itself. Do **not** add `position` fields; they are ignored.
-* **`difficulty` values:** Use `"easy"`, `"medium"`, or `"hard"` (lowercase). The UI maps these to Beginner / Intermediate / Advanced labels.
-* **Edges:** The `source` is the ID of the prerequisite skill. The `target` is the ID of the skill it unlocks. Every edge must have a matching entry in the node's `requires` array.
-* **Resources:** We only link to **100% free** resources unless `"isFree": false` is explicitly set. Do not link to paid courses, bootcamps, or generic landing pages. Link directly to the specific YouTube video or article that teaches that exact node. Each node can have multiple resources — add alternatives across different formats (video + article + interactive).
-* **`totalNodes`:** Keep this field accurate (equal to the number of node objects in the `nodes` array). It is used for progress calculations and stats.
+* **No coordinates needed:** The app uses the Dagre layout engine to automatically compute node positions from the graph structure. You only need to define the `requires` relationships — the visual tree arranges itself. Do **not** add `position` fields.
+* **`difficulty` values:** Use `"easy"`, `"medium"`, or `"hard"` (lowercase).
+* **Edges:** `source` is the prerequisite node ID; `target` is the node it unlocks. Every edge must have a corresponding `requires` entry on the target node.
+* **Resources:** Link only to **100% free** resources unless `"isFree": false` is set. Link directly to the specific video or article — no generic landing pages or paid courses. Each node can have multiple resources (video + article + interactive).
+* **`totalNodes`:** Must equal the number of entries in the `nodes` array exactly.
+* **`treeId`:** Kebab-case (`^[a-z0-9-]+$`); must match the JSON filename without the extension.
 
 ### Step 3: Submitting Your Tree
 
 1. Fork this repository.
 2. Create a new branch (e.g., `add-urban-sketching-tree`).
 3. Add your `.json` file to the `data/trees/` folder.
-4. Submit a Pull Request (PR)! Our automated systems will check your file for missing commas or formatting errors.
+4. Submit a Pull Request — automated CI will validate your JSON against `data/schema.json`.
 
 ---
 
-## 💻 2. Contributing Code
+## 💻 3. Contributing Code
 
-If you want to help build the platform's UI or backend, we are thrilled to have you! We use **Next.js**, **React Flow**, **Zustand**, **Tailwind CSS**, and **Supabase**.
+If you want to help build the platform's UI or backend, we are thrilled to have you! We use **Next.js 16**, **ReactFlow**, **Zustand**, **Tailwind CSS v4**, **Framer Motion**, and **Supabase**.
 
 ### Local Setup
 
 1. Fork and clone the repo.
 2. Run `npm install`.
-3. Duplicate `.env.local.example` to `.env.local`. (You can use the mock Supabase keys provided in the example for local UI development, or spin up your own free Supabase project).
+3. Duplicate `.env.local.example` to `.env.local` and fill in your Supabase credentials (or use the mock keys from the example file for local UI development).
 4. Run `npm run dev`.
+
+Open `http://localhost:3000` for the main app and `http://localhost:3000/builder` for the builder.
+
+### Codebase Map
+
+| Path | Purpose |
+|---|---|
+| `app/(canvas)/` | Canvas layout group — tree viewer and builder pages |
+| `app/(canvas)/tree/[slug]/` | Skill tree viewer page |
+| `app/(canvas)/builder/` | New tree builder page |
+| `app/(canvas)/builder/[id]/` | Edit existing tree page |
+| `components/canvas/` | Viewer canvas components (`SkillCanvas`, `CustomNode`, `NodeSidebar`, `CanvasFAB`) |
+| `components/builder/` | Builder components (`BuilderCanvas`, `BuilderNode`, `BuilderNodeEditor`, `BuilderHeader`, `LeftToolbar`, `ContextMenu`, `ShortcutsModal`, `MetadataPanel`, `ResourceEditor`, `IconPicker`, `ZoneSelector`) |
+| `components/layout/` | `Navbar`, `Footer`, `UserMenu` |
+| `lib/store.ts` | Zustand store — viewer/learner state |
+| `lib/builder-store.ts` | Zustand store — builder state (separate from viewer) |
+| `lib/builder-utils.ts` | `treeToDraft` converter, `BuilderDraft` type |
+| `lib/autoLayout.ts` | Dagre auto-layout (used by both viewer and builder) |
+| `lib/utils.ts` | Pure utilities: `getNodeStatus`, `getProgressPercent`, `formatHours`, `getLevelInfo` |
+| `data/trees/` | Skill tree JSON content files |
+| `data/schema.json` | JSON Schema (draft-07) for CI validation |
+| `supabase/migrations/` | SQL migration files |
+| `types/` | Shared TypeScript types (`tree.ts`, `user.ts`) |
 
 ### Development Guidelines
 
-* **State Management:** For anything related to the canvas (dragging, zooming, selecting nodes, XP), strictly use the Zustand store in `lib/store.ts`. Do not use React Context for canvas state — it causes severe performance issues with React Flow.
+* **State Management — viewer:** Use `lib/store.ts` (`useSkillTreeStore`) for anything in the viewer canvas (completed nodes, selected node, canvas view, XP). Never use React Context for canvas state — it causes severe performance issues with ReactFlow.
+* **State Management — builder:** Use `lib/builder-store.ts` (`useBuilderStore`) for all builder state. The two stores are completely independent; do not read from one in the other.
+* **Builder node placement:** When adding a node programmatically, call `findFreePosition(cx, cy, existingNodes)` from `BuilderCanvas.tsx` to pick the first unoccupied spiral-grid slot. This prevents nodes from stacking.
+* **Builder viewport centering:** Use `setViewport({ x: screenCX - nodeCX * zoom, y: screenCY - nodeCY * zoom, zoom })` — not `setCenter` — so the fixed-position editor panel is accounted for. Read `panelW` from `document.querySelector('[data-builder-panel]').offsetWidth`.
+* **`autoLayout.ts`:** Call `computeAutoLayout(tree, view, dir, dims?)` — pass `{ w: 224, h: 180 }` as `dims` from the builder so Dagre uses the actual builder node size rather than per-view defaults.
 * **XP / Levels:** `XP_PER_NODE`, `LEVEL_THRESHOLDS`, and `getLevelInfo()` are exported from `lib/utils.ts`. Import from there rather than redefining locally.
-* **Styling:** Use Tailwind utility classes. Theme tokens (colors, backgrounds) are defined in `app/globals.css`.
-* **Database (Supabase):** If your PR requires schema changes, add a migration file to `supabase/migrations/` and describe it in your PR. Use sequential filenames (`20240104_…`). Always enable RLS on new tables.
-* **Server Components & Cookies:** Use `createServerSupabaseClient()` from `lib/supabase-server.ts` in Server Components and Route Handlers. The `setAll` cookie handler silently no-ops in Server Components (by design) — session refresh is handled by middleware.
-* **Featured Trees:** To feature a different tree on the landing page, edit `lib/featured-trees.ts` — no other code changes needed.
+* **Styling:** Use Tailwind utility classes. Theme tokens are defined in `app/globals.css` (`background-dark=#0f0f0f`, `surface-dark=#1a1a1a`, `card-dark=#1a2920`, `primary=#11d452`).
+* **Animations:** Use Framer Motion `layoutId` for element-position animations between shared elements (builder tool bubble, header tab bubble). Use `AnimatePresence` for mount/unmount transitions.
+* **Database (Supabase):** If your PR requires schema changes, add a migration file to `supabase/migrations/` (`20240104_…` format) and describe it in your PR. Always enable RLS on new tables.
+* **Server Components & Cookies:** Use `createServerSupabaseClient()` from `lib/supabase-server.ts` in Server Components and Route Handlers.
+* **Featured Trees:** Edit `lib/featured-trees.ts` only — no other code changes needed.
 
 ---
 
 ## ✅ The Pull Request Process
 
-1. Ensure your code lints (`npm run lint`) and builds (`npm run build`).
-2. Update the README.md with details of changes to the interface or new environment variables.
-3. Your PR will be reviewed by a maintainer. We may suggest some UI tweaks or ask you to adjust a node's coordinates so the tree looks perfectly balanced.
+1. Ensure your code type-checks (`npx tsc --noEmit`), lints (`npm run lint`), and builds (`npm run build`).
+2. Update `CHANGELOG.md` with a brief description of your change under `[Unreleased]`.
+3. Update `README.md` if you've added new environment variables, routes, or major features.
+4. Your PR will be reviewed by a maintainer within a few days.
 
 Welcome to the party. Let's build the ultimate map of human knowledge!

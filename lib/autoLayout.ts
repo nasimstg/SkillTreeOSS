@@ -31,8 +31,10 @@ export function computeAutoLayout(
   tree: SkillTree,
   view: CanvasView,
   dir: LayoutDir,
+  /** Override node dimensions (e.g. for builder nodes which differ from viewer nodes) */
+  dims?: { w: number; h: number },
 ): Record<string, { x: number; y: number }> {
-  const { w, h }               = NODE_DIMS[view]
+  const { w, h }               = dims ?? NODE_DIMS[view]
   const { nodesep, ranksep }   = SPACING[dir]
 
   const g = new dagre.graphlib.Graph()

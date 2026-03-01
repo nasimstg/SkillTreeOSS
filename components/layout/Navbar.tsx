@@ -16,7 +16,7 @@ const CIRCUMFERENCE = 2 * Math.PI * R
 
 // ─── UserMenu ─────────────────────────────────────────────────────────────────
 
-function UserMenu({ user }: { user: UserProfile }) {
+export function UserMenu({ user }: { user: UserProfile }) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const [ghUsername, setGhUsername] = useState<string | null>(null)

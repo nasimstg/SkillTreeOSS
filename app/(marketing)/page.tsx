@@ -178,7 +178,7 @@ export default async function LandingPage() {
           <div className="relative z-10 mx-auto max-w-4xl text-center flex flex-col items-center gap-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold text-primary uppercase tracking-wider">
               <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-              v0.7 beta is now live
+              v0.8 · Visual Builder is live
             </div>
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-tight tracking-tight text-gradient-primary">
               The Democratization <br />of Mastery.
@@ -195,21 +195,20 @@ export default async function LandingPage() {
                 Start Learning (Free)
                 <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
               </Link>
-              <a
-                href="https://github.com/nasimstg/SkillTreeOSS"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-12 items-center justify-center gap-2 rounded-lg border border-primary/30 bg-transparent px-8 text-base font-bold text-white transition-all hover:bg-primary/10 hover:border-primary"
+              <Link
+                href="/builder"
+                className="group flex h-12 items-center justify-center gap-2 rounded-lg border border-primary/30 bg-transparent px-8 text-base font-bold text-white transition-all hover:bg-primary/10 hover:border-primary"
               >
-                <span className="material-symbols-outlined">code</span>
-                View on GitHub
-              </a>
+                <span className="material-symbols-outlined text-primary">account_tree</span>
+                Build a Tree
+              </Link>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-slate-500 font-medium">
               {[
-                { icon: 'check_circle', label: 'Open Source'      },
-                { icon: 'group',        label: 'Community Driven'  },
-                { icon: 'trophy',       label: 'Gamified Learning' },
+                { icon: 'check_circle',  label: 'Open Source'      },
+                { icon: 'group',         label: 'Community Driven'  },
+                { icon: 'trophy',        label: 'Gamified Learning' },
+                { icon: 'account_tree',  label: 'Visual Builder'    },
               ].map(p => (
                 <div key={p.label} className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-base">{p.icon}</span>
@@ -289,11 +288,12 @@ export default async function LandingPage() {
               <h2 className="text-2xl font-bold text-white">How It Works</h2>
               <p className="text-slate-400 mt-2">Three steps to mastery</p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { step: '01', icon: 'travel_explore',    title: 'Pick Your Quest',    desc: 'Browse community-built skill trees across any discipline — from coding to botany to urban sketching.'         },
                 { step: '02', icon: 'play_lesson',       title: 'Learn & Unlock',     desc: 'Each node links to the single best free resource. Complete it, hit Unlock, and watch the next path light up.' },
                 { step: '03', icon: 'workspace_premium', title: 'Share Your Mastery', desc: 'Generate a stunning visual skill resume to share on LinkedIn, GitHub, or wherever the world can see you.'      },
+                { step: '04', icon: 'account_tree',      title: 'Build & Contribute', desc: 'Use the visual builder to create your own skill tree and submit it as a PR — no JSON or Git knowledge needed.' },
               ].map((item) => (
                 <div
                   key={item.step}

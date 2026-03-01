@@ -136,11 +136,11 @@ function getAllAncestors(node: TreeNode, allNodes: TreeNode[]): TreeNode[] {
 
 // ── Props ──────────────────────────────────────────────────────────────────────
 
-interface Props { tree: SkillTree }
+interface Props { tree: SkillTree; preview?: boolean }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
 
-export default function NodeSidebar({ tree }: Props) {
+export default function NodeSidebar({ tree, preview = false }: Props) {
   const { selectedNode, setSelectedNode, completedNodeIds, completeNode, currentTree, setHoveredPrereqId } =
     useSkillTreeStore()
 
@@ -228,7 +228,7 @@ export default function NodeSidebar({ tree }: Props) {
               <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
 
                 {/* Resources */}
-                <ResourceList node={node} treeId={treeId} nodeId={node.id} />
+                <ResourceList node={node} treeId={treeId} nodeId={node.id} preview={preview} />
 
                 {/* Prerequisites — vertical timeline */}
                 {prerequisites.length > 0 && (
@@ -314,31 +314,32 @@ export default function NodeSidebar({ tree }: Props) {
                 )}
               </div>
 
-              {/* ── Footer ── */}
-              <div className="shrink-0 px-6 py-5 border-t border-white/[0.08] bg-background-dark shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.4)]">
-                {isCompleted ? (
-                  <div className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-primary/10 border border-primary/30 text-primary font-bold">
-                    <span className="material-symbols-outlined">workspace_premium</span>
-                    Node Mastered!
-                  </div>
-                ) : isLocked ? (
-                  <div className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-white/5 border border-white/10 text-slate-500 font-bold cursor-not-allowed">
-                    <span className="material-symbols-outlined">lock</span>
-                    Complete prerequisites first
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => completeNode(node.id, treeId)}
-                    className="w-full relative group overflow-hidden rounded-xl bg-primary hover:bg-primary-dark transition-all duration-300 text-background-dark h-14 font-bold text-base tracking-wide flex items-center justify-center gap-3 glow-primary hover:glow-primary-lg"
-                  >
-                    <span className="material-symbols-outlined group-hover:rotate-12 transition-transform duration-300">
-                      lock_open
-                    </span>
-                    Mark as Completed
-                  </button>
-                )}
-
-              </div>
+              {/* ── Footer — hidden in builder preview ── */}
+              {!preview && (
+                <div className="shrink-0 px-6 py-5 border-t border-white/[0.08] bg-background-dark shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.4)]">
+                  {isCompleted ? (
+                    <div className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-primary/10 border border-primary/30 text-primary font-bold">
+                      <span className="material-symbols-outlined">workspace_premium</span>
+                      Node Mastered!
+                    </div>
+                  ) : isLocked ? (
+                    <div className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-white/5 border border-white/10 text-slate-500 font-bold cursor-not-allowed">
+                      <span className="material-symbols-outlined">lock</span>
+                      Complete prerequisites first
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => completeNode(node.id, treeId)}
+                      className="w-full relative group overflow-hidden rounded-xl bg-primary hover:bg-primary-dark transition-all duration-300 text-background-dark h-14 font-bold text-base tracking-wide flex items-center justify-center gap-3 glow-primary hover:glow-primary-lg"
+                    >
+                      <span className="material-symbols-outlined group-hover:rotate-12 transition-transform duration-300">
+                        lock_open
+                      </span>
+                      Mark as Completed
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </motion.aside>
         </>
@@ -440,7 +441,7 @@ function PrereqTimelineItem({ prereq, isLast, completedNodeIds, onNavigate, onHo
 
 // ── ResourceList ───────────────────────────────────────────────────────────────
 
-function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string; nodeId: string }) {
+function ResourceList({ node, treeId, nodeId, preview = false }: { node: TreeNode; treeId: string; nodeId: string; preview?: boolean }) {
   const [typeFilter, setTypeFilter] = useState<ResourceType | 'all'>('all')
   const [votes, setVotes] = useState<Record<string, 'up' | 'down'>>({})
 
@@ -548,11 +549,13 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
                   <p className="text-xs text-slate-500">By {featured.author}</p>
                 </a>
 
-                {/* Per-resource vote */}
-                <ResourceVote
-                  vote={votes[featured.id] ?? null}
-                  onVote={(v) => handleVote(featured.id, featured.url, v)}
-                />
+                {/* Per-resource vote — hidden in builder preview */}
+                {!preview && (
+                  <ResourceVote
+                    vote={votes[featured.id] ?? null}
+                    onVote={(v) => handleVote(featured.id, featured.url, v)}
+                  />
+                )}
               </motion.div>
             )}
 
@@ -595,13 +598,15 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
                     </div>
                   </a>
 
-                  {/* Per-resource vote */}
-                  <div className="px-4 pb-3 border-t border-white/[0.05]">
-                    <ResourceVote
-                      vote={votes[r.id] ?? null}
-                      onVote={(v) => handleVote(r.id, r.url, v)}
-                    />
-                  </div>
+                  {/* Per-resource vote — hidden in builder preview */}
+                  {!preview && (
+                    <div className="px-4 pb-3 border-t border-white/[0.05]">
+                      <ResourceVote
+                        vote={votes[r.id] ?? null}
+                        onVote={(v) => handleVote(r.id, r.url, v)}
+                      />
+                    </div>
+                  )}
                 </motion.div>
               )
             })}
@@ -609,8 +614,8 @@ function ResourceList({ node, treeId, nodeId }: { node: TreeNode; treeId: string
         )}
       </AnimatePresence>
 
-      {/* Suggest a better resource */}
-      <SuggestResourceButton treeId={treeId} nodeId={nodeId} nodeLabel={node.label} />
+      {/* Suggest a better resource — hidden in builder preview */}
+      {!preview && <SuggestResourceButton treeId={treeId} nodeId={nodeId} nodeLabel={node.label} />}
     </div>
   )
 }

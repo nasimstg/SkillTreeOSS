@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Contribute — SkilleTreeOSS',
-  description: 'Add your own skill tree. All trees are open-source JSON files contributed via GitHub pull requests.',
+  description: 'Add your own skill tree. Use the visual builder or submit a JSON pull request on GitHub.',
 }
 
 const STEPS = [
@@ -81,9 +81,44 @@ export default function ContributePage() {
 
         <div className="mx-auto max-w-3xl px-6 lg:px-8 py-16 space-y-16">
 
+          {/* Builder CTA — easy path */}
+          <section>
+            <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-surface-dark to-surface-dark border border-primary/25 p-8 flex flex-col sm:flex-row items-center gap-6">
+              <div className="shrink-0 w-16 h-16 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center">
+                <span className="material-symbols-outlined text-primary text-3xl">account_tree</span>
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 border border-primary/25 text-primary text-[10px] font-black uppercase tracking-widest mb-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  Easiest way — no Git required
+                </div>
+                <h2 className="text-xl font-black text-white mb-1">Use the Visual Builder</h2>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Design your tree on a drag-and-drop canvas, fill in node details and resources,
+                  then hit Submit — the builder opens a GitHub PR for you automatically.
+                </p>
+              </div>
+              <Link
+                href="/builder"
+                className="shrink-0 inline-flex items-center gap-2 bg-primary hover:bg-primary/85 text-background-dark font-bold px-6 py-3 rounded-xl transition-colors text-sm whitespace-nowrap"
+                style={{ boxShadow: '0 0 16px rgba(17,212,82,0.25)' }}
+              >
+                <span className="material-symbols-outlined text-lg">open_in_new</span>
+                Open Builder
+              </Link>
+            </div>
+          </section>
+
+          {/* Divider with label */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-white/5" />
+            <span className="text-xs font-bold text-slate-600 uppercase tracking-widest">or contribute via GitHub</span>
+            <div className="flex-1 h-px bg-white/5" />
+          </div>
+
           {/* Steps */}
           <section>
-            <h2 className="text-2xl font-black text-white mb-8">How to contribute a tree</h2>
+            <h2 className="text-2xl font-black text-white mb-8">Manual JSON pull request</h2>
             <div className="space-y-4">
               {STEPS.map((step, i) => (
                 <div key={i} className="flex gap-5 bg-surface-dark rounded-2xl border border-white/5 p-6">
@@ -173,15 +208,24 @@ export default function ContributePage() {
             <p className="text-slate-400 text-sm mb-6">
               Any skill. Any topic. If it can be learned with free resources, it belongs here.
             </p>
-            <a
-              href="https://github.com/nasimstg/SkillTreeOSS"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary hover:bg-primary/80 text-background-dark font-bold px-6 py-3 rounded-xl transition-colors text-sm"
-            >
-              Open a Pull Request
-              <span className="material-symbols-outlined text-lg">arrow_forward</span>
-            </a>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/builder"
+                className="inline-flex items-center gap-2 bg-primary hover:bg-primary/80 text-background-dark font-bold px-6 py-3 rounded-xl transition-colors text-sm"
+              >
+                <span className="material-symbols-outlined text-lg">account_tree</span>
+                Use the Builder
+              </Link>
+              <a
+                href="https://github.com/nasimstg/SkillTreeOSS"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-white/10 hover:border-primary/40 text-slate-300 hover:text-white font-bold px-6 py-3 rounded-xl transition-colors text-sm"
+              >
+                <span className="material-symbols-outlined text-lg">code</span>
+                Open a Pull Request
+              </a>
+            </div>
           </div>
         </div>
       </main>
