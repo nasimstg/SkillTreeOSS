@@ -9,7 +9,24 @@ You do **not** need to be a programmer to contribute to this project. We welcome
 
 ---
 
-## 🗺️ 1. Contributing Content (No coding required)
+## 🏗️ 1. Using the Visual Builder (Easiest)
+
+The fastest way to create or update a skill tree is to use the **in-app builder** at [/builder](/builder). No JSON editing or GitHub knowledge required.
+
+1. Go to `/builder` (or `/builder/[treeId]` to edit an existing tree)
+2. Fill in the tree metadata (title, category, difficulty, description)
+3. Double-click the canvas to add nodes; drag between nodes to connect them
+4. Edit each node: label, description, zone, icon, and learning resources
+5. Click **Preview** to see exactly how the tree will look in the viewer
+6. Click **Submit Tree** to open a Pull Request:
+   - **Anonymously** — the SkillTreeOSS bot opens the PR on your behalf
+   - **As your GitHub account** — connect GitHub first (Settings → Connect GitHub), then the PR comes from your own fork
+
+The PR will be reviewed by maintainers before it goes live.
+
+---
+
+## 🗺️ 2. Contributing Content Manually (JSON)
 
 All the skill trees on the website are generated from simple text files formatted in JSON. They live in the `data/trees/` folder of this repository.
 

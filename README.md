@@ -18,6 +18,16 @@ SkilleTreeOSS solves this by turning education into a visual progression system.
 
 ## ✨ Features
 
+### 🏗️ Visual Skill Tree Builder
+- **In-app editor** at `/builder` — no JSON or GitHub knowledge required
+- Double-click the canvas to add nodes; drag to connect them
+- Edit node label, description, zone, icon, and learning resources inline
+- **Preview mode** — instantly see how the tree looks in the viewer
+- **Anonymous submission** — bot token creates a PR on your behalf
+- **GitHub-connected submission** — PR opens from your own GitHub fork
+- Auto-save drafts to localStorage + Supabase (signed-in users)
+- Load and edit any existing tree at `/builder/[treeId]`
+
 ### 🗺️ Interactive Skill Canvas
 - **4 visual themes** — World Map, RPG, Terminal, Neural
 - Dagre auto-layout with toggleable LR ↔ TB direction

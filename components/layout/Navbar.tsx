@@ -19,6 +19,7 @@ const CIRCUMFERENCE = 2 * Math.PI * R
 function UserMenu({ user }: { user: UserProfile }) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const [ghUsername, setGhUsername] = useState<string | null>(null)
 
   const globalXp    = useSkillTreeStore((s) => s.globalXp)
   const setGlobalXp = useSkillTreeStore((s) => s.setGlobalXp)
@@ -27,6 +28,17 @@ function UserMenu({ user }: { user: UserProfile }) {
   const dashOffset = CIRCUMFERENCE * (1 - progress)
 
   const initials = (user.display_name ?? user.email).charAt(0).toUpperCase()
+
+  // Fetch GitHub connection status
+  useEffect(() => {
+    fetch('/api/github/status')
+      .then(r => r.json())
+      .then(({ connected, username }: { connected: boolean; username: string | null }) => {
+        if (connected) setGhUsername(username)
+      })
+      .catch(() => {})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.id])
 
   // Hydrate globalXp from DB once on mount so it's correct after a page refresh
   useEffect(() => {
@@ -161,6 +173,14 @@ function UserMenu({ user }: { user: UserProfile }) {
               Dashboard
             </Link>
             <Link
+              href="/builder"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+            >
+              <span className="material-symbols-outlined text-[17px] leading-none text-slate-500">build</span>
+              Build a Tree
+            </Link>
+            <Link
               href="/settings"
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
@@ -168,6 +188,34 @@ function UserMenu({ user }: { user: UserProfile }) {
               <span className="material-symbols-outlined text-[17px] leading-none text-slate-500">settings</span>
               Settings
             </Link>
+
+            <div className="h-px bg-white/[0.06] my-0.5" />
+
+            {/* GitHub connection */}
+            {ghUsername ? (
+              <div className="flex items-center gap-2.5 px-3 py-2 text-sm">
+                <span className="material-symbols-outlined text-[17px] leading-none text-primary">link</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-slate-300 text-xs leading-tight">GitHub connected</p>
+                  <p className="text-primary text-[10px] truncate">@{ghUsername}</p>
+                </div>
+                <button
+                  onClick={() => fetch('/api/github/disconnect', { method: 'DELETE' }).then(() => setGhUsername(null))}
+                  className="text-slate-600 hover:text-red-400 transition-colors text-[10px]"
+                  title="Disconnect GitHub"
+                >
+                  <span className="material-symbols-outlined text-sm">link_off</span>
+                </button>
+              </div>
+            ) : (
+              <a
+                href="/api/github/connect"
+                className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+              >
+                <span className="material-symbols-outlined text-[17px] leading-none text-slate-500">link</span>
+                Connect GitHub
+              </a>
+            )}
 
             <div className="h-px bg-white/[0.06] my-0.5" />
 
@@ -224,6 +272,9 @@ export default function Navbar({ variant = 'landing' }: NavbarProps) {
           </Link>
           <Link href="/contribute" className="text-sm font-medium text-slate-400 hover:text-primary transition-colors">
             Contribute
+          </Link>
+          <Link href="/builder" className="text-sm font-medium text-slate-400 hover:text-primary transition-colors">
+            Build
           </Link>
           <a
             href="https://github.com/nasimstg/SkillTreeOSS"

@@ -37,6 +37,25 @@
 }
 
 @layer utilities {
+  /* Builder form input */
+  .input-sm {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #e2e8f0;
+    outline: none;
+    transition: border-color 0.15s;
+    min-height: 30px;
+  }
+  .input-sm:focus {
+    border-color: rgba(17, 212, 82, 0.5);
+    box-shadow: 0 0 0 2px rgba(17, 212, 82, 0.1);
+  }
+  .input-sm::placeholder { color: #4a5568; }
+  .input-sm option { background: #1a1a1a; color: #e2e8f0; }
+
   .glow-primary { box-shadow: 0 0 20px rgba(17, 212, 82, 0.4); }
   .glow-primary-lg { box-shadow: 0 0 40px rgba(17, 212, 82, 0.5); }
   .glow-blue { box-shadow: 0 0 20px rgba(43, 149, 255, 0.4); }
