@@ -1,0 +1,60 @@
+{
+  "treeId": "test-tree",
+  "title": "This is a test tree created using inapp builder",
+  "category": "Technology",
+  "difficulty": "medium",
+  "description": "This is for testing",
+  "version": "1.0",
+  "estimatedMonths": 3,
+  "totalNodes": 2,
+  "icon": "school",
+  "nodes": [
+    {
+      "id": "node-pgdx2y",
+      "label": "N11",
+      "description": "This is n1 of the tree",
+      "icon": "school",
+      "zone": "DevOps",
+      "resources": [
+        {
+          "id": "res-fd62b3",
+          "title": "video",
+          "url": "https://www.youtube.com/watch?v=1A6NUAl0IBg",
+          "type": "video",
+          "author": "Test",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "requires": []
+    },
+    {
+      "id": "node-d1tu6o",
+      "label": "New Node1111",
+      "description": "asdfasdf",
+      "icon": "bar_chart",
+      "zone": "Data",
+      "resources": [
+        {
+          "id": "res-4x0nsa",
+          "title": "aaa",
+          "url": "https://aadd.com",
+          "type": "article",
+          "author": "acdaa",
+          "estimatedHours": 1,
+          "isFree": true
+        }
+      ],
+      "requires": [
+        "node-pgdx2y"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-node-pgdx2y-node-d1tu6o",
+      "source": "node-pgdx2y",
+      "target": "node-d1tu6o"
+    }
+  ]
+}
