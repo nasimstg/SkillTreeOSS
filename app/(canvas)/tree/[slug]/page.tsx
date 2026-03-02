@@ -15,11 +15,22 @@ export async function generateMetadata({ params }: Props) {
     const treePath = join(process.cwd(), 'data', 'trees', `${slug}.json`)
     const tree = JSON.parse(readFileSync(treePath, 'utf-8')) as SkillTree
     return {
-      title: `${tree.title} — SkilleTreeOSS`,
+      title: tree.title,
       description: tree.description,
+      openGraph: {
+        title: `${tree.title} — SkillTreeOSS`,
+        description: tree.description,
+        url: `/tree/${slug}`,
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary' as const,
+        title: `${tree.title} — SkillTreeOSS`,
+        description: tree.description,
+      },
     }
   } catch {
-    return { title: 'Skill Tree — SkilleTreeOSS' }
+    return { title: 'Skill Tree' }
   }
 }
 

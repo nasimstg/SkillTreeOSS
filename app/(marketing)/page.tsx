@@ -4,6 +4,26 @@ import { join } from 'path'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { FEATURED_TREE_IDS } from '@/lib/featured-trees'
 import type { SkillTree } from '@/types/tree'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'SkillTreeOSS — Democratize Mastery',
+  description:
+    'Interactive, gamified learning paths built on the best free resources the internet has to offer. Level up your life, one node at a time.',
+  openGraph: {
+    title: 'SkillTreeOSS — Democratize Mastery',
+    description:
+      'Interactive, gamified learning paths built on the best free resources the internet has to offer.',
+    url: '/',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'SkillTreeOSS — Democratize Mastery',
+    description:
+      'Interactive, gamified learning paths built on the best free resources the internet has to offer.',
+  },
+}
 
 // Revalidate at most once per hour (ISR)
 export const revalidate = 3600

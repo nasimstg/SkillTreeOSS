@@ -17,11 +17,37 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+const APP_DESCRIPTION =
+  'Interactive, gamified learning paths built on the best free resources the internet has to offer. Level up your life, one node at a time.'
+
 export const metadata: Metadata = {
-  title: 'SkillTreeOSS — Democratize Mastery',
-  description:
-    'Interactive, gamified learning paths built on the best free resources the internet has to offer. Level up your life, one node at a time.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://skilltreeoss.vercel.app'),
+  title: {
+    default: 'SkillTreeOSS — Democratize Mastery',
+    template: '%s — SkillTreeOSS',
+  },
+  description: APP_DESCRIPTION,
   keywords: ['skill tree', 'learning path', 'free resources', 'gamified learning', 'open source'],
+  openGraph: {
+    type: 'website',
+    siteName: 'SkillTreeOSS',
+    title: 'SkillTreeOSS — Democratize Mastery',
+    description: APP_DESCRIPTION,
+    images: [
+      {
+        url: '/assets/skilltreeoss.png',
+        width: 192,
+        height: 192,
+        alt: 'SkillTreeOSS logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'SkillTreeOSS — Democratize Mastery',
+    description: APP_DESCRIPTION,
+    images: ['/assets/skilltreeoss.png'],
+  },
   // PWA / Apple web-app meta
   appleWebApp: {
     capable: true,

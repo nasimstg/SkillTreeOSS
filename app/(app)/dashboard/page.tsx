@@ -7,7 +7,9 @@ import type { SkillTree, TreeNode } from '@/types/tree'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Dashboard — SkillTreeOSS',
+  title: 'Dashboard',
+  description: 'Track your learning progress, XP, active skill tree quests, and recent unlocks.',
+  robots: { index: false, follow: false },
 }
 
 // XP awarded per completed node

@@ -7,9 +7,22 @@ import type { TreeStats } from '@/app/api/trees/stats/route'
 import ExploreClient, { type UserTreeProgress } from '@/components/explore/ExploreClient'
 
 export const metadata: Metadata = {
-  title: 'Explore Skill Trees — SkilleTreeOSS',
+  title: 'Explore Skill Trees',
   description:
     'Browse all available skill trees. Find your next learning path across technology, art, science, and more.',
+  openGraph: {
+    title: 'Explore Skill Trees — SkillTreeOSS',
+    description:
+      'Browse all available skill trees. Find your next learning path across technology, art, science, and more.',
+    url: '/explore',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Explore Skill Trees — SkillTreeOSS',
+    description:
+      'Browse all available skill trees. Find your next learning path across technology, art, science, and more.',
+  },
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

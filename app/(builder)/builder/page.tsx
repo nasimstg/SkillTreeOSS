@@ -5,8 +5,9 @@ import BuilderCanvas from '@/components/builder/BuilderCanvas'
 import type { BuilderDraft } from '@/lib/builder-utils'
 
 export const metadata: Metadata = {
-  title:       'Skill Tree Builder — SkillTreeOSS',
-  description: 'Create and contribute a new skill tree',
+  title:       'Skill Tree Builder',
+  description: 'Create and contribute a new skill tree visually — no JSON or Git knowledge needed.',
+  robots:      { index: false, follow: false },
 }
 
 export default async function BuilderPage() {
