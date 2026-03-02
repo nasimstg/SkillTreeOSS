@@ -75,7 +75,7 @@ export function SubmitModal({ tree, errors, onClose }: Props) {
           <h2 className="text-white font-semibold text-base">
             {isEdit ? 'Submit Tree Update' : 'Submit New Skill Tree'}
           </h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
+          <button onClick={onClose} className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-slate-500 hover:text-white hover:bg-white/5 transition-colors">
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>

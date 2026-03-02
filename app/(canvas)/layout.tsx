@@ -1,6 +1,6 @@
 export default function CanvasLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-[100dvh] overflow-hidden">
       {children}
     </div>
   )

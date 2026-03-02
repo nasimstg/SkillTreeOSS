@@ -23,11 +23,11 @@ export function ViewerHeader({ treeId }: Props) {
         }}
       />
 
-      <header className="absolute top-0 left-0 right-0 h-14 flex items-center justify-between px-5 z-40">
+      <header className="absolute top-0 left-0 right-0 h-14 flex items-center justify-between px-3 sm:px-5 z-40">
 
         {/* ── Left — Logo + back ─────────────────────────────────────── */}
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
             <div className="size-7 rounded bg-primary/20 flex items-center justify-center text-primary">
               <span className="material-symbols-outlined text-lg">account_tree</span>
             </div>
@@ -46,12 +46,12 @@ export function ViewerHeader({ treeId }: Props) {
         </div>
 
         {/* ── Right — Edit + UserMenu ────────────────────────────────── */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
 
-          {/* Edit this tree */}
+          {/* Edit this tree — min 44px tall for touch */}
           <Link
             href={`/builder/${treeId}`}
-            className="h-8 px-3.5 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-colors border border-white/10 flex items-center gap-1.5"
+            className="min-h-[36px] px-3 sm:px-3.5 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-colors border border-white/10 flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-[15px]">edit</span>
             <span className="hidden sm:inline">Edit Tree</span>

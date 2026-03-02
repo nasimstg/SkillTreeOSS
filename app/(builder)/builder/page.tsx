@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import BuilderCanvas from '@/components/builder/BuilderCanvas'
 import type { BuilderDraft } from '@/lib/builder-utils'
@@ -35,6 +36,27 @@ export default async function BuilderPage() {
 
   return (
     <div className="w-full h-full">
+      {/* Mobile unsupported overlay — only visible below md breakpoint */}
+      <div className="md:hidden fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-6 bg-background-dark px-6 text-center overflow-hidden" style={{ touchAction: 'none' }}>
+        <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+          <span className="material-symbols-outlined text-primary text-4xl">desktop_windows</span>
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold text-white">Builder needs a bigger screen</h1>
+          <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+            The visual tree builder is optimised for tablets and desktops.
+            Open it on a device with at least a 768 px wide display.
+          </p>
+        </div>
+        <Link
+          href="/explore"
+          className="h-11 px-6 rounded-full bg-primary text-black text-sm font-bold flex items-center gap-2"
+        >
+          <span className="material-symbols-outlined text-[18px]">explore</span>
+          Browse skill trees
+        </Link>
+      </div>
+
       <BuilderCanvas initialDraft={initialDraft} />
     </div>
   )

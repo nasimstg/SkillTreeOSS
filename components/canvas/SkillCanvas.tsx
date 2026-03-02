@@ -272,13 +272,18 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
     setGlobalXp,
   } = useSkillTreeStore()
 
-  const [layoutDir, setLayoutDir] = useState<LayoutDir>('LR')
+  const [layoutDir, setLayoutDir] = useState<LayoutDir>(() =>
+    typeof window !== 'undefined' && window.innerWidth < 1024 ? 'TB' : 'LR'
+  )
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null)
+  const [treeInfoOpen, setTreeInfoOpen] = useState(false)
   // Dagre-computed positions. Lazy-initialised on mount when the tree has no
   // stored positions (the common case). null = fall back to JSON position field.
-  const [autoPositions, setAutoPositions] = useState<Record<string, { x: number; y: number }> | null>(
-    () => tree.nodes.some((n) => !n.position) ? computeAutoLayout(tree, 'worldmap', 'LR') : null,
-  )
+  const [autoPositions, setAutoPositions] = useState<Record<string, { x: number; y: number }> | null>(() => {
+    if (!tree.nodes.some((n) => !n.position)) return null
+    const defaultDir: LayoutDir = typeof window !== 'undefined' && window.innerWidth < 1024 ? 'TB' : 'LR'
+    return computeAutoLayout(tree, 'worldmap', defaultDir)
+  })
   // Per-node animation state: 'completing' | 'unlocking' (cleared after animation)
   const [animatingNodes, setAnimatingNodes] = useState<Record<string, 'completing' | 'unlocking'>>({})
   const prevCompletedIdsRef = useRef<string[]>([])
@@ -474,8 +479,8 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
 
     const vw = window.innerWidth
     const vh = window.innerHeight
-    // Sidebar width matches the CSS: md:w-[500px] mobile:full
-    const sidebarW = vw >= 768 ? 500 : 0
+    // Sidebar is lg:w-2/5 (40 %) — below lg it overlays full-screen so ignore it
+    const sidebarW = vw >= 1024 ? Math.round(vw * 0.4) : 0
 
     // Center of the remaining visible canvas area in screen px
     const screenCX = (vw - sidebarW) / 2
@@ -620,10 +625,29 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
           color="#171717"
         />
 
-        {/* ── Floating info pill + toasts (top-left) ── */}
+        {/* ── Floating info pill (top-left) ── */}
         {/* In builder preview, push down to clear the 56px floating BuilderHeader */}
-        <Panel position="top-left" className="!mt-16 !ml-4 flex flex-col gap-2.5 pointer-events-none">
-          <div className="bg-background-dark/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden w-64">
+        <Panel position="top-left" className="!mt-16 !ml-2 sm:!ml-4 flex flex-col gap-2.5 pointer-events-none">
+
+          {/* Mobile: collapsed icon toggle — tapping expands the full panel */}
+          <button
+            className="lg:hidden pointer-events-auto w-10 h-10 rounded-xl bg-background-dark/90 backdrop-blur-2xl border border-white/10 shadow-2xl flex items-center justify-center relative"
+            onClick={() => setTreeInfoOpen(v => !v)}
+            aria-label={treeInfoOpen ? 'Close tree info' : 'Open tree info'}
+          >
+            {treeInfoOpen
+              ? <span className="material-symbols-outlined text-slate-400 text-xl leading-none">close</span>
+              : <>
+                  <span className="material-symbols-outlined text-primary text-xl leading-none">{tree.icon}</span>
+                  {progress > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary shadow-[0_0_6px_rgba(17,212,82,0.8)]" />
+                  )}
+                </>
+            }
+          </button>
+
+          {/* Full info panel — always visible on desktop, toggled on mobile */}
+          <div className={`${treeInfoOpen ? 'block pointer-events-auto' : 'hidden'} lg:block bg-background-dark/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden w-[calc(100vw-1rem)] max-w-[16rem]`}>
 
             {/* Row 1 — identity */}
             <div className="flex items-center gap-3 px-4 pt-3.5 pb-2.5">
@@ -683,17 +707,6 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
               </div>
             )}
           </div>
-
-          {/* Toast stack — hidden in builder preview */}
-          {!preview && toasts.length > 0 && (
-            <div className="relative h-12">
-              <AnimatePresence mode="popLayout">
-                {toasts.map((t, i) => (
-                  <CanvasToast key={t.id} {...t} index={i} onDismiss={dismissToast} />
-                ))}
-              </AnimatePresence>
-            </div>
-          )}
         </Panel>
 
         {/* ── Canvas controls pill (bottom-center) ── */}
@@ -709,6 +722,19 @@ export default function SkillCanvas({ tree, initialCompletedIds = [], userRating
           />
         </Panel>
       </ReactFlow>
+
+      {/* Toast stack — fixed above sidebar + info panel on mobile (z-[60] > sidebar z-50) */}
+      {!preview && toasts.length > 0 && (
+        <div className="fixed left-2 sm:left-4 top-[7rem] lg:top-[13.5rem] z-[60] pointer-events-none">
+          <div className="relative h-12">
+            <AnimatePresence mode="popLayout">
+              {toasts.map((t, i) => (
+                <CanvasToast key={t.id} {...t} index={i} onDismiss={dismissToast} />
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
 
       {/* Node detail sidebar */}
       <NodeSidebar tree={tree} preview={preview} />

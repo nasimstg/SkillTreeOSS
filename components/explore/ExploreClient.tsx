@@ -10,24 +10,24 @@ import type { TreeStats } from '@/app/api/trees/stats/route'
 const PAGE_SIZE = 12
 
 const DIFFICULTY_LABEL: Record<string, string> = {
-  easy:   'Beginner',
+  easy: 'Beginner',
   medium: 'Intermediate',
-  hard:   'Advanced',
+  hard: 'Advanced',
 }
 
 const DIFFICULTY_COLOR: Record<string, string> = {
-  easy:   'text-primary border-primary/30',
+  easy: 'text-primary border-primary/30',
   medium: 'text-yellow-400 border-yellow-400/30',
-  hard:   'text-red-400 border-red-400/30',
+  hard: 'text-red-400 border-red-400/30',
 }
 
 const CATEGORY_ICON: Record<string, string> = {
   Technology: 'terminal',
-  Art:        'palette',
-  Science:    'science',
-  Music:      'music_note',
-  Language:   'translate',
-  Business:   'business_center',
+  Art: 'palette',
+  Science: 'science',
+  Music: 'music_note',
+  Language: 'translate',
+  Business: 'business_center',
 }
 
 const DIFFICULTY_ORDER: Record<string, number> = { easy: 0, medium: 1, hard: 2 }
@@ -35,35 +35,35 @@ const DIFFICULTY_ORDER: Record<string, number> = { easy: 0, medium: 1, hard: 2 }
 type SortKey = 'alpha' | 'enrolled' | 'rating' | 'easiest' | 'shortest'
 
 const SORT_OPTIONS: { value: SortKey; label: string; icon: string }[] = [
-  { value: 'alpha',    label: 'A → Z',          icon: 'sort_by_alpha'  },
-  { value: 'enrolled', label: 'Most Popular',    icon: 'people'         },
-  { value: 'rating',   label: 'Top Rated',       icon: 'star'           },
-  { value: 'easiest',  label: 'Easiest First',   icon: 'trending_up'    },
-  { value: 'shortest', label: 'Shortest First',  icon: 'schedule'       },
+  { value: 'alpha', label: 'A → Z', icon: 'sort_by_alpha' },
+  { value: 'enrolled', label: 'Most Popular', icon: 'people' },
+  { value: 'rating', label: 'Top Rated', icon: 'star' },
+  { value: 'easiest', label: 'Easiest First', icon: 'trending_up' },
+  { value: 'shortest', label: 'Shortest First', icon: 'schedule' },
 ]
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface UserTreeProgress {
   completedCount: number
-  totalNodes:     number
+  totalNodes: number
 }
 
 interface Props {
-  trees:        SkillTree[]
-  stats:        Record<string, TreeStats>
-  categories:   string[]
+  trees: SkillTree[]
+  stats: Record<string, TreeStats>
+  categories: string[]
   userProgress: Record<string, UserTreeProgress>
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export default function ExploreClient({ trees, stats, categories, userProgress }: Props) {
-  const [search,     setSearch]     = useState('')
-  const [category,   setCategory]   = useState('All')
+  const [search, setSearch] = useState('')
+  const [category, setCategory] = useState('All')
   const [difficulty, setDifficulty] = useState('All')
-  const [sort,       setSort]       = useState<SortKey>('alpha')
-  const [page,       setPage]       = useState(1)
+  const [sort, setSort] = useState<SortKey>('alpha')
+  const [page, setPage] = useState(1)
 
   // ── "Continue your journey" strip ─────────────────────────────────────────
   const inProgressTrees = useMemo(
@@ -135,8 +135,8 @@ export default function ExploreClient({ trees, stats, categories, userProgress }
   }, [trees, stats, search, category, difficulty, sort])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-  const hasActive  = search !== '' || category !== 'All' || difficulty !== 'All'
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const hasActive = search !== '' || category !== 'All' || difficulty !== 'All'
 
   function resetPage() { setPage(1) }
   function clearFilters() {
@@ -176,8 +176,8 @@ export default function ExploreClient({ trees, stats, categories, userProgress }
         </div>
       )}
 
-      {/* ── Sticky filter bar ─────────────────────────────────────────── */}
-      <div className="sticky top-16 z-20 border-b border-white/5 bg-background-dark/95 backdrop-blur-xl">
+      {/* ── filter bar ─────────────────────────────────────────── */}
+      <div className="border-b border-white/5 bg-background-dark/95 backdrop-blur-xl">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-8">
 
           {/* Row 1: search + results count + sort */}
@@ -241,7 +241,7 @@ export default function ExploreClient({ trees, stats, categories, userProgress }
           </div>
 
           {/* Row 2: category pills + difficulty pills */}
-          <div className="flex items-center gap-2 pb-3 overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-2 pb-3 overflow-x-auto scrollbar-none flex-wrap">
             {/* Category pills */}
             {['All', ...categories].map(cat => {
               const icon = CATEGORY_ICON[cat]
@@ -250,11 +250,10 @@ export default function ExploreClient({ trees, stats, categories, userProgress }
                 <button
                   key={cat}
                   onClick={() => { setCategory(cat); resetPage() }}
-                  className={`shrink-0 flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border transition-all ${
-                    active
-                      ? 'bg-primary/20 border-primary/40 text-primary'
-                      : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
-                  }`}
+                  className={`shrink-0 flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border transition-all ${active
+                    ? 'bg-primary/20 border-primary/40 text-primary'
+                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
+                    }`}
                 >
                   {icon && (
                     <span className="material-symbols-outlined text-[13px] leading-none">
@@ -271,19 +270,18 @@ export default function ExploreClient({ trees, stats, categories, userProgress }
 
             {/* Difficulty pills */}
             {[
-              { key: 'All',    label: 'All Levels',   activeClass: 'bg-primary/20 border-primary/40 text-primary'             },
-              { key: 'easy',   label: 'Beginner',     activeClass: 'bg-primary/15 border-primary/30 text-primary'             },
-              { key: 'medium', label: 'Intermediate', activeClass: 'bg-yellow-400/15 border-yellow-400/40 text-yellow-400'    },
-              { key: 'hard',   label: 'Advanced',     activeClass: 'bg-red-400/15 border-red-400/40 text-red-400'             },
+              { key: 'All', label: 'All Levels', activeClass: 'bg-primary/20 border-primary/40 text-primary' },
+              { key: 'easy', label: 'Beginner', activeClass: 'bg-primary/15 border-primary/30 text-primary' },
+              { key: 'medium', label: 'Intermediate', activeClass: 'bg-yellow-400/15 border-yellow-400/40 text-yellow-400' },
+              { key: 'hard', label: 'Advanced', activeClass: 'bg-red-400/15 border-red-400/40 text-red-400' },
             ].map(d => (
               <button
                 key={d.key}
                 onClick={() => { setDifficulty(d.key); resetPage() }}
-                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium border transition-all ${
-                  difficulty === d.key
-                    ? d.activeClass
-                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
-                }`}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium border transition-all ${difficulty === d.key
+                  ? d.activeClass
+                  : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/20'
+                  }`}
               >
                 {d.label}
               </button>
@@ -364,11 +362,10 @@ export default function ExploreClient({ trees, stats, categories, userProgress }
                   <button
                     key={p}
                     onClick={() => setPage(p)}
-                    className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${
-                      p === page
-                        ? 'bg-primary/20 text-primary border border-primary/30'
-                        : 'text-slate-500 hover:text-white hover:bg-white/5'
-                    }`}
+                    className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors ${p === page
+                      ? 'bg-primary/20 text-primary border border-primary/30'
+                      : 'text-slate-500 hover:text-white hover:bg-white/5'
+                      }`}
                   >
                     {p}
                   </button>
@@ -397,8 +394,8 @@ function ContinueCard({
   progress,
   treeStats,
 }: {
-  tree:       SkillTree
-  progress:   UserTreeProgress
+  tree: SkillTree
+  progress: UserTreeProgress
   treeStats?: TreeStats
 }) {
   const pct = Math.round((progress.completedCount / Math.max(1, progress.totalNodes)) * 100)
@@ -477,15 +474,15 @@ function TreeCard({
   treeStats,
   progress,
 }: {
-  tree:       SkillTree
+  tree: SkillTree
   treeStats?: TreeStats
-  progress?:  UserTreeProgress
+  progress?: UserTreeProgress
 }) {
   const categoryIcon = CATEGORY_ICON[tree.category] ?? 'auto_awesome'
-  const diffLabel    = DIFFICULTY_LABEL[tree.difficulty]    ?? tree.difficulty
-  const diffColor    = DIFFICULTY_COLOR[tree.difficulty]    ?? 'text-slate-400 border-slate-400/30'
-  const isStarted    = (progress?.completedCount ?? 0) > 0
-  const pct          = isStarted
+  const diffLabel = DIFFICULTY_LABEL[tree.difficulty] ?? tree.difficulty
+  const diffColor = DIFFICULTY_COLOR[tree.difficulty] ?? 'text-slate-400 border-slate-400/30'
+  const isStarted = (progress?.completedCount ?? 0) > 0
+  const pct = isStarted
     ? Math.round((progress!.completedCount / Math.max(1, progress!.totalNodes)) * 100)
     : 0
 

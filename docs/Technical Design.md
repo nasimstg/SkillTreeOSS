@@ -188,7 +188,7 @@ Key details:
 - **Default node dimensions** — per `CanvasView`: `worldmap` 110×160, `rpg` 100×150, `terminal` 80×90, `neural` 80×110.
 - **Builder override** — pass `dims: { w: 224, h: 180 }` (actual builder node size) to avoid overlap in builder canvas.
 - **`dir`** — passed straight to Dagre's `rankdir`.
-- **Viewer** — positions stored in `autoPositions` state; passed as `posOverrides` to `buildNodes`. Auto-initialised on mount when `tree.nodes.some(n => !n.position)`.
+- **Viewer** — positions stored in `autoPositions` state; passed as `posOverrides` to `buildNodes`. Auto-initialised on mount when `tree.nodes.some(n => !n.position)`. Direction defaults to `'TB'` on `window.innerWidth < 1024` (mobile/tablet) and `'LR'` on desktop.
 - **Builder** — `applyAutoLayout(positions, newDir)` bulk-updates node positions in `useBuilderStore`; `fitView` called 60 ms later.
 
 ---
@@ -289,11 +289,19 @@ addCustomZone: (zone: string) => void
 
 | File | Responsibility |
 |------|----------------|
-| `SkillCanvas.tsx` | Root canvas: `buildNodes`/`buildEdges`, ReactFlow instance, animation state, auto-layout, `centerOnSelectedNode` (uses `setViewport` formula) |
+| `SkillCanvas.tsx` | Root canvas: `buildNodes`/`buildEdges`, ReactFlow instance, animation state, auto-layout, `centerOnSelectedNode`; `layoutDir` defaults to `'TB'` on `window.innerWidth < 1024`; `treeInfoOpen` state for mobile info panel toggle |
 | `CustomNode.tsx` | Four node renderers (worldmap/rpg/terminal/neural) + `NodeAnimShell` (completion burst, unlock ripple, selection ring, prereq amber ring) |
-| `NodeSidebar.tsx` | Right-side panel: resources, prerequisites timeline (topological sort, distant-ancestor accordion), vote buttons, Mark-as-Completed CTA |
-| `CanvasFAB.tsx` | Bottom-centre pill: view switcher (4 themes), fit-view, layout direction, auto-arrange, share |
+| `NodeSidebar.tsx` | Right-side panel: resources, prerequisites timeline (topological sort, distant-ancestor accordion), vote buttons, Mark-as-Completed CTA; `h-[100dvh]` height; safe-area footer padding |
+| `CanvasFAB.tsx` | Bottom-centre pill: view switcher dropdown moved outside `overflow-x-auto` to prevent clipping; safe-area bottom padding |
 | `CanvasContextMenu.tsx` | Right-click context menu for pane and nodes |
+
+### PWA (`components/pwa/`, `app/manifest.ts`, `public/sw.js`)
+
+| File | Responsibility |
+|------|----------------|
+| `components/pwa/InstallPrompt.tsx` | Install bottom-sheet with three states: `android-native` (native prompt), `android-guide` (Chrome manual, HTTP fallback), `ios` (Safari share guide). `beforeinstallprompt` captured pre-hydration via `window.__pwaPrompt` |
+| `app/manifest.ts` | Next.js App Router web manifest — standalone display, green theme, PNG icons |
+| `public/sw.js` | Service worker: cache-first for static assets, network-first for pages |
 
 ### Builder (`components/builder/`)
 

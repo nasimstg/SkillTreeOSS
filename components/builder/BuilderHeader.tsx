@@ -44,11 +44,11 @@ export function BuilderHeader() {
         }}
       />
 
-      <header className="absolute top-0 left-0 right-0 h-14 flex items-center justify-between px-5 z-40">
+      <header className="absolute top-0 left-0 right-0 h-14 flex items-center justify-between px-3 sm:px-5 z-40">
 
         {/* ── Left — Logo + back ──────────────────────────────────────────────── */}
-        <div className="flex items-center gap-3 min-w-[180px]">
-          <Link href="/" className="flex items-center gap-2.5 group">
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
             <div className="size-7 rounded bg-primary/20 flex items-center justify-center text-primary">
               <span className="material-symbols-outlined text-lg">account_tree</span>
             </div>
@@ -145,18 +145,18 @@ export function BuilderHeader() {
         </div>
 
         {/* ── Right — status + actions ────────────────────────────────────────── */}
-        <div className="flex items-center gap-2 min-w-[180px] justify-end">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-1 min-w-0 justify-end">
 
-          {/* Dirty indicator */}
+          {/* Dirty indicator — dot always visible; label hidden on xs */}
           {isDirty ? (
-            <span className="text-amber-400 text-xs font-medium flex items-center gap-1.5 opacity-80">
+            <span className="text-amber-400 text-xs font-medium flex items-center gap-1.5 opacity-80 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-              Unsaved
+              <span className="hidden sm:inline">Unsaved</span>
             </span>
           ) : (
-            <span className="text-slate-600 text-xs flex items-center gap-1.5">
+            <span className="text-slate-600 text-xs flex items-center gap-1.5 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-slate-600" />
-              Saved
+              <span className="hidden sm:inline">Saved</span>
             </span>
           )}
 
@@ -164,26 +164,27 @@ export function BuilderHeader() {
           <button
             onClick={() => setShowShortcuts(true)}
             title="Shortcuts & guide (?)"
-            className="h-8 w-8 rounded-full flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-colors"
+            className="h-8 w-8 rounded-full flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-colors shrink-0"
           >
             <span className="material-symbols-outlined text-[18px]">help_outline</span>
           </button>
 
-          {/* Save Draft */}
+          {/* Save Draft — label hidden on xs */}
           <button
             onClick={handleSaveDraft}
-            className="h-8 px-3.5 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
+            className="h-8 px-2.5 sm:px-3.5 rounded-full text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/10 shrink-0 flex items-center gap-1.5"
           >
-            Save Draft
+            <span className="material-symbols-outlined text-[15px] sm:hidden">save</span>
+            <span className="hidden sm:inline">Save Draft</span>
           </button>
 
           {/* Submit PR */}
           <button
             onClick={() => setShowSubmit(true)}
-            className="h-8 px-4 rounded-full bg-primary text-black text-sm font-bold shadow-[0_0_15px_rgba(17,212,82,0.3)] hover:shadow-[0_0_22px_rgba(17,212,82,0.5)] hover:bg-primary/90 transition-all flex items-center gap-1.5"
+            className="h-8 px-3 sm:px-4 rounded-full bg-primary text-black text-sm font-bold shadow-[0_0_15px_rgba(17,212,82,0.3)] hover:shadow-[0_0_22px_rgba(17,212,82,0.5)] hover:bg-primary/90 transition-all flex items-center gap-1.5 shrink-0"
           >
             <span className="material-symbols-outlined text-[15px]">upload_file</span>
-            Submit PR
+            <span className="hidden sm:inline">Submit PR</span>
             {errors.length > 0 && (
               <span className="ml-0.5 bg-black/20 rounded-full w-4 h-4 text-[10px] font-black flex items-center justify-center">
                 {errors.length}
@@ -194,7 +195,7 @@ export function BuilderHeader() {
           {/* User menu — same dropdown as the main navbar */}
           {user && (
             <>
-              <div className="w-px h-5 bg-white/10" />
+              <div className="w-px h-5 bg-white/10 shrink-0" />
               <UserMenu user={user} />
             </>
           )}

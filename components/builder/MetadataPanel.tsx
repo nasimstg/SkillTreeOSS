@@ -32,7 +32,7 @@ export function MetadataPanel() {
   const [showAdvanced, setShowAdvanced] = useState(false)
 
   return (
-    <div className="absolute top-[62px] left-4 w-72 z-20 pointer-events-auto">
+    <div className="absolute top-[62px] left-2 sm:left-4 w-[calc(100vw-1rem)] max-w-72 z-20 pointer-events-auto">
       <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/[0.07] bg-background-dark/90 backdrop-blur-xl">
 
         {/* ── Header ─────────────────────────────────────────────────── */}

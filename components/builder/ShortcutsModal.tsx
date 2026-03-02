@@ -125,7 +125,7 @@ export function ShortcutsModal({ onClose }: Props) {
       >
 
         {/* Header */}
-        <div className="flex items-start justify-between px-6 py-5 border-b border-white/[0.06]">
+        <div className="flex items-start justify-between px-4 sm:px-6 py-4 sm:py-5 border-b border-white/[0.06]">
           <div>
             <div className="flex items-center gap-2.5 mb-1">
               <div className="size-8 rounded-lg flex items-center justify-center"
@@ -138,14 +138,14 @@ export function ShortcutsModal({ onClose }: Props) {
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-colors flex-shrink-0 mt-0.5"
+            className="min-w-[44px] min-h-[44px] rounded-lg flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-colors flex-shrink-0"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
         {/* Body */}
-        <div className="p-6 grid grid-cols-[1fr_220px] gap-6">
+        <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-6">
 
           {/* ── Left: Guide steps ─────────────────────────────── */}
           <div>

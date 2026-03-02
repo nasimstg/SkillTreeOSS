@@ -61,13 +61,13 @@ export function LeftToolbar({ activeTool, setActiveTool, onAddNode }: Props) {
   }
 
   return (
-    <div className="absolute left-4 bottom-6 z-30 pointer-events-auto">
+    <div className="absolute left-2 sm:left-4 bottom-4 sm:bottom-6 z-30 pointer-events-auto max-w-[calc(100vw-1rem)] overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
       {/*
         Glass-tube container — frosted glass with rim lighting to simulate
         a sealed tube filled with luminescent liquid.
       */}
       <div
-        className="flex flex-row items-center gap-0.5 py-2.5 px-2 rounded-2xl"
+        className="flex flex-row items-center gap-0.5 py-2.5 px-2 rounded-2xl w-max"
         style={{
           background:          'rgba(8, 12, 22, 0.92)',
           backdropFilter:      'blur(20px)',

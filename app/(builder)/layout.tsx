@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 // BuilderCanvas renders its own header (BuilderHeader) inside.
 export default function BuilderRootLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-[#030712]">
+    <div className="h-[100dvh] w-screen flex flex-col overflow-hidden bg-[#030712]">
       {children}
     </div>
   )

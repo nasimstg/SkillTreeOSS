@@ -82,7 +82,7 @@ export function BuilderNodeEditor() {
             onClick={handleClose}
             whileHover={{ backgroundColor: 'rgba(255,255,255,0.07)' }}
             whileTap={{ backgroundColor: 'rgba(255,255,255,0.12)' }}
-            className="shrink-0 p-2 text-slate-400 hover:text-white transition-colors cursor-pointer border-r border-r-white/[0.06]"
+            className="shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer border-r border-r-white/[0.06]"
             aria-label="Close panel"
           >
             <span className="material-symbols-outlined text-[24px] leading-none block">arrow_right</span>
@@ -92,8 +92,8 @@ export function BuilderNodeEditor() {
           <div className="h-screen w-full flex flex-col overflow-hidden">
 
             {/* Header */}
-            <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-white/[0.06] shrink-0">
-              <div className="flex items-center gap-3 pr-8 min-w-0">
+            <div className="flex items-start justify-between px-4 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-white/[0.06] shrink-0">
+              <div className="flex items-center gap-3 pr-4 sm:pr-8 min-w-0">
                 {/* Icon badge — emoji-aware */}
                 <div
                   className="size-9 rounded-lg flex items-center justify-center shrink-0"
@@ -120,7 +120,7 @@ export function BuilderNodeEditor() {
                 onClick={handleClose}
                 whileHover={{ backgroundColor: 'rgba(255,255,255,0.07)' }}
                 whileTap={{ scale: 0.92 }}
-                className="shrink-0 rounded-full p-2 text-slate-400 hover:text-white transition-colors"
+                className="shrink-0 rounded-full min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
               >
                 <motion.span
                   className="material-symbols-outlined text-[24px] leading-none block"
@@ -135,7 +135,7 @@ export function BuilderNodeEditor() {
 
             {/* ── Scrollable body ── */}
             <div
-              className="flex-1 overflow-y-auto px-6 py-5 space-y-6"
+              className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-5 space-y-6"
               style={{ scrollbarWidth: 'thin', scrollbarColor: '#374151 transparent' }}
             >
 

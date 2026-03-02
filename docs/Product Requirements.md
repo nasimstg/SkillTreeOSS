@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
 
 **Project Name:** SkilleTreeOSS
-**Version:** 0.8.0
+**Version:** 0.8.1
 **Objective:** To provide an interactive, gamified learning platform where complex disciplines are mapped into visual "skill trees" connected to the internet's best free resources — and to give anyone the tools to create and publish those trees without writing code.
 
 ---
@@ -68,6 +68,17 @@
 | **Builder — auto-center on node select** (accounts for fixed editor panel width) | **v0.8** |
 | **Builder — Dagre auto-layout with LR/TB direction toggle** | **v0.8** |
 | **Builder — Preview mode** (live `SkillCanvas` from builder state) | **v0.8** |
+| **PWA support** — `app/manifest.ts`, `/public/sw.js` service worker, `InstallPrompt` component | **v0.8.1** |
+| **PWA install prompt** — bottom-sheet popup (native Android + iOS guide + HTTP Android guide fallback) | **v0.8.1** |
+| **Mobile viewport fix** — `h-[100dvh]` on all canvas/builder layouts; `env(safe-area-inset-bottom)` footer padding | **v0.8.1** |
+| **NodeSidebar mobile** — full-height `h-[100dvh]`, safe-area CTA, slides in correctly on all devices | **v0.8.1** |
+| **CanvasFAB mobile** — view-switcher dropdown lifted out of `overflow-x-auto` (no clipping); safe-area padding | **v0.8.1** |
+| **Canvas TreeInfo pill** — collapses to icon button on `< lg`; tap to expand; green progress pip indicator | **v0.8.1** |
+| **Canvas default layout TB on mobile** — `window.innerWidth < 1024` detected at init; Dagre runs with `'TB'` | **v0.8.1** |
+| **Canvas toasts** — moved to fixed `z-[60]` overlay; visible above full-screen NodeSidebar on mobile | **v0.8.1** |
+| **Builder mobile guard** — `SmallScreenDesktopWarning` amber corner toast when `screen.width < 768` in desktop mode | **v0.8.1** |
+| **Builder overlay** — `touchAction: none` + `overflow-hidden` prevent scroll-through on mobile | **v0.8.1** |
+| **Multi-tree dashboard** — loads all 29 trees via `readdirSync`; active quests, recent unlocks, builder CTA | **v0.8.1** |
 
 ---
 

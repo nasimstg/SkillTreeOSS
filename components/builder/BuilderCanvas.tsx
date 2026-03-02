@@ -503,6 +503,50 @@ function BuilderCanvasInner({ existingTree, initialDraft }: Props) {
   )
 }
 
+// ─── Small-screen desktop-mode warning ───────────────────────────────────────
+// Shown when the user forces "Desktop site" on a phone (screen.width < 768).
+// CSS breakpoints won't catch this — the simulated desktop viewport is wide —
+// but screen.width always reflects the physical screen size.
+
+function SmallScreenDesktopWarning() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    // screen.width = physical CSS pixels, unaffected by desktop-mode viewport scaling
+    if (typeof screen !== 'undefined' && screen.width < 768) {
+      setVisible(true)
+    }
+  }, [])
+
+  if (!visible) return null
+
+  return (
+    <div
+      className="absolute top-16 right-3 z-50 flex items-start gap-2.5 px-3 py-2.5 rounded-xl shadow-2xl max-w-[260px] text-xs font-medium"
+      style={{
+        background: 'rgba(20, 14, 4, 0.95)',
+        border: '1px solid rgba(217, 119, 6, 0.35)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}
+    >
+      <span className="material-symbols-outlined text-amber-400 text-base leading-none shrink-0 mt-px">
+        warning
+      </span>
+      <span className="text-amber-300/90 leading-relaxed flex-1">
+        Builder is designed for larger screens — touch interactions may be limited.
+      </span>
+      <button
+        onClick={() => setVisible(false)}
+        className="shrink-0 p-0.5 rounded text-amber-400/50 hover:text-amber-300 hover:bg-amber-400/10 transition-colors"
+        aria-label="Dismiss warning"
+      >
+        <span className="material-symbols-outlined text-sm leading-none">close</span>
+      </button>
+    </div>
+  )
+}
+
 // ─── Public export — wraps with ReactFlowProvider + BuilderHeader ────────────
 
 export default function BuilderCanvas(props: Props) {
@@ -512,6 +556,7 @@ export default function BuilderCanvas(props: Props) {
       <div className="relative w-full h-full overflow-hidden">
         <BuilderCanvasInner {...props} />
         <BuilderHeader />
+        <SmallScreenDesktopWarning />
       </div>
     </ReactFlowProvider>
   )

@@ -286,7 +286,7 @@ export default async function LandingPage() {
           <div className="mx-auto max-w-[1280px]">
             <div className="text-center mb-12">
               <h2 className="text-2xl font-bold text-white">How It Works</h2>
-              <p className="text-slate-400 mt-2">Three steps to mastery</p>
+              <p className="text-slate-400 mt-2">Four steps to mastery</p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[

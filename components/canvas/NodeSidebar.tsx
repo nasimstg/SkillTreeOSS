@@ -166,7 +166,7 @@ export default function NodeSidebar({ tree, preview = false }: Props) {
   const sortedPrereqs = sortPrereqsTopologically(prerequisites)
   const immediateIds = new Set(node.requires)
   const immediate = sortedPrereqs.filter((p) => immediateIds.has(p.id))
-  const distant   = sortedPrereqs.filter((p) => !immediateIds.has(p.id))
+  const distant = sortedPrereqs.filter((p) => !immediateIds.has(p.id))
   const prereqDoneCount = prerequisites.filter((p) => completedNodeIds.includes(p.id)).length
 
   return (
@@ -180,26 +180,26 @@ export default function NodeSidebar({ tree, preview = false }: Props) {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: '100%', opacity: 0.6 }}
             transition={SPRING}
-            className="fixed right-0 top-0 z-50 h-screen w-full lg:w-2/5 flex flex-row bg-background-dark border-l border-white/[0.07] shadow-2xl font-display"
+            className="fixed right-0 top-0 z-50 h-[100dvh] w-full lg:w-2/5 flex flex-row bg-background-dark border-l border-white/[0.07] shadow-2xl font-display"
           >
             <motion.button
               onClick={() => setSelectedNode(null)}
               whileHover={{ backgroundColor: 'rgba(255,255,255,0.07)' }}
               whileTap={{ backgroundColor: 'rgba(255,255,255,0.12)' }}
-              className="shrink-0 p-2 text-slate-400 hover:text-white transition-colors cursor-pointer border-r border-r-white/[0.06]"
+              className="shrink-0 min-w-[44px] min-h-[44px] hidden md:flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer border-r border-r-white/[0.06]"
               aria-label="Close panel"
             >
               <motion.span
                 className="material-symbols-outlined text-[24px] leading-none block"
               >
-                arrow_right
+                chevron_right
               </motion.span>
             </motion.button>
-            <div className='h-screen w-full flex flex-col'>
+            <div className='h-[100dvh] w-full flex flex-col'>
               {/* ── Header ── */}
-              <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-white/[0.06] shrink-0">
-                <div className="flex flex-col gap-1 pr-8">
-                  <h2 className="text-2xl font-bold tracking-tight leading-tight text-white">
+              <div className="flex items-start justify-between px-4 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-white/[0.06] shrink-0">
+                <div className="flex flex-col gap-1 pr-4 sm:pr-8">
+                  <h2 className="text-xl sm:text-2xl font-bold tracking-tight leading-tight text-white">
                     {node.label}
                   </h2>
                   <p className="text-sm text-slate-400 font-normal leading-relaxed">
@@ -210,7 +210,7 @@ export default function NodeSidebar({ tree, preview = false }: Props) {
                   onClick={() => setSelectedNode(null)}
                   whileHover={{ backgroundColor: 'rgba(255,255,255,0.07)' }}
                   whileTap={{ scale: 0.92 }}
-                  className="shrink-0 rounded-full p-2 text-slate-400 hover:text-white transition-colors"
+                  className="shrink-0 rounded-full min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
                   aria-label="Close panel"
                 >
                   <motion.span
@@ -225,7 +225,7 @@ export default function NodeSidebar({ tree, preview = false }: Props) {
               </div>
 
               {/* ── Scrollable body ── */}
-              <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+              <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-5 space-y-6">
 
                 {/* Resources */}
                 <ResourceList node={node} treeId={treeId} nodeId={node.id} preview={preview} />
@@ -316,7 +316,10 @@ export default function NodeSidebar({ tree, preview = false }: Props) {
 
               {/* ── Footer — hidden in builder preview ── */}
               {!preview && (
-                <div className="shrink-0 px-6 py-5 border-t border-white/[0.08] bg-background-dark shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.4)]">
+                <div
+                  className="shrink-0 px-4 sm:px-6 pt-4 sm:pt-5 border-t border-white/[0.08] bg-background-dark shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.4)]"
+                  style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)' }}
+                >
                   {isCompleted ? (
                     <div className="w-full flex items-center justify-center gap-3 h-14 rounded-xl bg-primary/10 border border-primary/30 text-primary font-bold">
                       <span className="material-symbols-outlined">workspace_premium</span>
@@ -362,7 +365,7 @@ function PrereqTimelineItem({ prereq, isLast, completedNodeIds, onNavigate, onHo
   const status = getNodeStatus(prereq, completedNodeIds)
   const isCompleted = status === 'completed'
   const isAvailable = status === 'available'
-  const isLocked    = status === 'locked'
+  const isLocked = status === 'locked'
 
   const zoneStyle = ZONE_ICON_STYLE[prereq.zone] ?? 'bg-slate-400/15 text-slate-400'
 
@@ -711,15 +714,15 @@ function SuggestResourceButton({
   nodeId,
   nodeLabel,
 }: {
-  treeId:    string
-  nodeId:    string
+  treeId: string
+  nodeId: string
   nodeLabel: string
 }) {
-  const [open,    setOpen]    = useState(false)
+  const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const [url,     setUrl]     = useState('')
-  const [title,   setTitle]   = useState('')
-  const [state,   setState]   = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
+  const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('')
+  const [state, setState] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -727,7 +730,7 @@ function SuggestResourceButton({
     setState('loading')
     try {
       const res = await fetch('/api/resources/suggest', {
-        method:  'POST',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ treeId, nodeId, nodeLabel, message, url, title }),
       })
@@ -751,11 +754,10 @@ function SuggestResourceButton({
       {/* Toggle button */}
       <button
         onClick={() => { setOpen(v => !v); if (state === 'done') reset() }}
-        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-dashed text-xs font-semibold transition-all ${
-          open
-            ? 'border-primary/30 text-primary bg-primary/5'
-            : 'border-white/10 text-slate-500 hover:border-white/20 hover:text-slate-300'
-        }`}
+        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-dashed text-xs font-semibold transition-all ${open
+          ? 'border-primary/30 text-primary bg-primary/5'
+          : 'border-white/10 text-slate-500 hover:border-white/20 hover:text-slate-300'
+          }`}
       >
         <span className="material-symbols-outlined text-sm leading-none">
           {open ? 'expand_less' : 'post_add'}

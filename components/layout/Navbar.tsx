@@ -129,7 +129,7 @@ export function UserMenu({ user }: { user: UserProfile }) {
 
       {/* ── Dropdown ── */}
       {open && (
-        <div className="absolute top-full right-0 mt-2.5 w-58 min-w-[220px] bg-[#111] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden z-50">
+        <div className="absolute top-full right-0 mt-2.5 w-58 min-w-[220px] max-w-[calc(100vw-1rem)] bg-[#111] border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden z-50">
 
           {/* User header */}
           <div className="p-3.5 border-b border-white/[0.06]">
@@ -303,9 +303,9 @@ export default function Navbar({ variant = 'landing' }: NavbarProps) {
           )}
         </nav>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile menu toggle — 44×44 minimum touch target */}
         <button
-          className="md:hidden p-2 text-slate-300 hover:text-primary transition-colors"
+          className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-300 hover:text-primary transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -317,67 +317,95 @@ export default function Navbar({ variant = 'landing' }: NavbarProps) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className={`md:hidden border-t ${variant === 'canvas' ? 'border-white/[0.06] bg-background-dark/98' : 'border-primary/10 bg-bg-landing/95'} backdrop-blur-md px-6 py-4 flex flex-col gap-4`}>
-          <Link href="/explore" className="text-sm font-medium text-slate-300 hover:text-primary">
-            Explore Trees
-          </Link>
-          <Link href="/contribute" className="text-sm font-medium text-slate-300 hover:text-primary">
-            Contribute
-          </Link>
+        <div className={`md:hidden border-t ${variant === 'canvas' ? 'border-white/[0.06] bg-background-dark/98' : 'border-primary/10 bg-bg-landing/95'} backdrop-blur-md px-6 py-2 flex flex-col`}>
+          {/* Each link gets a tall touch-friendly row */}
+          {[
+            { href: '/explore',    label: 'Explore Trees' },
+            { href: '/contribute', label: 'Contribute'    },
+            { href: '/builder',    label: 'Build a Tree'  },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMobileOpen(false)}
+              className="text-sm font-medium text-slate-300 hover:text-primary py-3.5 border-b border-white/[0.04] transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
           <a
             href="https://github.com/nasimstg/SkillTreeOSS"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-slate-300 hover:text-primary"
+            className="text-sm font-medium text-slate-300 hover:text-primary py-3.5 border-b border-white/[0.04] transition-colors"
           >
             GitHub
           </a>
 
           {user ? (
             <>
-              {/* Compact user row */}
-              <div className="flex items-center gap-3 py-1">
-                <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-primary/15 shrink-0">
+              {/* User identity row */}
+              <div className="flex items-center gap-3 py-3 border-b border-white/[0.04]">
+                <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-primary/15 shrink-0">
                   {user.avatar_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={user.avatar_url} alt="" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-primary font-bold text-xs">
+                    <span className="text-primary font-bold text-sm leading-none">
                       {(user.display_name ?? user.email).charAt(0).toUpperCase()}
                     </span>
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-white text-xs font-semibold truncate">{user.display_name ?? 'User'}</p>
-                  <p className="text-slate-500 text-[10px] truncate">{user.email}</p>
+                  <p className="text-white text-sm font-semibold truncate leading-snug">{user.display_name ?? 'User'}</p>
+                  <p className="text-slate-500 text-xs truncate leading-snug">{user.email}</p>
                 </div>
               </div>
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-2 bg-primary text-background-dark font-bold text-sm px-4 py-2 rounded-lg w-fit"
-              >
-                <span className="material-symbols-outlined text-lg">grid_view</span>
-                Dashboard
-              </Link>
+
+              {/* Navigation links — same row style as the links above */}
+              {[
+                { href: '/dashboard', icon: 'grid_view',  label: 'Dashboard'    },
+                { href: '/builder',   icon: 'build',      label: 'Build a Tree' },
+                { href: '/settings',  icon: 'settings',   label: 'Settings'     },
+              ].map(({ href, icon, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 text-sm font-medium text-slate-300 hover:text-primary py-3.5 border-b border-white/[0.04] transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[17px] text-slate-500">{icon}</span>
+                  {label}
+                </Link>
+              ))}
+
               <button
                 onClick={handleSignOut}
-                className="text-sm font-medium text-red-400 hover:text-red-300 text-left"
+                className="flex items-center gap-2.5 py-3.5 text-sm font-medium text-red-400 hover:text-red-300 transition-colors w-full text-left"
               >
+                <span className="material-symbols-outlined text-[17px]">logout</span>
                 Sign Out
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="text-sm font-medium text-slate-300 hover:text-primary">
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="text-sm font-medium text-slate-300 hover:text-primary py-3.5 border-b border-white/[0.04] transition-colors"
+              >
                 Sign In
               </Link>
-              <Link
-                href="/signup"
-                className="flex items-center gap-2 bg-primary text-background-dark font-bold text-sm px-4 py-2 rounded-lg w-fit"
-              >
-                <span className="material-symbols-outlined text-lg">rocket_launch</span>
-                Get Started
-              </Link>
+              <div className="pt-2 pb-1">
+                <Link
+                  href="/signup"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 bg-primary text-background-dark font-bold text-sm px-4 py-2.5 rounded-lg w-fit"
+                >
+                  <span className="material-symbols-outlined text-lg">rocket_launch</span>
+                  Get Started
+                </Link>
+              </div>
             </>
           )}
         </div>
