@@ -16,12 +16,21 @@ export const metadata: Metadata = {
       'Interactive, gamified learning paths built on the best free resources the internet has to offer.',
     url: '/',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'SkillTreeOSS — Democratize Mastery',
+      },
+    ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'SkillTreeOSS — Democratize Mastery',
     description:
       'Interactive, gamified learning paths built on the best free resources the internet has to offer.',
+    images: ['/og-image.jpg'],
   },
 }
 
