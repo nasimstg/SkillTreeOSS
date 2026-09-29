@@ -1,122 +1,192 @@
 {
     "treeId": "cybersecurity-basics",
-    "title": "Cybersecurity Basics",
+    "title": "Cybersecurity Foundations",
     "category": "Security",
     "difficulty": "medium",
-    "description": "Essential knowledge for protecting systems and networks from digital attacks.",
-    "version": "1.0",
-    "estimatedMonths": 4,
-    "totalNodes": 7,
+    "description": "A practical foundation in computing, networks, security principles, automation, web systems, and defensive operations.",
+    "version": "1.1",
+    "estimatedMonths": 6,
+    "totalNodes": 12,
     "icon": "security",
     "nodes": [
         {
-            "id": "it-fundamentals",
-            "label": "IT Fundamentals",
-            "description": "Basic hardware, software, operating systems, and networking concepts.",
+            "id": "computer-os-fundamentals",
+            "label": "Computer and Operating System Fundamentals",
+            "description": "Hardware, virtualization, Linux and Windows administration, filesystems, processes, permissions, and command-line usage.",
             "icon": "computer",
             "zone": "Foundation",
             "resources": [
                 {
-                    "id": "comptia-a-plus",
-                    "title": "CompTIA A+ Certification Course",
-                    "url": "https://www.youtube.com/watch?v=F3Grs12L8j0",
-                    "type": "video",
-                    "author": "Professor Messer",
-                    "estimatedHours": 15,
+                    "id": "tryhackme-pre-security",
+                    "title": "Pre Security",
+                    "url": "https://tryhackme.com/path/outline/presecurity",
+                    "type": "interactive",
+                    "author": "TryHackMe",
+                    "estimatedHours": 19,
                     "isFree": true
                 }
             ],
             "requires": []
         },
         {
+            "id": "networking-fundamentals",
+            "label": "Networking Fundamentals",
+            "description": "TCP/IP, routing, switching, DNS, HTTP, common protocols, and the foundations needed to secure networks.",
+            "icon": "router",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "cisco-networking-basics",
+                    "title": "Networking Basics",
+                    "url": "https://www.netacad.com/courses/networking-basics",
+                    "type": "course",
+                    "author": "Cisco Networking Academy",
+                    "estimatedHours": 12,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "computer-os-fundamentals"
+            ]
+        },
+        {
+            "id": "security-foundations",
+            "label": "Security Foundations",
+            "description": "The CIA triad, ethics and legal boundaries, threat modeling, risk, defense in depth, identity, authentication, authorization, vulnerability management, and patching.",
+            "icon": "security",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "owasp-threat-modeling",
+                    "title": "Threat Modeling",
+                    "url": "https://owasp.org/www-community/Threat_Modeling",
+                    "type": "article",
+                    "author": "OWASP",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "computer-os-fundamentals"
+            ]
+        },
+        {
+            "id": "scripting-automation",
+            "label": "Scripting and Automation",
+            "description": "Use Python and PowerShell to automate administration, parse data, call APIs, and support security workflows.",
+            "icon": "code",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "python-tutorial",
+                    "title": "The Python Tutorial",
+                    "url": "https://docs.python.org/3/tutorial/",
+                    "type": "docs",
+                    "author": "Python Software Foundation",
+                    "estimatedHours": 12,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "computer-os-fundamentals"
+            ]
+        },
+        {
             "id": "network-security",
             "label": "Network Security",
-            "description": "Firewalls, VPNs, IDS/IPS, and securing network protocols.",
+            "description": "Firewalls, VPNs, IDS/IPS, secure protocols, segmentation, and the controls used to protect networks.",
             "icon": "router",
             "zone": "Defense",
             "resources": [
                 {
-                    "id": "comptia-network",
-                    "title": "Network+ Training",
-                    "url": "https://www.youtube.com/watch?v=6mJb8_lO3cQ",
-                    "type": "video",
-                    "author": "NetworkChuck",
+                    "id": "cisco-network-security",
+                    "title": "What Is Network Security?",
+                    "url": "https://www.cisco.com/site/us/en/learn/topics/security/what-is-network-security.html",
+                    "type": "article",
+                    "author": "Cisco",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "networking-fundamentals",
+                "security-foundations"
+            ]
+        },
+        {
+            "id": "web-application-fundamentals",
+            "label": "Web and Application Fundamentals",
+            "description": "HTTP, browsers, APIs, DNS, cookies, sessions, databases, and basic application architecture before studying web security.",
+            "icon": "language",
+            "zone": "Foundation",
+            "resources": [
+                {
+                    "id": "mdn-http-overview",
+                    "title": "An overview of HTTP",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview",
+                    "type": "docs",
+                    "author": "MDN Web Docs",
+                    "estimatedHours": 8,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "networking-fundamentals",
+                "scripting-automation"
+            ]
+        },
+        {
+            "id": "defensive-security-monitoring",
+            "label": "Defensive Security and Monitoring",
+            "description": "Security controls, identity and access management, logging, SIEM concepts, alert triage, vulnerability management, and defense in depth.",
+            "icon": "shield",
+            "zone": "Defense",
+            "resources": [
+                {
+                    "id": "mitre-attack",
+                    "title": "MITRE ATT&CK",
+                    "url": "https://attack.mitre.org/",
+                    "type": "docs",
+                    "author": "MITRE",
                     "estimatedHours": 10,
                     "isFree": true
                 }
             ],
             "requires": [
-                "it-fundamentals"
+                "networking-fundamentals",
+                "security-foundations",
+                "network-security"
             ]
         },
         {
-            "id": "osint",
-            "label": "OSINT (Open Source Intelligence)",
-            "description": "Information gathering from publicly available sources.",
-            "icon": "travel_explore",
-            "zone": "Reconnaissance",
-            "resources": [
-                {
-                    "id": "osint-framework",
-                    "title": "OSINT Framework",
-                    "url": "https://osintframework.com/",
-                    "type": "interactive",
-                    "author": "OSINT Framework",
-                    "estimatedHours": 3,
-                    "isFree": true
-                }
-            ],
-            "requires": [
-                "it-fundamentals"
-            ]
-        },
-        {
-            "id": "cryptography",
-            "label": "Cryptography Basics",
-            "description": "Encryption, hashing, digital signatures, and PKI.",
-            "icon": "key",
-            "zone": "Concepts",
-            "resources": [
-                {
-                    "id": "crypto-course",
-                    "title": "Cryptography for Beginners",
-                    "url": "https://www.youtube.com/watch?v=jhXCTbFnK8o",
-                    "type": "video",
-                    "author": "freeCodeCamp",
-                    "estimatedHours": 2,
-                    "isFree": true
-                }
-            ],
-            "requires": [
-                "it-fundamentals"
-            ]
-        },
-        {
-            "id": "ethical-hacking",
-            "label": "Ethical Hacking / Pentesting",
-            "description": "Vulnerability scanning, exploitation, and post-exploitation using Kali Linux.",
+            "id": "offensive-security-fundamentals",
+            "label": "Offensive Security Fundamentals",
+            "description": "Authorization, reconnaissance, enumeration, vulnerability validation, and safe introductory security testing without assuming advanced post-exploitation skills.",
             "icon": "bug_report",
             "zone": "Offense",
             "resources": [
                 {
-                    "id": "pentesting-full",
-                    "title": "Full Ethical Hacking Course",
-                    "url": "https://www.youtube.com/watch?v=3Kq1MIfTWCE",
-                    "type": "video",
-                    "author": "freeCodeCamp",
-                    "estimatedHours": 15,
+                    "id": "overthewire-wargames",
+                    "title": "Wargames",
+                    "url": "https://overthewire.org/wargames/",
+                    "type": "interactive",
+                    "author": "OverTheWire",
+                    "estimatedHours": 12,
                     "isFree": true
                 }
             ],
             "requires": [
+                "computer-os-fundamentals",
+                "networking-fundamentals",
+                "security-foundations",
                 "network-security",
-                "osint"
+                "scripting-automation"
             ]
         },
         {
             "id": "web-security",
             "label": "Web Application Security",
-            "description": "OWASP Top 10, SQL injection, XSS, CSRF, and secure coding practices.",
+            "description": "OWASP Top 10, SQL injection, XSS, CSRF, and secure coding practices after learning web fundamentals.",
             "icon": "language",
             "zone": "Defense",
             "resources": [
@@ -126,71 +196,236 @@
                     "url": "https://portswigger.net/web-security",
                     "type": "interactive",
                     "author": "PortSwigger",
-                    "estimatedHours": 20,
+                    "estimatedHours": 25,
                     "isFree": true
                 }
             ],
             "requires": [
-                "ethical-hacking"
+                "web-application-fundamentals",
+                "security-foundations"
             ]
         },
         {
             "id": "incident-response",
-            "label": "Incident Response & Forensics",
-            "description": "Handling security breaches, tracking indicators of compromise (IoC), and analyzing malware.",
+            "label": "Incident Response and Forensics",
+            "description": "Incident handling, log analysis, Windows and Linux artifacts, network evidence, malware fundamentals, and indicators of compromise.",
             "icon": "policy",
             "zone": "Operations",
             "resources": [
                 {
                     "id": "dfir-madness",
-                    "title": "Digital Forensics & Incident Response",
+                    "title": "Digital Forensics and Incident Response",
                     "url": "https://dfirmadness.com/",
                     "type": "article",
                     "author": "DFIR Madness",
+                    "estimatedHours": 8,
+                    "isFree": true
+                },
+                {
+                    "id": "malware-traffic-analysis",
+                    "title": "Malware-Traffic-Analysis.net",
+                    "url": "https://www.malware-traffic-analysis.net/",
+                    "type": "interactive",
+                    "author": "Malware-Traffic-Analysis.net",
+                    "estimatedHours": 10,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "computer-os-fundamentals",
+                "networking-fundamentals",
+                "security-foundations",
+                "network-security",
+                "defensive-security-monitoring"
+            ]
+        },
+        {
+            "id": "osint",
+            "label": "OSINT (Open Source Intelligence)",
+            "description": "Optional information gathering from publicly available sources, with emphasis on methodology, ethics, and legal boundaries.",
+            "icon": "travel_explore",
+            "zone": "Optional",
+            "resources": [
+                {
+                    "id": "osint-framework",
+                    "title": "OSINT Framework",
+                    "url": "https://osintframework.com/",
+                    "type": "interactive",
+                    "author": "OSINT Framework",
+                    "estimatedHours": 3,
+                    "isFree": true
+                },
+                {
+                    "id": "bellingcat-toolkit",
+                    "title": "Online Investigation Toolkit",
+                    "url": "https://bit.ly/bcattools",
+                    "type": "article",
+                    "author": "Bellingcat",
                     "estimatedHours": 5,
                     "isFree": true
                 }
             ],
             "requires": [
-                "network-security"
+                "computer-os-fundamentals"
+            ]
+        },
+        {
+            "id": "cryptography",
+            "label": "Cryptography Basics",
+            "description": "Optional practical study of hashing, encryption, TLS, certificates, digital signatures, key management, and password storage.",
+            "icon": "key",
+            "zone": "Optional",
+            "resources": [
+                {
+                    "id": "khan-academy-cryptography",
+                    "title": "Cryptography",
+                    "url": "https://www.khanacademy.org/computing/computer-science/cryptography",
+                    "type": "interactive",
+                    "author": "Khan Academy",
+                    "estimatedHours": 8,
+                    "isFree": true
+                },
+                {
+                    "id": "cryptohack",
+                    "title": "CryptoHack",
+                    "url": "https://cryptohack.org/",
+                    "type": "interactive",
+                    "author": "CryptoHack",
+                    "estimatedHours": 12,
+                    "isFree": true
+                }
+            ],
+            "requires": [
+                "computer-os-fundamentals",
+                "networking-fundamentals"
             ]
         }
     ],
     "edges": [
         {
-            "id": "e-it-net",
-            "source": "it-fundamentals",
+            "id": "e-computer-networking",
+            "source": "computer-os-fundamentals",
+            "target": "networking-fundamentals"
+        },
+        {
+            "id": "e-computer-security",
+            "source": "computer-os-fundamentals",
+            "target": "security-foundations"
+        },
+        {
+            "id": "e-computer-scripting",
+            "source": "computer-os-fundamentals",
+            "target": "scripting-automation"
+        },
+        {
+            "id": "e-network-security",
+            "source": "networking-fundamentals",
             "target": "network-security"
         },
         {
-            "id": "e-it-os",
-            "source": "it-fundamentals",
-            "target": "osint"
+            "id": "e-security-network-security",
+            "source": "security-foundations",
+            "target": "network-security"
         },
         {
-            "id": "e-it-cr",
-            "source": "it-fundamentals",
-            "target": "cryptography"
+            "id": "e-network-web",
+            "source": "networking-fundamentals",
+            "target": "web-application-fundamentals"
         },
         {
-            "id": "e-net-eh",
+            "id": "e-scripting-web",
+            "source": "scripting-automation",
+            "target": "web-application-fundamentals"
+        },
+        {
+            "id": "e-network-defensive",
+            "source": "networking-fundamentals",
+            "target": "defensive-security-monitoring"
+        },
+        {
+            "id": "e-network-security-defensive",
             "source": "network-security",
-            "target": "ethical-hacking"
+            "target": "defensive-security-monitoring"
         },
         {
-            "id": "e-os-eh",
-            "source": "osint",
-            "target": "ethical-hacking"
+            "id": "e-security-defensive",
+            "source": "security-foundations",
+            "target": "defensive-security-monitoring"
         },
         {
-            "id": "e-eh-web",
-            "source": "ethical-hacking",
+            "id": "e-computer-offensive",
+            "source": "computer-os-fundamentals",
+            "target": "offensive-security-fundamentals"
+        },
+        {
+            "id": "e-network-offensive",
+            "source": "networking-fundamentals",
+            "target": "offensive-security-fundamentals"
+        },
+        {
+            "id": "e-network-security-offensive",
+            "source": "network-security",
+            "target": "offensive-security-fundamentals"
+        },
+        {
+            "id": "e-security-offensive",
+            "source": "security-foundations",
+            "target": "offensive-security-fundamentals"
+        },
+        {
+            "id": "e-scripting-offensive",
+            "source": "scripting-automation",
+            "target": "offensive-security-fundamentals"
+        },
+        {
+            "id": "e-web-web-security",
+            "source": "web-application-fundamentals",
             "target": "web-security"
         },
         {
-            "id": "e-net-ir",
+            "id": "e-security-web-security",
+            "source": "security-foundations",
+            "target": "web-security"
+        },
+        {
+            "id": "e-computer-incident",
+            "source": "computer-os-fundamentals",
+            "target": "incident-response"
+        },
+        {
+            "id": "e-network-incident",
+            "source": "networking-fundamentals",
+            "target": "incident-response"
+        },
+        {
+            "id": "e-network-security-incident",
             "source": "network-security",
             "target": "incident-response"
+        },
+        {
+            "id": "e-security-incident",
+            "source": "security-foundations",
+            "target": "incident-response"
+        },
+        {
+            "id": "e-defensive-incident",
+            "source": "defensive-security-monitoring",
+            "target": "incident-response"
+        },
+        {
+            "id": "e-computer-osint",
+            "source": "computer-os-fundamentals",
+            "target": "osint"
+        },
+        {
+            "id": "e-computer-crypto",
+            "source": "computer-os-fundamentals",
+            "target": "cryptography"
+        },
+        {
+            "id": "e-network-crypto",
+            "source": "networking-fundamentals",
+            "target": "cryptography"
         }
     ]
 }

@@ -83,6 +83,10 @@ First public OSS release — full MVP platform, ready for community contribution
 
 _Tracked in [GitHub Issues](../../issues)._
 
+### Changed
+- Expanded the Cybersecurity Foundations tree with operating systems, networking, security foundations, scripting, web fundamentals, defensive monitoring, and introductory offensive security topics.
+- Updated prerequisites, optional OSINT and cryptography branches, resource links, and the estimated completion time to six months.
+
 ### Planned
 - Admin dashboard for reviewing `resource_suggestions`
 - GitHub Actions JSON schema linting on PRs (`data/schema.json` + Zod)
